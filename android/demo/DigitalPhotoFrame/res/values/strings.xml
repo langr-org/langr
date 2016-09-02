@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">电子相册</string>
+    <string name="menu_more">更多</string>
+    <string name="button_setting">相框设置</string>
+    <string name="button_qcode">扫一扫</string>
+    <string-array name="auto_play_frequency_entry">
+        <item>10分钟</item>
+        <item>30分钟</item>
+        <item>1小时</item>
+        <item>4小时</item>  
+        <item>6小时</item>
+        <item>从不</item>     
+    </string-array>
+    <string-array name="auto_play_frequency_value">
+        <item>10</item>
+        <item>30</item>
+        <item>60</item>
+        <item>240</item>
+        <item>360</item>
+        <item>0</item>
+    </string-array>
+	<string-array name="gender">
+	    <item>男</item>
+	    <item>女</item>
+	    <item>中间</item>
+	</string-array>
+</resources>

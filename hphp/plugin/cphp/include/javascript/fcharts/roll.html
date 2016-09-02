@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=gb2312" />
+<title>Untitled Document</title>
+
+<script type="text/javascript" src="../swfobject.js"></script>
+</head>
+
+<body leftmargin="0" topmargin="0">
+<div id="swf"></div>
+<script type="text/javascript">
+	/***
+	 * RoundCorner		边框圆角半径 (像素)
+	 * BordersAlpha		边框颜色的不透明度 (0~100 透明~不透明)
+	 * TextBold		文字加粗
+	 * TextLeftMargin	说明文字左右两侧与边框的间距
+	 * Effects		轮播效果:
+	 *				从左上方进入 从右上方进入 从右下方进入 从左下方进入
+	 *				从正左侧进入 从正右侧进入 从正上方进入 从正下方进入
+	 *				水平的百叶窗 垂直的百叶窗 动态百叶窗一 动态百叶窗二
+	 */
+      	var str="PicWidth=180&PicHeight=140&MovieHeight=165&TextHeight=25&TextBgColor=FFFFFF&PicUrls=./sample1.jpg|./sample2.jpg|./sample3.jpg|./sample4.jpg&UrlValue=http://www.langr.org|http://fang.langr.org/|http://play.langr.org/|/&TextValue=发布1.0|FlashAlter官方网站|下载及帮助|无~~&Target=_blank&BordersWidth=1&RoundCorner=0&BordersColor=000000&BordersAlpha=100&TextFont=Arial&TextSize=12&TextBold=1&TextColor=CC1515&TextHoverColor=000000&TextLeftMargin=10&TextAlign=center&NumBgColor=CC1515&NumColor=FFF57F&NumActiveColor=990000&NumBorderColor=FFFFFF&Effects=0|1|2|3|4|5|6|7|8|9|10|11&Author=Aslan&HomePage=http://www.aslan.cn/";
+	var s1 = new SWFObject("./roll.swf","movie","180","165","6");
+	s1.addVariable("flashvars", str);  
+	s1.addParam("flashvars", str);  
+//	s1.addParam("quality","high");
+	s1.addParam("scale", "noscale");
+	s1.addParam("salign","LT");
+	s1.addParam("menu", "false");
+	s1.write("swf");  </script></body>
+</html>

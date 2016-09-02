@@ -1,0 +1,3 @@
+<div id='Hinet3A1' style="display:inline; width:260px;padding-right:5px;padding-bottom:5px"><a href="#p4" onclick="c2('Hinet3A1')"><img src="images/index/buy_04.gif" border="0"></a></div>
+<div id='Hinet3A2' style="display:inline; width:260px;padding-right:5px;padding-bottom:5px"><a href="#p5" onclick="c2('Hinet3A2')"><img src="images/index/buy_05.gif" border="0"></a></div>
+<div id='Hinet3A3' style="display:inline; width:260px;padding-right:5px;padding-bottom:5px"><a href="#p6" onclick="c2('Hinet3A3')"><img src="images/index/buy_06.gif" border="0"></a></div>

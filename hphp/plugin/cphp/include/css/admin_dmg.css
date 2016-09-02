@@ -1,0 +1,45 @@
+@import url("spiffyCal_v2_1.css");
+body { font-size: 9pt; }
+td { font-size: 9pt; line-height:1.8em;}
+input, select { font-size:9pt; }
+a:link { font-size:9pt; color: #0000FF; text-decoration:underline }
+a:visited { font-size:9pt; color: #0000FF; text-decoration:underline }
+a:hover { font-size:9pt; color:#c90026;text-decoration:underline; }
+.bb {text-indent: 14px;}
+.cc {
+	font-size: 10pt;
+	font-weight: bold;
+}
+.date 
+	{
+	font-family: Arial;
+	font-size: 7pt;
+	font-weight: bold;
+	}
+#page a:link
+	{
+	font-family: Arial;
+	font-size:9pt;
+	color: #0000FF;
+	text-decoration:underline;
+	padding: 4px;
+	font-weight: bold;
+	}
+#page a:visited
+	{ 
+	font-family: Arial;
+	font-size:9pt; color: #0000FF; text-decoration:underline;
+	padding: 4px;
+	font-weight: bold;
+	}
+ #page a:hover
+    {
+	font-family: Arial;
+	font-size: 9pt;
+	color: #FF0000;
+	font-weight: bold;
+	height: auto;
+	width: auto;
+	padding: 3px;
+	border: 1px solid #0000FF;
+}

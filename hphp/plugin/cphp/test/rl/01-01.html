@@ -1,0 +1,215 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>推廣儲值拆帳查詢 </title>
+<link href="agency.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="spiffyCal/spiffyCal_v2_1.js"></script>
+
+</head>
+<body bgcolor="#FFFFFF" leftmargin="0" topmargin="0">
+<table width="1000" border="0" cellpadding="0" cellspacing="6" bgcolor="#1C4905" align=center>
+<tr>
+<td style="line-height: 3em;"><font size=5 color=#FFFFFF><b>麻將大悶鍋經銷商系統</b></font>　<font color=#FFFFFF>登入帳號：<font color=#00ff00><b>A00015（預付卡網站）</b></font>　[ <a href=#><font color=#FFFFFF>經銷商管理首頁</font></a> ]　[ <a href=#><font color=#FFFFFF>登出管理後台</font></a> ]</font></td>
+</tr>
+</table>
+<hr width=1000 size=1 align=center>
+<table width="1000" border="0" cellspacing="0" cellpadding="0" align=center>
+<tr>
+<!-- 左側選單 Begin -->
+<td width=160 valign=top align=cnter>
+
+<table width="160" border="0" cellspacing="1" cellpadding="2" bgcolor=#B2D6B2>
+<tr><td width=160 bgcolor=#B2D6B2><img src="images/agency/arrow02.gif"><b>管理查詢選單</b></td></tr>
+<tr><td width=160 bgcolor=#E9F7EB>
+<div class="bb"><a href=#>推廣儲值拆帳查詢</a></div>
+<div class="bb"><a href=#>推廣註冊會員查詢</a></div>
+<div class="bb"><a href=#>推廣行銷資料素材</a></div>
+<div class="bb">子經銷商管理</div>
+<div class="bb">子經銷商拆帳設定</div>
+<div class="bb"><a href=#>修改聯絡資料</a></div>
+</td></tr>
+</table>
+
+</td>
+<!-- 左側選單 End -->
+<!-- 右側內容 Begin -->
+<td width=840 valign=top align=center>
+<font size=4><b>推廣儲值拆帳查詢</b></font><font color=red>（拆帳 20%）</font>
+&nbsp;<p>
+<form name="new_product">
+<table width="780" border="0" cellspacing="1" cellpadding="0" align=center>
+<tr>
+<td align=right width=70>付款方式：</td>
+<td align=left width=120>
+<select name="qry_mpid" id="qry_mpid">
+<option value="">全部</option>
+<option value="ATM"  >ATM付款</option>
+<option value="ShopPay"  >超商付款</option>
+<option value="CreditCard"  >信用卡付款</option>
+<option value="3A"  >3A小額付款</option>
+</select></td>
+<td align=right width=70>是否銷帳：</td>
+<td align=left width=520>
+<select name="qry_mpid" id="qry_mpid">
+<option value="">全部</option>
+<option value="OK"  >已銷帳</option>
+<option value="NO" >未銷帳</option>
+</select></td>
+</tr>
+<tr><td align=right>查詢日期：</td>
+<td colspan=3 align=left class="dataTableRow">
+<script type="text/javascript">
+start_date = new ctlSpiffyCalendarBox("start_date", "new_product", "q_start_date","btnDate1","2007-08-23");
+end_date = new ctlSpiffyCalendarBox("end_date", "new_product", "q_end_date","btnDate2","2007-08-23");
+</script>
+
+<script type="text/javascript">start_date.writeControl(); start_date.dateFormat="yyyy-MM-dd";</script>　～　
+<script type="text/javascript">end_date.writeControl(); end_date.dateFormat="yyyy-MM-dd";</script>
+　<input name="" type="button" value="查詢"> <font color=red>（最大查詢週期 180 天）
+</td></tr>
+</table>
+</form>&nbsp;
+<table width="780" border="0" cellspacing="1" cellpadding="0" align=center>
+<tr>
+<td width=390 align=left>總筆數 <b>530</b> 筆 │ 已銷帳 <b>230</b> 筆 │ 未銷帳 <b>300</b> 筆
+<td align=right><a href=#><IMG SRC="images/agency/ms_excel.gif" WIDTH="21" HEIGHT="21" BORDER="0" ALT="" align="absmiddle"> 查詢結果下載Excel文件</a></td>
+</tr>
+</table>
+<table width="780" border="0" cellspacing="1" cellpadding="0" align=center bgcolor=#1C4905>
+<tr bgcolor=#B2D6B2>
+<td width=140 align=center>會員ID</td>
+<td width=150 align=center>訂購時間</td>
+<td width=120 align=center>儲值點數</td>
+<td width=120 align=center>點數金額</td>
+<td width=130 align=center>付款方式</td>
+<td width=120 align=center>是否銷帳</td>
+</tr>
+<tr bgcolor=#ffffff style="font-family:Arial;">
+<td align=center class="cc">a214dj</td>
+<td align=center class="cc">2007-08-21 01:26:39</td>
+<td align=center class="cc">50000</td>
+<td align=center class="cc">500</td>
+<td align=center class="cc">3A(CHTOTP)</td>
+<td align=center class="cc"><IMG SRC="images/agency/No.png" WIDTH="16" HEIGHT="16" BORDER="0" ALT="未銷帳" align="absmiddle"></td>
+</tr>
+<tr bgcolor=#E9F7EB style="font-family:Arial;">
+<td align=center class="cc">ycc021</td>
+<td align=center class="cc">2007-08-21 00:54:30</td>
+<td align=center class="cc">30000</td>
+<td align=center class="cc">300</td>
+<td align=center class="cc">3A(FETNET)</td>
+<td align=center class="cc"><IMG SRC="images/agency/No.png" WIDTH="16" HEIGHT="16" BORDER="0" ALT="未銷帳" align="absmiddle"></td>
+</tr>
+<tr bgcolor=#ffffff style="font-family:Arial;">
+<td align=center class="cc">a214dj</td>
+<td align=center class="cc">2007-08-21 01:26:39</td>
+<td align=center class="cc">50000</td>
+<td align=center class="cc">500</td>
+<td align=center class="cc">3A(839OTP)</td>
+<td align=center class="cc"><IMG SRC="images/agency/No.png" WIDTH="16" HEIGHT="16" BORDER="0" ALT="未銷帳" align="absmiddle"></td>
+</tr>
+<tr bgcolor=#E9F7EB style="font-family:Arial;">
+<td align=center class="cc">ycc021</td>
+<td align=center class="cc">2007-08-21 00:54:30</td>
+<td align=center class="cc">30000</td>
+<td align=center class="cc">300</td>
+<td align=center class="cc">3A(FETNET)</td>
+<td align=center class="cc"><IMG SRC="images/agency/No.png" WIDTH="16" HEIGHT="16" BORDER="0" ALT="未銷帳" align="absmiddle"></td>
+</tr>
+<tr bgcolor=#ffffff style="font-family:Arial;">
+<td align=center class="cc">a214dj</td>
+<td align=center class="cc">2007-08-21 01:26:39</td>
+<td align=center class="cc">50000</td>
+<td align=center class="cc">500</td>
+<td align=center class="cc">3A(TCC)</td>
+<td align=center class="cc"><IMG SRC="images/agency/No.png" WIDTH="16" HEIGHT="16" BORDER="0" ALT="未銷帳" align="absmiddle"></td>
+</tr>
+<tr bgcolor=#E9F7EB style="font-family:Arial;">
+<td align=center class="cc">ycc021</td>
+<td align=center class="cc">2007-08-21 00:54:30</td>
+<td align=center class="cc">300000</td>
+<td align=center class="cc">3000</td>
+<td align=center class="cc">ATM</td>
+<td align=center class="cc"><IMG SRC="images/agency/Ok.png" WIDTH="16" HEIGHT="16" BORDER="0" ALT="已銷帳" align="absmiddle"></td>
+</tr>
+<tr bgcolor=#ffffff style="font-family:Arial;">
+<td align=center class="cc">a214dj</td>
+<td align=center class="cc">2007-08-21 01:26:39</td>
+<td align=center class="cc">50000</td>
+<td align=center class="cc">500</td>
+<td align=center class="cc">3A(CHTOTP)</td>
+<td align=center class="cc"><IMG SRC="images/agency/No.png" WIDTH="16" HEIGHT="16" BORDER="0" ALT="未銷帳" align="absmiddle"></td>
+</tr>
+<tr bgcolor=#E9F7EB style="font-family:Arial;">
+<td align=center class="cc">ycc021</td>
+<td align=center class="cc">2007-08-21 00:54:30</td>
+<td align=center class="cc">30000</td>
+<td align=center class="cc">300</td>
+<td align=center class="cc">3A(FETNET)</td>
+<td align=center class="cc"><IMG SRC="images/agency/No.png" WIDTH="16" HEIGHT="16" BORDER="0" ALT="未銷帳" align="absmiddle"></td>
+</tr>
+<tr bgcolor=#ffffff style="font-family:Arial;">
+<td align=center class="cc">a214dj</td>
+<td align=center class="cc">2007-08-21 01:26:39</td>
+<td align=center class="cc">50000</td>
+<td align=center class="cc">500</td>
+<td align=center class="cc">3A(CHTOTP)</td>
+<td align=center class="cc"><IMG SRC="images/agency/Ok.png" WIDTH="16" HEIGHT="16" BORDER="0" ALT="已銷帳" align="absmiddle"></td>
+</tr>
+<tr bgcolor=#E9F7EB style="font-family:Arial;">
+<td align=center class="cc">ycc021</td>
+<td align=center class="cc">2007-08-21 00:54:30</td>
+<td align=center class="cc">30000</td>
+<td align=center class="cc">300</td>
+<td align=center class="cc">3A(TAT)</td>
+<td align=center class="cc"><IMG SRC="images/agency/Ok.png" WIDTH="16" HEIGHT="16" BORDER="0" ALT="已銷帳" align="absmiddle"></td>
+</tr>
+</table><p>
+<table width="780" border="0" cellspacing="1" cellpadding="0" align=center>
+<tr><td align=right>
+<table width="200" border="0" cellspacing="1" cellpadding="1" bgcolor=#1C4905>
+<tr bgcolor=#FFFFFF align=right style="font-family:Arial; font-size:10pt; font-weight: bold;">
+<td width=80>總計金額</td>
+<td width=120>52,000</td>
+</tr>
+<tr bgcolor=#FFFFFF align=right style="font-family:Arial; font-size:10pt; font-weight: bold;">
+<td width=80>未銷帳金額</td>
+<td width=120>31,000</td>
+</tr>
+<tr bgcolor=#FFFFFF align=right style="font-family:Arial; font-size:10pt; font-weight: bold;">
+<td width=80>已銷帳金額</td>
+<td width=120>21,000</td>
+</tr>
+<tr bgcolor=#FFFFFF align=right style="font-family:Arial; font-size:10pt; font-weight: bold;">
+<td width=80>可拆帳金額</td>
+<td width=120>4,200</td>
+</tr>
+</table>
+</td></tr>
+</table>
+<table width="780" border="0" cellspacing="1" cellpadding="5" align=center>
+<tr><td id=page align=right>
+共 <b>15</b> 頁 <a href=#>下一頁</a> <b>1</b>  <a href=#>2</a>   <a href=#>3</a>   <a href=#>4</a>   <a href=#>5</a>   <a href=#>6</a>   <a href=#>7</a>   <a href=#>8</a>   <a href=#>9</a>   <a href=#>10</a>  <a href=#>下10頁</a> <a href=#>最後一頁</a>
+</td></tr>
+</table>
+&nbsp;<br>
+
+</td>
+<!-- 右側內容 End -->
+</tr>
+</table>
+<hr width=1000 size=1 align=center>
+<!-- 下方版權宣告 Begin -->
+<table width="1000" border="0" cellspacing="5" cellpadding="0" align=center>
+<tr>
+<td width=1000 align=center>
+艾德網科技股份有限公司 ADDWE Technology Co., Ltd. 2000-2007 &copy;<br>
+TEL: 02-22787789　FAX: 02-29993432　E-Mail: <a href="mailto:agency@betcity.com.tw?Subject=經銷商聯絡">agency@betcity.com.tw</a><br>
+</td>
+<!-- 下方版權宣告 End -->
+</tr>
+</table>
+<div id="spiffycalendar" class="text"></div>
+</body>
+</html>

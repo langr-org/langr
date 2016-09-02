@@ -1,0 +1,13 @@
+// $Id$
+// vim:ft=javascript
+
+// If your extension references something external, use ARG_WITH
+// ARG_WITH("lcrypt", "for lcrypt support", "no");
+
+// Otherwise, use ARG_ENABLE
+// ARG_ENABLE("lcrypt", "enable lcrypt support", "no");
+
+if (PHP_LCRYPT != "no") {
+	EXTENSION("lcrypt", "lcrypt.c");
+}
+

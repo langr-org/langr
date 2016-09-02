@@ -1,0 +1,126 @@
+BODY { font-size: 10pt; margin:0px 0px 0px 0px}
+#button   { border:1px solid #4C77B6;background-color: #DFE6EF; font-family:Verdana, Arial,ËÎÌו; font-size:12px }
+td {
+	font-size: 10pt;
+	color: #000066;
+
+}
+hr {
+	color: #000066;
+	height: 1pt;
+}
+a:link, a:visited, a:active { text-decoration: underline; color: #0033CC}
+a:hover { color: #FF0000; text-decoration:underline }
+.tdtitle {
+	background-color: #99CC66;
+	color: #FFFFFF;
+
+}
+.lineborder {
+	border: 1pt double #345487;
+}
+
+input { border:1px solid #4C77B6; font-family:Verdana, Arial,ËÎÌו; font-size:12px }
+
+.button {
+	color: #000000;
+	background-color: #FCF2CF;
+	border: 1pt solid #000000;
+
+
+}
+.copyright {
+	text-align: center;
+	color: #666666;
+}
+.tableoutside {
+	background-color: #FFFFFF;
+}
+.tdinside0 {
+	border: none;
+	background-color: #E1F9D9;
+
+
+}
+.tdinside1 {
+	border: none;
+	background-color: #E7FDB3;
+
+
+}
+.errormsg {
+	color: #FF0000;
+}
+.noborder {
+	border: 0px;
+
+}
+.permiture {
+	color: #000066;
+}
+.permitfalse {
+	color: #FF0000;
+}
+.emphases {
+	color: #CC0033;
+}
+.highemphases {
+	color: #FF0000;
+}
+.remark {
+	color: #330099;
+
+}
+.bigwhite {
+	font-size: 10.5pt;
+	font-weight: bold;
+	color: #FFFFFF;
+}
+.bigblack {
+	font-weight: bolder;
+	color: #000000;
+}
+.menubg {
+	background-color: #EEF2F7;
+}
+.menubg2 {
+	background-color: #F2F3DC;
+}
+.linetd {
+	border-bottom-width: 1pt;
+	border-bottom-style: double;
+	border-bottom-color: #345487;
+}
+.mainbg {
+	background-color: #F2F5F9;
+}
+.pformstrip {
+	background-color: #D1DCEB;
+	color:#3A4F6C;
+	font-weight:bold;padding:5px;
+	margin-top:1px
+}
+.percentborder {
+	border-top: 1px double #2F5E5B;
+	border-right: 0px double #2F5E5B;
+	border-bottom: 1px double #2F5E5B;
+	border-left: 0px double #2F5E5B;
+	background-color: #D9E4E6;
+
+
+}
+.percentbg {
+	background-color: #95B5B4;
+}
+.pager {font-family: Times New Roman, Times, serif;font-size:10pt;}
+.typeList { font-size:10pt; }
+
+#prompt
+{
+	width: 60%;
+	border: 1pt double #345487;
+	background-color: #F2F5F9;
+	MARGIN-TOP: 150px;
+	PADDING-TOP: 60px;
+	PADDING-BOTTOM: 60px;
+}

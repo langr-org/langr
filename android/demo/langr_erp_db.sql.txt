@@ -1,0 +1,288 @@
+-- $Id$
+create database `erp_db`;
+use `erp_db`;
+
+-- 分类
+create table `e_type` (
+  `id` int(11) not null auto_increment,
+  `pid` int(11) not null default 0,
+  `ppid` int(11) not null default 0,
+  `pppid` int(11) not null default 0,
+  `name` varchar(128) not null default '',
+  `status` smallint(2) not null default 1,
+  primary key (`id`),
+  key `pid` (`pid`)
+) engine=innodb default charset=utf8 comment='产品分类表';
+
+-- 办公室/分店或仓库
+create table `e_shop` (
+  `id` int(11) not null auto_increment,
+  `level` int(11) not null default 0 comment '等级',
+  `name` varchar(128) not null default '',
+  `contacts` varchar(128) not null default '' comment '负责(联系)人',
+  `tel` varchar(16) not null default '' comment '负责人电话',
+  `tel2` varchar(16) not null default '' comment '座机电话',
+  `fax` varchar(16) not null default '' comment '传真',
+  `province` varchar(32) not null default '' comment '省',
+  `city` varchar(32) not null default '' comment '市',
+  `area` varchar(32) not null default '' comment '县/区',
+  `addr` varchar(255) not null default '' comment '详细地址',
+  `lat` decimal(15,12) not null default '0' comment '纬度',
+  `lng` decimal(15,12) not null default '0' comment '经度',
+  `open_date` datetime not null default '2015-03-01 09:00:00' comment '使用开始时间',
+  `close_date` datetime not null default '2095-01-01 18:00:00' comment '使用结束时间',
+  `note` varchar(255) not null default '' comment '备注',
+  `status` smallint(2) not null default 1 comment '店铺/仓库状态:0close,1正常,2准备中',
+  `created` int(11) default '0' comment '创建时间',
+  `updated` int(11) default '0' comment '更新时间',
+  primary key (`id`),
+  key `tel2` (`tel2`)
+) engine=innodb default charset=utf8 comment='店铺/仓库表';
+
+-- !暂不用
+-- [进]原料或成品(生产时需要)
+-- NOTE: 汇到总部的记录表合并时，id 需要去掉 auto_increment 属性
+create table `e_materials` (
+  `id` int(11) not null auto_increment,
+  `sid` int(11) not null default 1 comment '所在(店铺/仓库)位置:e_shop.id',
+  `type` int(11) default '1' comment '产品分类：e_type.id',
+  `name` varchar(64) not null comment '名称',
+  `status` smallint(2) default '1' comment '1正常在库2已(生产)转库存3不可用',
+  `created` int(11) default '0' comment '创建时间',
+  `updated` int(11) default '0' comment '更新时间',
+  primary key (`id`)
+) engine=innodb default charset=utf8 comment='原料/进货表';
+
+-- (存)[进->存]库存产品
+-- NOTE: 汇到总部的记录表合并时，id 需要去掉 auto_increment 属性
+create table `e_products` (
+  `id` int(11) not null auto_increment,
+  `sid` int(11) not null default 1 comment '所在(店铺/仓库)位置:e_shop.id',
+  `type` int(11) default '1' comment '分类：e_type.id',
+  `ean13` varchar(15) not null default '0' comment '产品条形码',
+  `fname` varchar(64) not null default '' comment '长名称',
+  `sname` varchar(32) not null comment '短名称(型号)',
+  `unit` varchar(64) not null default '件' comment '单位',
+  `buy_price` decimal(11,4) not null default '0' comment '成本价',
+  `price` decimal(11,2) not null default '0' comment '(原)销售价',
+  `sale` decimal(4,2) not null default '1.00' comment '*折扣(0.01~1.00)',
+  `sale_price` decimal(11,2) not null default '0' comment '折扣后销售价',
+  `vip_price` decimal(11,2) not null default '0' comment 'vip销售价',
+  `vip2_price` decimal(11,2) not null default '0' comment 'vip2(合作商拿货价)销售价',
+  -- 产品属性套餐包:
+  -- 解析时：[combo]=>[{属性1:[{属性1值1:库存数},{属性1值2:库存数}]},{属性2:[{属性2值1:库存数}]}]
+  -- demo: [{颜色:[{红:10},{蓝:0}]},{套餐:[{送包:3},{返现100:2}]}]
+  `combo` varchar(511) not null default '' comment
+  '[{颜色:[{红:10},{蓝:0}]},{套餐:[{送包:3},{返现100:2}]}](json)套餐属性:颜色，配套产品等属性',
+  `pic` varchar(255) not null default '' comment '图片',
+  `desc` varchar(255) not null default '' comment '简介',
+  `detail` text comment '更多详情',
+  `pay` int(11) default '0' comment '累计购买人数',
+  `hot` int(11) default '0' comment '热门度',
+  `sort` int(4) default '0' comment '(逆序)排序(推荐)',
+  `real_inventory` int(11) default '0' comment '真实库存',
+  `inventory` int(11) default '0' comment '显示(可下单)库存',
+  `status` smallint(2) default '1' comment '1正常2手动下线',
+  `created` int(11) default '0' comment '创建时间',
+  `updated` int(11) default '0' comment '更新时间',
+  primary key (`id`),
+  key `type` (`type`),
+  key `ean13` (`ean13`),
+  key `sname` (`sname`),
+  key `sort` (`sort`),
+  key `status` (`status`)
+) engine=innodb default charset=utf8 comment='产品表';
+
+-- 产品库存进出及操作记录表
+-- NOTE: 汇到总部的记录表合并时，id 需要去掉 auto_increment 属性
+create table `e_op_log`(
+  `id` int(11) not null auto_increment,
+  `sid` int(11) not null default 1 comment '所在(店铺/仓库)位置:e_shop.id',
+  `admin` varchar(32) not null default '' comment '操作人',
+  `table` varchar(32) not null default '' comment '操作的表名:e_products,e_orders...',
+  `did` int(11) not null default 0 comment '数据记录id:e_products.id,e_orders.id',
+  `content` varchar(512) not null default '' comment '修改栏位1:原值->目标置,修改栏位2:原值->目标置,...',
+  `note` varchar(255) not null default '' comment '操作备注',
+  `created` int(11) default '0' comment '创建时间',
+  primary key (`id`),
+  key `table` (`table`)
+) engine=innodb default charset=utf8 comment='主要数据库操作记录表';
+
+-- (销)订单销售商品列表，一个销售产品一条数据
+-- NOTE: 汇到总部的记录表合并时，id 需要去掉 auto_increment 属性
+create table `e_orders` (
+  `id` int(11) not null auto_increment,
+  `sid` int(11) not null default 1 comment '所在(店铺/仓库)位置:e_shop.id',
+  -- oid: YYmmddXxxxHHmmii Xxxx:店铺+员工编号(长度不易超过8位)
+  `oid` varchar(20) not null default '' comment '订单Id:150102001000001',
+  `follow` varchar(15) not null default '0' comment '跟踪码/防伪码/产品唯一码',
+  `pid` int(11) not null default '0' comment '产品id:e_products.id',
+  `ean13` varchar(15) not null default '0' comment '产品条形码',
+  `sname` varchar(32) not null comment '短名称(型号)',
+  -- 产品属性套餐包内容: [颜色:红,套餐:送包,磅数:25yy]
+  `content` varchar(511) not null default '' comment '订单内容及产品套餐',
+  `userid` int(11) not null default 0 comment '认购者用户id',
+  `tel` int(11) not null default '' comment '认购者电话',
+  `pcs_money` decimal(11,2) not null default '0' comment '单品原金额',
+  `count` int(11) not null default 1 comment '数量',
+  `sum_money` decimal(11,2) not null default '0' comment '此项总金额',
+  `sale_money` decimal(11,2) not null default '0' comment '此项总优惠后金额',
+  `total_money` decimal(11,2) default '0' comment 'oid订单总实际付款金额',
+  `pay_money` decimal(11,2) default '0' comment 'oid订单总实际付款金额',
+  `pay_time` int(11) not null default '0' comment '付款日',
+  `pay_type` smallint(2) default '0' comment '支付方式0未支付1现金2刷卡3支付宝4网银转账5其它',
+  `pay_end_time` int(11) not null default '0' comment '最后付款时间:created+24h?',
+  `pay_admin` int(11) not null default '0' comment '支付确认人',
+  `check_admin` int(11) not null default '0' comment '审核确认人',
+  `addr_id` int(11) not null default '0' comment '收货人地址id',
+  `exp_no` varchar(32) not null default '' comment '发货物流及物流号 sf:123455',
+  `invoice_id` int(11) not null default '0' comment '发票id,0表示不要发票1需要发票但还未开',
+  `invoice_title` varchar(64) not null default '' comment '发票抬头:用于简化工作人员流程，可不用填写发票表信息',
+  `recommend` varchar(16) default '0' comment '来源/推荐',
+  `note` varchar(255) not null default '' comment '备注:客户物品或特殊需求',
+  `pay_status` smallint(2) default '0' comment '支付状态0未付款,1待确认,2已确认付款,3已退款',
+  `status` smallint(2) default '1' comment
+  '0取消(商品反库)1准备处理2已完结3正在处理中4处理完(客户未拿)5处理完(客户已拿/未付款)6申请退换货',
+  `created` int(11) default '0' comment '创建时间',
+  `updated` int(11) default '0' comment '更新时间',
+  primary key (`id`),
+  key `oid` (`oid`),
+  key `ean13` (`ean13`),
+  key `userid` (`userid`),
+  key `pay_status` (`pay_status`),
+  key `status` (`status`)
+) engine=innodb default charset=utf8 comment='订单表';
+
+-- 客户关系表
+create table `e_user`(
+  `id` int(11) not null auto_increment,
+  `sid` int(11) not null default 1 comment '所在(店铺/仓库)位置:e_shop.id',
+  `account` varchar(32) not null default '' comment '登陆或识别账号:电话/邮箱',
+  `pwd` varchar(32) not null default '' comment '密码',
+  `type` varchar(32) not null default 'c' comment '客户类型：c客户,g供应商,h合作商',
+  `name` varchar(32) not null default '' comment '姓名',
+  `tel` varchar(16) not null default '' comment '主联系方式',
+  `tel2` varchar(16) not null default '' comment '联系方式2',
+  `email` varchar(64) not null default '' comment '',
+  `qq` varchar(32) not null default '' comment '',
+  `weixin` varchar(32) not null default '' comment '',
+  `url` varchar(64) not null default 'http://' comment '',
+  `sex` varchar(2) not null default '男' comment '',
+  `pic` varchar(128) not null default '' comment '',
+  `birth` date not null default '1980-01-01' comment '生日或年龄段:(1970-01-01)70后,(1980-01-01)80后',
+  `level` int(11) default '0' comment '级别,5以上老客户可享受vip价格,合作商可享受vip2价格',
+  `addr` varchar(255) not null default '' comment '大致地址',
+  `money` decimal(11,2) not null default '0' comment '用户余额/赊账',
+  `points` int(11) default '0' comment '积分',
+  `tag` varchar(32) default '' comment 'tag/来源/推荐/标示圈子，如：群12345 中山公园1',
+  `note` varchar(255) not null default '' comment '客户的(供货)优势/兴趣/消费习惯',
+  `status` smallint(2) default '1' comment '0未用1正常',
+  `created` int(11) default '0' comment '创建时间',
+  `updated` int(11) default '0' comment '更新时间',
+  primary key(`id`),
+  key `account` (`account`),
+  key `tel` (`tel`)
+) engine=innodb default charset=utf8 comment='客户关系表';
+
+-- 客户通话/需求备注记录表
+create table `e_user_log`(
+  `id` int(11) not null auto_increment,
+  `sid` int(11) not null default 1 comment '所在(店铺/仓库)位置:e_shop.id',
+  `userid` int(11) not null default 0 comment '用户id',
+  `name` varchar(32) not null default '' comment '',
+  `type` varchar(10) not null default 'tel' comment 'tel/qq/email/weixin/wangwang/offline',
+  `admin` varchar(32) not null default '' comment '管理记录人',
+  `src` varchar(32) not null default '' comment '来电号/qq/email',
+  `des` varchar(32) not null default '' comment '目标接电话号',
+  `note` varchar(255) not null default '' comment '来去电主要内容或需求',
+  `created` int(11) default '0' comment '创建时间',
+  `updated` int(11) default '0' comment '更新时间',
+  primary key(`id`)
+) engine=innodb default charset=utf8 comment='客户跟踪记录';
+
+-- 收货人地址
+create table `e_contact`(
+  `id` int(11) not null auto_increment,
+  `sid` int(11) not null default 1 comment '所在(店铺/仓库)位置:e_shop.id',
+  `userid` int(11) not null default 0 comment '用户id',
+  `name` varchar(32) not null default '' comment '收件人',
+  `tel` varchar(32) not null default '' comment '收件人联系方式',
+  `province` varchar(32) not null default '' comment '省',
+  `city` varchar(32) not null default '' comment '市',
+  `area` varchar(32) not null default '' comment '县/区',
+  `addr` varchar(255) not null default '' comment '收件详细地址',
+  `postcode` varchar(10) not null default '' comment '邮政编码',
+  `note` varchar(32) not null default '' comment '备注:记录证件号什么的',
+  `status` smallint(2) default '1' comment '0未用1正常',
+  `created` int(11) default '0' comment '创建时间',
+  `updated` int(11) default '0' comment '更新时间',
+  primary key(`id`),
+  key `userid`(`userid`)
+) engine=innodb default charset=utf8 comment='收件信息';
+
+-- 发票信息
+create table `e_invoice`(
+  `id` int(11) not null auto_increment,
+  `sid` int(11) not null default 1 comment '所在(店铺/仓库)位置:e_shop.id',
+  `oid` int(11) not null default 0 comment 'e_orders.id',
+  `userid` int(11) not null default 0 comment '用户id',
+  `title` varchar(64) not null default '' comment '发票抬头',
+  `type` varchar(10) not null default '' comment '发票类型',
+  `invoice_no` varchar(100) not null default '' comment '发票号',
+  `content` varchar(255) not null default '' comment '发票内容',
+  `addr_id` int(11) not null default '0' comment '发票邮寄地址',
+  `note` varchar(255) not null default '' comment '备注',
+  `status` smallint(2) default '0' comment '0未开1已开',
+  `created` int(11) default '0' comment '创建时间',
+  `updated` int(11) default '0' comment '更新时间',
+  primary key(`id`),
+  key `oid`(`oid`),
+  key `userid`(`userid`)
+) engine=innodb default charset=utf8 comment='发票信息';
+
+-- 后台
+create table `e_admin`(
+  `id` int(11) not null auto_increment,
+  `sid` int(11) not null default 1 comment '所在(店铺/仓库)位置:e_shop.id',
+  `aid` int(11) not null default 0 comment 'e_staff.id',
+  `admin` varchar(32) not null default '' comment '登陆名',
+  `pwd` varchar(32) not null default '' comment '密码',
+  `name` varchar(32) not null default '' comment '姓名',
+  `group` varchar(32) not null default 'c' comment '组',
+  `power` text comment '权限',
+  `tel` varchar(16) not null default '' comment '',
+  `email` varchar(64) not null default '' comment '',
+  `qq` varchar(32) not null default '' comment '',
+  `sex` varchar(2) not null default '男' comment '',
+  `pic` varchar(128) not null default '' comment '',
+  `birth` date not null default '1990-01-01' comment '生日或年龄段:(1980-01-01)80后,(1990-01-01)90后',
+  `level` int(11) default '0' comment '级别',
+  `addr` varchar(255) not null default '' comment '大致地址',
+  `status` smallint(2) default '1' comment '0禁用1正常',
+  `created` int(11) default '0' comment '创建时间',
+  `updated` int(11) default '0' comment '更新时间',
+  primary key(`id`),
+  key `admin`(`admin`)
+) engine=myisam default charset=utf8 comment='管理员';
+
+-- !暂不用，员工信息
+create table `e_staff`(
+  `id` int(11) not null auto_increment,
+  `sid` int(11) not null default 1 comment '所在(店铺/仓库)位置:e_shop.id',
+  `name` varchar(32) not null default '' comment '姓名',
+  `nick_name` varchar(32) not null default '' comment '昵称',
+  `birth` date not null default '1990-01-01' comment '',
+  `pic` varchar(128) not null default '' comment '',
+  `tel` varchar(16) not null default '' comment '',
+  `indate` datetime not null default '2015-01-01 08:00:00' comment '入',
+  `outdate` datetime not null default '2095-01-01 18:00:00' comment '离',
+  `status` smallint(2) default '1' comment '0未用1正常',
+  `created` int(11) default '0' comment '创建时间',
+  `updated` int(11) default '0' comment '更新时间',
+  primary key(`id`)
+) engine=myisam default charset=utf8 comment='员工';
+
+insert into e_shop
+(id,level,name,contacts,tel,tel2,province,city,area,addr,lat,lng,open_date,note,created) values 
+(1,1,'李宁-Kason 常兴店','游金平','13715201397','075588888888','广东省','深圳市','南山区','常兴路169号','0.0','0.0','2013-03-01 10:00:00','',UNIX_TIMESTAMP());
+

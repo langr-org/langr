@@ -1,0 +1,258 @@
+获取 cpuid 硬件信息
+sudo /usr/sbin/dmidecode -t processor | grep ID:
+
+Asterisk Call Manager/1.0
+
+/* action: login */
+Action: login
+Username: user
+Secret: pwd
+Events: off
+
+Response: Success
+Message: Authentication accepted
+
+Response: Success
+Message: Already logged in
+
+Response: Error
+Message: Authentication failed
+
+/* action: logoff */
+Action: logoff
+
+Response: Goodbye
+Message: Thanks for all the fish.
+
+/* no action */
+Response: Error
+Message: Missing action in request
+
+/* no action command */
+Response: Error
+Message: Invalid/unknown command
+
+/* no login */
+Response: Error
+Message: Authentication Required
+
+/**
+ * 通道信息
+ * command: show channels
+ */
+Action: Command
+Command: show channels
+
+Response: Follows
+Privilege: Command
+Channel              Location             State   Application(Data)             
+0 active channels
+0 active calls
+--END COMMAND--
+
+Response: Follows
+Privilege: Command
+Channel                                  Location                       State   Application(Data)
+SIP/wuxpbx-00005c94                      (None)                         Up      Bridged Call(SIP/827-00005c93)
+SIP/827-00005c93                         s@macro-dialout-trun           Up      Dial(SIP/wuxpbx/807|80|Tt)
+2 active channels
+1 active call
+--END COMMAND--
+
+Response: Follows
+Privilege: Command
+Channel                                  Location                       State   Application(Data)
+SIP/665-00005c9e                         665@from-internal:1            Ringing AppDial((Outgoing Line))
+SIP/659-00005c9d                         s@macro-dial:10                Ring    Dial(SIP/665||Tt)
+2 active channels
+1 active call
+--END COMMAND--
+
+Response: Follows
+Privilege: Command
+Channel                                  Location             State   Application(Data)
+SIP/x7065551212b-1af                     (None)               Ringing AppDial((Outgoing Line))
+SIP/x7065551212c-2aa                     29@default:2         Ring    Dial(SIP/x7065551212b)
+2 active channels
+1 active call
+--END COMMAND--
+
+Response: Error
+Message: Authentication Required
+
+/**
+ * show hints
+ */
+action: command
+command: show hints
+
+Response: Follows
+Privilege: Command
+
+    -= Registered Asterisk Dial Plan Hints =-
+                    979@ext-local           : IAX2/979              State:Unavailable     Watchers  0
+                    911@ext-local           : IAX2/911              State:Unavailable     Watchers  0
+                    910@ext-local           : IAX2/910              State:Unavailable     Watchers  0
+                    888@ext-local           : SIP/888               State:Unavailable     Watchers  0
+                    878@ext-local           : IAX2/878              State:Unavailable     Watchers  0
+                    808@ext-local           : IAX2/808              State:Unavailable     Watchers  0
+                    806@ext-local           : SIP/806               State:Unavailable     Watchers  0
+                    805@ext-local           : SIP/805               State:Unavailable     Watchers  0
+                    804@ext-local           : SIP/804               State:Unavailable     Watchers  0
+                    803@ext-local           : SIP/803               State:Unavailable     Watchers  0
+                    802@ext-local           : SIP/802               State:Unavailable     Watchers  0
+                    801@ext-local           : SIP/801               State:Unavailable     Watchers  0
+----------------
+- 12 hints registered
+--END COMMAND--
+
+/**
+ * 信息
+ * command: show parkedcalls
+ */
+Action: Command
+Command: show parkedcalls
+
+Response: Follows
+Privilege: Command
+ Num                   Channel (Context         Extension    Pri ) Timeout
+0 parked calls.
+--END COMMAND--
+
+/**
+ * 座机示忙, 设备示忙
+ * Command: database put DND extension YES
+ * Command: database put DND device_no YES
+ * 示闲
+ * Command: database del DND extension 
+ */
+Action: Command
+Command: database put DND 802 YES
+
+Response: Follows
+Privilege: Command
+Updated database successfully
+--END COMMAND--
+
+Action: Command
+Command: database del DND 802 
+
+Response: Follows
+Privilege: Command
+Database entry removed.
+--END COMMAND--
+
+/**
+ * show, put, 
+ * Command: database show AMPUSER ...
+ * Command: database show DEVICE ...
+ * Command: database show DIAL ...
+ * Command: database show USER extension 
+ */
+Action: command
+Command: database show USER 802
+
+Response: Follows
+Privilege: Command
+/USER/802                                         : SIP/802
+--END COMMAND--
+
+Action: command
+Command: database show DIAL
+
+Response: Follows
+Privilege: Command
+/DIAL/IAX2/819                                    : 819
+/DIAL/IAX2/868                                    : 868
+/DIAL/IAX2/881                                    : 881
+/DIAL/IAX2/979                                    : 979
+/DIAL/SIP/150                                     : 833
+/DIAL/SIP/160                                     : 160
+/DIAL/SIP/501                                     : 826
+/DIAL/SIP/600                                     : 600
+/DIAL/SIP/659                                     : 659
+/DIAL/SIP/660                                     : 660
+/DIAL/SIP/851                                     : 851
+/DIAL/SIP/852                                     : 852
+/DIAL/SIP/871                                     : 871
+/DIAL/SIP/896                                     : 896
+/DIAL/SIP/898                                     : 898
+/DIAL/ZAP/22                                      : 836
+--END COMMAND--
+
+Action: command
+Command: database show DEVICE
+
+Response: Follows
+Privilege: Command
+/DEVICE/895/dial                                  : SIP/895
+/DEVICE/895/type                                  : fixed
+/DEVICE/895/user                                  : 895
+/DEVICE/896/dial                                  : SIP/896
+/DEVICE/896/type                                  : fixed
+/DEVICE/896/user                                  : 896
+/DEVICE/898/dial                                  : SIP/898
+/DEVICE/898/type                                  : fixed
+/DEVICE/898/user                                  : 898
+/DEVICE/979/dial                                  : IAX2/979
+/DEVICE/979/type                                  : fixed
+/DEVICE/979/user                                  : 979
+--END COMMAND--
+
+
+/* event */
+Event: hintchange
+Privilege: agent,all
+ghao: 826
+status: Busy
+
+Event: callerchange
+Privilege: call,all
+callerid: 826
+channel: SIP/826-00005c83
+agentno: 33305326
+status: wait
+
+Event: callerchange
+Privilege: call,all
+channel: SIP/826-00005c83
+agentno: 33305326
+status: answer
+
+Event: callerchange
+Privilege: call,all
+channel: SIP/827-00005c93
+status: hangup
+
+Event: queueinfo
+Privilege: call,all
+queue: 900
+agents: 10
+idles: 5
+dnds: 0
+rings: 0
+busys: 0
+noregs: 5
+
+Event: hintchange
+Privilege: agent,all
+ghao: 827
+status: Idle
+
+Event: queueinfo
+Privilege: call,all
+queue: 900
+agents: 10
+idles: 4
+dnds: 0
+rings: 0
+busys: 1
+noregs: 5
+
+Event: callerchange
+Privilege: call,all
+callerid: 824
+channel: SIP/824-00005c99
+agentno: 82640781
+status: wait
+

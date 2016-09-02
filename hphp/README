@@ -1,0 +1,19 @@
+hiphp
+
+$Id: README 15 2011-11-16 10:46:10Z loghua@gmail.com $
+
+/** 
+ * @file README
+ * @brief 
+ * 
+ * Copyright (C) 2011 LangR.Org
+ * 
+ * Licensed under The MIT License
+ * Redistributions of files must retain the above copyright notice.
+ * 
+ * @package hiphp
+ * @author Langr <hua@langr.org> 2011/10/12 00:44
+ * @license MIT License (http://www.opensource.org/licenses/mit-license.php)
+ * 
+ * $Id: README 15 2011-11-16 10:46:10Z loghua@gmail.com $
+ */

@@ -1,0 +1,112 @@
+﻿-- 潜力王！
+-- $Id$
+-- 短线潜力，5~20,	-10%~30%
+-- 中线潜力，20~60,	-30%~50%
+-- 长线潜力，60~200,	-100%
+-- 建仓潜力，60~100,	5~30%
+-- 起动潜力，10~30,	20~40%
+-- 爆发出货，
+
+-- 公司代码及基本面，每日行情总表等
+CREATE DATABASE `king_potential`;
+use `king_potential`;
+
+-- .sh .sz listed company
+CREATE TABLE `listed_company` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `code` varchar(8) NOT NULL default '000000' COMMENT '',
+  `sname` varchar(30) NOT NULL default '' COMMENT '简称',
+  `pyname` varchar(20) NOT NULL default '' COMMENT '拼音简称',
+  `se` varchar(4) NOT NULL default 'SH' COMMENT 'SSE,SZSE Stock Exchange 值:SH,SZ,HK',
+  `level` smallint(2) NOT NULL default '9' COMMENT '级别:123蓝筹456中789',
+  `tmoney` bigint(12) NOT NULL DEFAULT '0' COMMENT 'total money',
+  `tstock` bigint(11) NOT NULL DEFAULT '0' COMMENT 'total stock',
+  `type` varchar(20) NOT NULL default '' COMMENT '类型',
+  `industry` varchar(20) NOT NULL default '' COMMENT '行业',
+  `industry2` varchar(20) NOT NULL default '' COMMENT '行业2',
+  `industry3` varchar(20) NOT NULL default '' COMMENT '行业3',
+  `area` varchar(30) NOT NULL default '' COMMENT '所属地区',
+  `sday` bigint(11) NOT NULL DEFAULT '0' COMMENT '上市日期',
+  `sprice` float(7,4) NOT NULL DEFAULT '0' COMMENT '上市价',
+  `name` varchar(60) NOT NULL default '' COMMENT '全名',
+  `addr` varchar(90) NOT NULL default '' COMMENT '地址',
+  `url` varchar(30) NOT NULL default '' COMMENT 'url',
+  `tel` varchar(16) NOT NULL default '' COMMENT 'tel',
+  `desc` varchar(255) NOT NULL COMMENT '简介',
+  `updated` bigint(11) NOT NULL DEFAULT '0' COMMENT '',
+  `created` bigint(11) NOT NULL DEFAULT '0' COMMENT '',
+  PRIMARY KEY (`id`),
+  KEY (`code`),
+  KEY (`pyname`),
+  KEY (`level`),
+  KEY (`industry`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='company list';
+
+-- 全部每日交易历史价格 
+CREATE TABLE `price_all` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `code` varchar(8) NOT NULL default '000000' COMMENT '',
+  `level` smallint(2) NOT NULL default '9' COMMENT '级别:123蓝筹456中789',
+  `money` bigint(11) NOT NULL DEFAULT '0' COMMENT '当天交易额',
+  `stock` bigint(11) NOT NULL DEFAULT '0' COMMENT 'stock',
+  `stto` float(7,4) NOT NULL DEFAULT '0.0000' COMMENT 'stock turnover',
+  `bbd` bigint(11) NOT NULL DEFAULT '0' COMMENT '大单净量',
+  `last_price` float(7,4) NOT NULL DEFAULT '0' COMMENT '昨',
+  `o_price` float(7,4) NOT NULL DEFAULT '0' COMMENT '开',
+  `c_price` float(7,4) NOT NULL DEFAULT '0' COMMENT '收',
+  `h_price` float(7,4) NOT NULL DEFAULT '0' COMMENT '高',
+  `l_price` float(7,4) NOT NULL DEFAULT '0' COMMENT '低',
+  `adj_o_price` float(7,4) NOT NULL DEFAULT '0' COMMENT '前开',
+  `adj_c_price` float(7,4) NOT NULL DEFAULT '0' COMMENT '前收(除权)',
+  `rise` float(7,4) NOT NULL DEFAULT '0.0000' COMMENT '涨幅',
+  `d_rise` float(7,4) NOT NULL DEFAULT '0.0000' COMMENT '振幅',
+  `day` bigint(11) NOT NULL DEFAULT '0' COMMENT '日期',
+  `updated` bigint(11) NOT NULL DEFAULT '0' COMMENT '',
+  `created` bigint(11) NOT NULL DEFAULT '0' COMMENT '',
+  PRIMARY KEY (`id`),
+  KEY (`code`),
+  KEY (`level`),
+  KEY (`stto`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='historical price';
+
+-- end 
+
+CREATE TABLE `username_index` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `userName` varchar(50) NOT NULL DEFAULT '' COMMENT '账号',
+  `uid` bigint(11) NOT NULL DEFAULT '0' COMMENT '用户id',
+  PRIMARY KEY (`id`),
+  KEY (`userName`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='账号索引表';
+
+CREATE TABLE `register_log` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `uid` int(11) NOT NULL DEFAULT '0' COMMENT '用户id',
+  `username` varchar(50) NOT NULL COMMENT '用户名',
+  `phone` varchar(20) NOT NULL COMMENT '电话号码',
+  `system` varchar(20) DEFAULT '0' COMMENT '使用的系统',
+  `systemver` varchar(50) DEFAULT NULL COMMENT '系统版本',
+  `imei` varchar(15) DEFAULT NULL COMMENT 'imei信息',
+  `ip` varchar(15) NOT NULL DEFAULT '0.0.0.0' COMMENT 'IP地址',
+  `appver` varchar(15) DEFAULT '' COMMENT '应用程序版本',
+  `created` int(10) NOT NULL DEFAULT '0' COMMENT '创建时间',
+  PRIMARY KEY (`id`),
+  KEY (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='注册数据来源表';
+
+CREATE TABLE `intro_log` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `reg_id` int(11) NOT NULL DEFAULT '0' COMMENT '注册人userID',
+  `intro_id` varchar(20) NOT NULL COMMENT '推荐人userID',
+  `created` int(10) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='推荐人记录表';
+
+CREATE TABLE `feedback` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `content` text COMMENT '反馈内容',
+  `contact` varchar(64) DEFAULT NULL COMMENT '联系方式',
+  `ip` varchar(30) DEFAULT NULL COMMENT 'IP',
+  `created` int(11) DEFAULT NULL COMMENT '时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户反馈表';

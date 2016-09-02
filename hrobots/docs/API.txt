@@ -1,0 +1,61 @@
+hrobots 采集中心 API 协议
+
+$Id: API.txt 75 2014-05-26 03:57:48Z huanghua $
+
+通信数据格式使用 json, 客户端请求时，通过 POST json 数据到服务器端，
+服务器端返回直接 echo 数据到页面。
+
+0. 查看服务器说明，下载客户端和key
+直接访问 http://www.kitsmall.com/key.php
+
+1. 查找服务器
+url: http://www.kitsmall.com/dynamic_ip/ip.php?act=serverinfo&name=hrobots
+method: GET
+client:
+	POST:
+	{"api":"get_server","args":{}}
+server:
+	echo:
+	{"errno":0,"errmsg":"ok","ret":{"server":"http://192.168.100.58/api"}}
+
+
+2. 检测服务器是否正常工作，及是否需要更新版本
+工作不正常时，则需要再查找服务器
+url: http://server/
+action: ping
+method: POST
+client:
+	POST:
+	{"api":"ping","args":{}}
+server:
+	echo:
+	{"errno":0,"errmsg":"ok","ret":{"version":"0.1","client_version":"0.6","time":"20140513160950"}}
+
+3. 请求任务
+url: http://server/
+action: gettask
+method: POST
+request args:
+	do:	null | collect | update
+		请求动作: 采集或者更新，为空时由服务器选择，而且服务器可能忽略此请求
+	module:	null | [digikey,mouser,future,element14,avnet,arrow,rs,tti]
+		请求模块: 需要采集或更新的数据源，客户端必需已经安装有相应的模块，为空时由服务器选择，而且服务器可能忽略此请求
+	client:	array(client_id,client_version,username,client_key) 客户id和key
+	device:	array(PHP_OS,cpuinfo...) 客户设备信息，存入备注
+client:
+	POST:
+	{"api":"gettask","args":{"do":"collect","module":"mouser","client":{"client_id":"@x@x","version":"0.4","checksum":"qwe33r4","username":"HQ1405xxx","device":{}}}}
+server:
+	echo:
+	{"errno":0,"errmsg":"ok","ret":{"do":"collect","module":"mouser","taskid":"123","count":100,"list":[{"id":123,"url":"http://x.com/x/x"},{"id":124,"url":"http://x.com/x/x/2"},{"id":125,"url":"http://x.com/x/x/3"}...]}}
+
+4. 发送已完成的任务
+url: http://server/
+action: puttask
+method: POST
+client:
+	POST:
+	{"api":"puttask","args":{"do":"collect","module":"mouser","taskid":"123","count":100,"client":{},"list":{"do":"collect","module":"mouser","taskid":"123","count":20,"list":[{"id":123,"url":"http://x.com/x/x","gds_name":""...},{"id":124,"url":"http://x.com/x/x/2","gds_name":""},{"id":125,"url":"http://x.com/x/x/3","gds_name":""...}...]}}}
+server:
+	echo:
+	{"errno":0,"errmsg":"ok","ret":{}}

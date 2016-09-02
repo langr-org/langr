@@ -1,0 +1,216 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="jquery.min.js" ></script>
+<script type="text/javascript" src="js/highcharts.js" ></script>
+<title>图表:线图</title>
+<style type="text/css">
+	.clearfix:after {
+		content: ".";
+		display: block;
+		height: 0;
+		clear: both;
+		visibility: hidden;
+	}
+	.clearfix {display: inline-block;}  /* for IE/Mac */
+
+	.cpu{width:200px;height:200px; display:block;float:left;margin-right:10px;}
+	.memory{height:200px; width:830px; margin-top:10px;}
+</style>
+</head>
+<body>
+	<div class="clearfix">
+		<div id="cpu1"  class="cpu"></div>
+		<div id="cpu2"  class="cpu"></div>
+		<div id="cpu3"  class="cpu"></div>
+		<div id="cpu4"  class="cpu"></div>
+	</div>
+	<div class="memory" id="memory">
+		
+	</div>
+<script type="text/javascript">
+
+	//定义皮肤
+Highcharts.theme = {
+   colors: ["#DDDF0D", "#7798BF", "#55BF3B", "#DF5353", "#aaeeee", "#ff0066", "#eeaaee", 
+      "#55BF3B", "#DF5353", "#7798BF", "#aaeeee"],//备用线条颜色
+   chart: {
+      backgroundColor: {//渐变背景
+         linearGradient: [0, 0, 0, 200],
+         stops: [
+            [0, 'rgb(96, 96, 96)'],
+            [1, 'rgb(16, 16, 16)']
+         ]
+      },
+      borderWidth: 0,
+      borderRadius: 5,
+      plotShadow: false,//plot绘图区域样式
+      plotBorderWidth: 1,
+	  plotBorderColor:"#444"
+   },
+   title: {//标题样式
+      style: { 
+         color: '#FFF',
+         font: '16px Lucida Grande, Lucida Sans Unicode, Verdana, Arial, Helvetica, sans-serif'
+      }
+   },
+   xAxis: {//x轴样式
+      gridLineWidth: 1,
+	  gridLineColor:"#008040",
+      lineWidth: 0,
+      labels: false,
+	  tickWidth:0,
+      title: {
+         style: {
+            color: '#fff',
+            font: 'bold 12px Lucida Grande, Lucida Sans Unicode, Verdana, Arial, Helvetica, sans-serif'
+         }            
+      }
+   },
+   yAxis: {//y
+   	  gridLineWidth: 1,
+	  gridLineColor:"#008040",
+      lineWidth: 0,
+      tickWidth: 0,
+      labels: {
+         style: {
+            color: '#fff'
+         }
+      },
+      title:false
+   },
+   
+   plotOptions: {//画图选项
+      line: {
+         dataLabels: {
+            color: '#CCC'
+         },
+         marker: {//标记圆点样式
+            radius:2
+         },
+		 lineWidth:1,
+		 color:"#00ff00"
+      }
+   },
+   tooltip: false,
+  legend:false,
+  exporting: false
+};
+
+// Apply the theme
+var highchartsOptions = Highcharts.setOptions(Highcharts.theme);
+
+
+Highcharts.setOptions({
+   global: {
+      useUTC: false
+   }
+});
+   
+var lineoptions={
+   	  credits:{enabled:false},//不显示Highcharts的链接
+      chart: {
+         renderTo: 'cpu1',
+         defaultSeriesType: 'line',
+		 animation:false,//不显示动画(性能)
+         events: {
+            load: function() {
+   
+               //每秒生成随机数填充
+               var series = this.series[0];
+               setInterval(function() {
+			   	var d = new Date();
+				d.setMilliseconds(0);
+                  var x = d.getTime(), // current time with 0 milliseconds
+                     y = parseInt(Math.abs(Math.random()*100),10);
+					 
+                  series.addPoint([x, y], true, true);
+               }, 1000);
+            }
+         }
+      },
+      title: {
+         text: 'CPU1使用记录(%)'
+      },
+      xAxis: {
+         type: 'datetime',//x轴数据类型 时间
+		 tickInterval: 5 * 1000 // 5 seconds tick，x轴竖线间距
+      },
+      yAxis: {
+		 min:0,
+		 max:100,//y轴最大值
+		 tickInterval:20
+      },
+      
+      series: [{
+         data: (function() {//初始数据填充
+			var d = new Date();
+				d.setMilliseconds(0);
+            var data = [],
+               time = d.getTime(),
+               i;
+            
+            for (i = -19; i <= 0; i++) {
+               data.push({
+                  x: time + i * 1000,
+                  y: 0
+               });
+            }
+            return data;
+         })()
+      }]
+   };
+   
+$(document).ready(function() {
+   var cpu1  = new Highcharts.Chart(lineoptions);
+   lineoptions.chart.renderTo="cpu2";
+   lineoptions.title.text="CPU2使用记录(%)";
+   var cpu2  = new Highcharts.Chart(lineoptions);
+   lineoptions.chart.renderTo="cpu3";
+   lineoptions.title.text="CPU3使用记录(%)";
+   var cpu3  = new Highcharts.Chart(lineoptions);
+   lineoptions.chart.renderTo="cpu4";
+   lineoptions.title.text="CPU4使用记录(%)";
+   var cpu4  = new Highcharts.Chart(lineoptions);
+   lineoptions.chart.renderTo="memory";
+   lineoptions.title.text="内存使用记录(G)";
+   lineoptions.chart.events.load=function(){
+       var series = this.series[0];
+       setInterval(function() {
+	   	var d = new Date();
+		d.setMilliseconds(0);
+          var x = d.getTime(), // current time with 0 milliseconds
+             y = Math.abs(Math.random()*8);
+			 
+          series.addPoint([x, y], true, true);
+       }, 1000);
+   }
+   lineoptions.series.data = (function() {
+			var d = new Date();
+				d.setMilliseconds(0);
+            var data = [],
+               time = d.getTime(),
+               i;
+            
+            for (i = -52; i <= 0; i++) {
+               data.push({
+                  x: time + i * 1000,
+                  y: 0
+               });
+            }
+            return data;
+         })();
+   lineoptions.yAxis.max=8;
+   lineoptions.yAxis.tickInterval=1;
+   lineoptions.xAxis.tickInterval=1000;
+   lineoptions.plotOptions={line:{lineWidth:2,color:"#0080ff",marker:{radius:4}}};
+   
+   var memory  = new Highcharts.Chart(lineoptions);
+   
+   
+});
+</script>
+	
+</body>
+</html>

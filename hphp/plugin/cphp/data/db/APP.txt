@@ -1,0 +1,230 @@
+/***
+ * cphp 网站架构基本数据库
+ * 数据资料的说明讲参见 APP.sql
+ * 
+ * $Id: APP.txt 8 2009-10-20 10:05:34Z langr $
+ */
+set names UTF8;
+/* 站点设置 */
+drop table if exists `{$db_prefix}c_siteset`;
+create table `{$db_prefix}c_siteset` (
+	`id` int(10) unsigned not null auto_increment,
+	`name` varchar(255),
+	`content` text,
+	`createtime` datetime,
+	`updatetime` datetime,
+	`state` tinyint,
+	`note` varchar(255),
+	index (id),
+	primary key (id)
+) engine=MyISAM default charset=utf8;
+
+/* 站点用户资料 */
+drop table if exists `{$db_prefix}c_user`;
+create table `{$db_prefix}c_user` (
+	`id` int(10) unsigned not null auto_increment,
+	`account` varchar(32),
+	`pwd` varchar(32),
+	`pwd2` varchar(32),
+	`gid` int(10) unsigned not null default '0',
+	`attr` int(10),
+	`money` int(10),
+	`icon` varchar(255),
+	`role` int(10),
+	`power_site` int(10) not null default '0',
+	`power_article` int(10) not null default '0',
+	`power_other` int(10) not null default '0',
+	`last_logintime` datetime,
+	`last_loginip` varchar(20),
+	`login_count` int(10),
+	`createtime` datetime,
+	`updatetime` datetime,
+	`state` tinyint,
+	`note` varchar(255),
+	index (id),
+	primary key (id)
+) engine=MyISAM default charset=utf8;
+
+/* 用户详细资料 */
+drop table if exists `{$db_prefix}c_userinfo`;
+create table `{$db_prefix}c_userinfo` (
+	`id` int(10) unsigned not null auto_increment,
+	`uid` int(10) unsigned not null default '0',
+	`nickname` varchar(32),
+	`name` varchar(32),
+	`sex` varchar(2),
+	`birthday` date,
+	`email` varchar(255),
+	`url` varchar(255),
+	`tel` varchar(255),
+	`post` varchar(10),
+	`addr` varchar(255),
+	`createtime` datetime,
+	`updatetime` datetime,
+	`state` tinyint,
+	`note` varchar(255),
+	index (id),
+	primary key (id)
+) engine=MyISAM default charset=utf8;
+
+/* 网页模块 */
+drop table if exists `{$db_prefix}c_modules`;
+create table `{$db_prefix}c_modules` (
+	`id` int(10) unsigned not null auto_increment,
+	`idname` varchar(32),					/* 模块 id 名 */
+	`name` varchar(32),					/* 模块名 */
+	`pid` int(10) unsigned not null default '0',		/* 模块父 id */
+	`class` int(10) unsigned not null default '0',		/* 模块所属分类 */
+	`area` varchar(10),					/* 模块所在区域: top, nav, bottom ... */
+	`attr` int(10),						/* 模块属性: 折叠, 展开 ... */
+	`order` int(10), 					/* 排序 */
+	`link` varchar(255),					/* 链接地址 */
+	`target` varchar(10),					/* 链接窗口目标 */
+	`title` varchar(255),					/* 链接描述 */
+	`content` text,						/* 内容 (html) */
+	`createtime` datetime,
+	`updatetime` datetime,
+	`state` tinyint,					/* 状态: 1 显示, 0 不显示 */
+	`note` varchar(255),					/* 备注 */
+	index (id),
+	primary key (id)
+) engine=MyISAM default charset=utf8;
+
+/* 文章分类 */
+drop table if exists `{$db_prefix}c_class`;
+create table `{$db_prefix}c_class` (
+	`id` int(10) unsigned not null auto_increment,		/* 分类 id */
+	`idname` varchar(32),					/* 分类 id 名 */
+	`name` varchar(32),					/* 分类名 */
+	`pid` int(10) unsigned not null default '0',		/* 父分类, */
+	`attr` int(10),						/* 属性 */
+	`order` int(10),					/* 排序 */
+	`description` varchar(255),				/* 分类描述 */
+	`createtime` datetime,
+	`updatetime` datetime,
+	`state` tinyint,					/* 状态: 1 显示, 0 不显示 */
+	`note` varchar(255),
+	index (id),
+	primary key (id)
+) engine=MyISAM default charset=utf8;
+
+/* 文章管理 */
+drop table if exists `{$db_prefix}c_article`;
+create table `{$db_prefix}c_article` (
+	`id` int(10) unsigned not null auto_increment,		/* 文章 id */
+	`title` varchar(255),					/* 文章标题 */
+	`class` int(10),					/* 文章分类 */
+	`attr` int(10),						/* 属性 (权限) */
+	`view` int(10),						/* 访问量 */
+	`comment` int(10),					/* 评论量 */
+	`author` varchar(50),					/* 文章作者 */
+	`body` text,						/* 文章内容 */
+	`ubb` int(10) not null default '1',			/* ubb 支持: 1 ubb, 2 html, 3 ubb & html */
+	`createtime` datetime,
+	`updatetime` datetime,
+	`state` tinyint,					/* 状态: 1 显示, 2 草稿, 0 隐藏 ... */
+	`note` varchar(255),
+	index (id),
+	primary key (id)
+) engine=MyISAM default charset=utf8;
+
+/* 评论 */
+drop table if exists `{$db_prefix}c_comment`;
+create table `{$db_prefix}c_comment` (
+	`id` int(10) unsigned not null auto_increment,		/* 评论 id */
+	`title` varchar(255),					/* 评论标题 */
+	`aid` int(10),						/* 被评论的文章 id */
+	`attr` int(10),						/* */
+	`comment` text,						/* 评论内容 */
+	`author` varchar(50),					/* 评论者 */
+	`email` varchar(255),					/* */
+	`url` varchar(255),
+	`ip` varchar(17),
+	`reply` text,						/* 回复内容 */
+	`createtime` datetime,
+	`updatetime` datetime,
+	`state` tinyint,					/* 状态: 1 显示, 0 屏蔽 */
+	`note` varchar(255),
+	index (id),
+	primary key (id)
+) engine=MyISAM default charset=utf8;
+
+/* 留言 */
+drop table if exists `{$db_prefix}c_guestbook`;
+create table `{$db_prefix}c_guestbook` (
+	`id` int(10) unsigned not null auto_increment,		/* 留言 id */
+	`title` varchar(255),					/* 留言标题 */
+	`uid` int(10),						/* 留言所属用户 id (针对多用户时) */
+	`attr` int(10),						/* 默认为 1, 为 2 表示留言者请求隐藏留言内容 */
+	`comment` text,						/* 留言内容 */
+	`author` varchar(50),					/* 留言者 */
+	`email` varchar(255),
+	`url` varchar(255),
+	`ip` varchar(17),
+	`reply` text,						/* 回复内容 */
+	`by` varchar(50),					/* 回复者 */
+	`createtime` datetime,					/* 留言时间 */
+	`updatetime` datetime,					/* 回复时间 */
+	`state` tinyint,					/* 状态: 1 显示(未回复), 2 已回复, 0 屏蔽 */
+	`note` varchar(255),
+	index (id),
+	primary key (id)
+) engine=MyISAM default charset=utf8;
+
+/* 访问统计 (暂时不用) */
+drop table if exists `{$db_prefix}c_view`;
+create table `{$db_prefix}c_view` (
+	`id` int(10) unsigned not null auto_increment,
+	`url` text,						/* 被访问的完整 url */
+	`ip` varchar(20),					/* 访问者 ip */
+	`ipaddr` varchar(255),					/* ip 所在物理地址 */
+	`createtime` datetime,
+	`updatetime` datetime,
+	`state` tinyint,
+	`note` varchar(255),
+	index (id),
+	primary key (id)
+) engine=MyISAM default charset=utf8;
+
+
+/* 商品分类 */
+drop table if exists `{$db_prefix}p_waveclass`;
+create table `{$db_prefix}p_waveclass` (
+	`id` int(10) unsigned not null auto_increment,		/* 分类 id */
+	`name` varchar(255),					/* 分类名 */
+	`pid` int(10) unsigned not null default '0',		/* 分类父 id */
+	`attr` int(10),						/* 分类属性 */
+	`order` int(10),					/* 分类排序 */
+	`description` varchar(255),				/* 描述 */
+	`createtime` datetime,
+	`updatetime` datetime,
+	`state` tinyint,					/* 状态: 1 正常, 0 隐藏 */
+	`note` varchar(255),
+	index (id),
+	primary key (id)
+) engine=MyISAM default charset=utf8;
+
+/* 商品管理 */
+drop table if exists `{$db_prefix}p_wave`;
+create table `{$db_prefix}p_wave` (
+	`id` int(10) unsigned not null auto_increment,		/* 商品 id */
+	`name` varchar(255),					/* 商品名 */
+	`waveclass` int(10),					/* 商品分类 */
+	`measure` varchar(50),					/* 计量方式: 个, 瓶, Kg ... */
+	`cost` double(16,2) unsigned NOT NULL default '0.00',	/* 成本价 */
+	`money` double(16,2) unsigned NOT NULL default '0.00',	/* 商品销售价 */
+	`storage` int(10) unsigned NOT NULL default '0',	/* 此商品的现有库存 */
+	`sell` int(10) unsigned NOT NULL default '0',		/* 此商品累计的总兑换 */
+	`attr` int(10),						/* 属性 */
+	`view` int(10),						/* 商品浏览率 */
+	`comment` int(10),					/* 商品评论数 */
+	`by` varchar(50),
+	`img` varchar(255),
+	`body` text,
+	`createtime` datetime,
+	`updatetime` datetime,
+	`state` tinyint,					/* 状态: 1 上架, 0 下架 */
+	`note` varchar(255),					/* 备注 */
+	index (id),
+	primary key (id)
+) engine=MyISAM default charset=utf8;

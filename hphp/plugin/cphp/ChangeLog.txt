@@ -1,0 +1,32 @@
+ChangeLog.txt
+
+上次更新: 07/05/23 by langr <hua@langr.org>
+主要更新内容:
+将 lib/main.inc.php 移至 include/config/ 目录, 新增 include/config/app.inc.php 
+项目专用配置文件.
+lib/main.fun.php
+	新增 posttohost() 函数, 通过 post 方式向远程主机传数据并取返回结果.
+	新增 wlog() 函数, 记录日志到日志文件夹, 并自动添加必要的信息.
+lib/contrl.class.php
+	更新 loadDB() 函数, 允许同一程序同时有多个数据库连接
+	更新 TmplVarReplace() 函数, 允许在子模板中支持 php 函数调用
+include/config/main.inc.php
+	新增 CFG_APP_PATH 项目相对(Web目录)路径
+	新增 CFG_DB_CHAR 数据库编码
+	新增 SMTP_xxx 发送邮件配置
+	新增 CLIENT_IP 客户真实IP地址
+lib/mysql.class.php
+	更新 connect() 函数, 解决数据库不同编码乱码问题
+	新增 autoDBChar(), 去掉并不能正确处理数据库编码问题的 autoDBLanguage() 函数, 
+
+上次更新: 07/03/15 by langr <hua@langr.org>
+主要更新内容:
+lib/main.fun.php
+	新增 url() 函数, 让架构更灵活配合 apache 支持 ReWrite
+	args() 自动对 url() 的 get 参数进行转换
+	新增 prevent_cc() 函数防止用户恶意刷新请求, (Discuz 称为 防 cc 攻击)
+	新增 tool() 函数, 对工具类插件建议直接使用此函数
+lib/main.inc.php
+	新增 ReWrite 开关支持
+lib/mysql.class.php
+	新增 selectDB() 函数, 支持同时选择多个数据库

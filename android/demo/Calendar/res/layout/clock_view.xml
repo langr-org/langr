@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>  
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"  
+    android:orientation="vertical"  
+    android:layout_width="fill_parent"  
+    android:layout_height="fill_parent">  
+    <org.langr.calendar.ClockView   
+        android:id="@+id/clock"   
+        android:layout_width="fill_parent"  
+        android:layout_height="fill_parent"/>
+    <!-- 居中
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" -->
+    <DigitalClock
+        android:id="@+id/digital_clock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+		android:layout_above="@+id/clock"
+		android:layout_alignParentLeft="true"
+		android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="20dp"
+        android:textSize="64sp"
+        />
+
+</RelativeLayout>

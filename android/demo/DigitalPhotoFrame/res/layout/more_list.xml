@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/fullscreen_content_controls"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:layout_gravity="top|center_horizontal"
+	android:orientation="vertical"
+	tools:ignore="UselessParent">
+
+	<TextView
+		android:id="@+id/photo_frame_setting"
+		style="?metaButtonBarButtonStyle"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:textColor="#FFFFFFFF"
+		android:textSize="22sp" 
+		android:layout_margin="5dp"
+		android:text="相框设置" />
+	<TextView
+		android:id="@+id/qcode_setting"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:textColor="#FFFFFFFF"
+		android:textSize="22sp" 
+		android:layout_margin="5dp"
+		android:text="扫一扫设置" />
+	<TextView
+		android:id="@+id/about_view"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:textColor="#FFFFFFFF"
+		android:textSize="22sp" 
+		android:layout_margin="5dp"
+		android:text="关于" />
+</LinearLayout>

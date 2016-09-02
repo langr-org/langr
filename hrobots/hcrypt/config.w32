@@ -1,0 +1,13 @@
+// $Id$
+// vim:ft=javascript
+
+// If your extension references something external, use ARG_WITH
+// ARG_WITH("hcrypt", "for hcrypt support", "no");
+
+// Otherwise, use ARG_ENABLE
+// ARG_ENABLE("hcrypt", "enable hcrypt support", "no");
+
+if (PHP_HQREBOTS != "no") {
+	EXTENSION("hcrypt", "hcrypt.c");
+}
+

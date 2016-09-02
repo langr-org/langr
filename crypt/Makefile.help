@@ -1,0 +1,31 @@
+E:\>gcc -o md5 testmd5.c -L./lib -lbeecrypt -I./include 
+linux$ gcc -o rsa_cipher testrsa_cipher.c bcrypt.c bcrypt.h -L./lib -lbeecrypt -I./include 
+linux$ gcc -o rsa_cipher testrsa.c bcrypt.c bcrypt.h -lbeecrypt -fopenmp			#消除一些宏定义信息
+E:\>gcc -o md5 testmd5.c md5.c -Llib -lbeecrypt -Iinclude
+E:\src\work\test\crypt>gcc -static -o md8 testmd5.c md5.c lib/libbeecrypt.dll.a -Iinclude	#x静态编译
+linux$ gcc -static -o md8 testmd5.c md5.c -Iinclude -Llib -lbeecrypt				#静态编译
+
+修改 include/beecrypt/api.h 文件, 以在 windows 系统下可使用 gcc -static 
+来静态连接 beecrypt 库, 在编译时定义 -DBEECRYPT_STATIC
+/* use windows static lib by langr 2009/11/15 00:41 */
+#ifdef	BEECRYPT_STATIC
+# ifdef	BEECRYPTAPI
+#  undef	BEECRYPTAPI
+#  define	BEECRYPTAPI
+# endif
+#endif
+
+E:\crypt>gcc -static -DBEECRYPT_STATIC -o md8 testmd5.c md5.c md5.h -Llib -lbeecrypt -Iinclude	#正常的静态编译
+
+#先静态编译成.o目标文件
+linux$ gcc -c -o md5.o -static md5.c md5.h -Iinclude -Llib -lbeecrypt
+#再生成静态或动态库文件？？
+linux$ ar cr libmd5.a md5.o
+linux$ gcc -shared -fPCI -o libmd5.so md5.o
+
+编译php扩展时，在Makefile里加上静态库
+linux$ gcc -xxx xxx lib/libbeecrypt.a
+
+#在动静态库混合编译时，要将becrypt 静态编译到其他的动态库里面时，
+#在编译命令后面加上 libbeecrype.a 
+SHARED_LIBADD="$SHARED_LIBADD lib/libbeecrypt.a"

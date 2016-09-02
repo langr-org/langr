@@ -1,0 +1,22 @@
+ecshop mysql
+
+table:
+admin_uesr
+add: extension
+alter table `wts_admin_user` add `extension` varchar(15) default '' after email;
+
+
+wsshop.wts_order_info:
+order_id
+user_id
+consignee	收件人
+tel
+mobile
+
+wsshop.wts_users:
+user_id
+user_name
+office_phone
+home_phone
+mobile_phone
+

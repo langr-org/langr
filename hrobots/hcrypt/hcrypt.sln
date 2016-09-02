@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "hcrypt", "hcrypt.vcproj", "{A16C2B4A-E828-457E-AAC0-732F227ED48D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug_TS|Win32 = Debug_TS|Win32
+		Release_TS|Win32 = Release_TS|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A16C2B4A-E828-457E-AAC0-732F227ED48D}.Debug_TS|Win32.ActiveCfg = Debug_TS|Win32
+		{A16C2B4A-E828-457E-AAC0-732F227ED48D}.Debug_TS|Win32.Build.0 = Debug_TS|Win32
+		{A16C2B4A-E828-457E-AAC0-732F227ED48D}.Release_TS|Win32.ActiveCfg = Release_TS|Win32
+		{A16C2B4A-E828-457E-AAC0-732F227ED48D}.Release_TS|Win32.Build.0 = Release_TS|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

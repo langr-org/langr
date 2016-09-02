@@ -1,0 +1,32 @@
+<table id="Table_01" width="162" height="420" border="0" cellpadding="0" cellspacing="0">
+              <tr>
+	      <td><a href="<?=url('?module=member&action=register')?>"><img src="images/index/menu_01.gif" alt="會員註冊" name="menu_01" width="162" height="35" border="0" id="menu_01" onmouseover="MM_swapImage('menu_01','','images/index/menu_01-over.gif',1)" onmouseout="MM_swapImgRestore()" /></a></td>
+              </tr>
+              <tr>
+                <td><a href="<?=url('?module=twmj&action=game&sub=download')?>"> <img src="images/index/menu_02.gif" alt="遊戲下載" name="menu_02" width="162" height="35" border="0" id="menu_02" onmouseover="MM_swapImage('menu_02','','images/index/menu_02-over.gif',1)" onmouseout="MM_swapImgRestore()" /></a></td>
+              </tr>
+              <tr>
+                <td><a href="<?=url('?module=twmj&action=game&sub=new_user')?>"> <img src="images/index/menu_03.gif" alt="新手報到" name="menu_03" width="162" height="35" border="0" id="menu_03" onmouseover="MM_swapImage('menu_03','','images/index/menu_03-over.gif',1)" onmouseout="MM_swapImgRestore()" /></a></td>
+              </tr>
+              <tr>
+                <td><a href="<?=url('?module=twmj&action=game&sub=bonus_explain')?>"> <img src="images/index/menu_05.gif" alt="紅利介紹" name="menu_05" width="162" height="35" border="0" id="menu_05" onmouseover="MM_swapImage('menu_05','','images/index/menu_05-over.gif',1)" onmouseout="MM_swapImgRestore()" /></a></td>
+              </tr>
+              <tr>
+	      <td><a href="<?=url('?module=twmj&action=game&sub=vbank_explain')?>"> <img src="images/index/menu_06.gif" alt="銀行介紹" name="menu_06" width="162" height="35" border="0" id="menu_06" onmouseover="MM_swapImage('menu_06','','images/index/menu_06-over.gif',1)" onmouseout="MM_swapImgRestore()" /></a></td>
+              </tr>
+              <tr>
+	      <td><a href="<?=url('?module=twmj&action=bug')?>"> <img src="images/index/menu_08.gif" alt="Bug回報" name="menu_08" width="162" height="35" border="0" id="menu_08" onmouseover="MM_swapImage('menu_08','','images/index/menu_08-over.gif',1)" onmouseout="MM_swapImgRestore()" /></a></td>
+              </tr>
+              <tr>
+                <td><a href="http://www.betcity.com.tw/"> <img src="images/index/menu_09.gif" alt="遊戲規範" name="menu_09" width="162" height="35" border="0" id="menu_09" onmouseover="MM_swapImage('menu_09','','images/index/menu_09-over.gif',1)" onmouseout="MM_swapImgRestore()" /></a></td>
+              </tr>
+              <tr>
+                <td><a href="<?=url('?module=twmj&action=game&sub=user_norms')?>"> <img src="images/index/menu_10.gif" alt="使用者規範" name="menu_10" width="162" height="35" border="0" id="menu_10" onmouseover="MM_swapImage('menu_10','','images/index/menu_10-over.gif',1)" onmouseout="MM_swapImgRestore()" /></a></td>
+              </tr>
+              <tr>
+                <td><a href="<?=url('?module=twmj&action=game&sub=explain')?>"> <img src="images/index/menu_11.gif" alt="遊戲介紹" name="menu_11" width="162" height="35" border="0" id="menu_11" onmouseover="MM_swapImage('menu_11','','images/index/menu_11-over.gif',1)" onmouseout="MM_swapImgRestore()" /></a></td>
+              </tr>
+              <tr>
+                <td><a href="<?=url('?module=twmj&action=game&sub=rules')?>"> <img src="images/index/menu_12.gif" alt="遊戲規則" name="menu_12" width="162" height="35" border="0" id="menu_12" onmouseover="MM_swapImage('menu_12','','images/index/menu_12-over.gif',1)" onmouseout="MM_swapImgRestore()" /></a></td>
+              </tr>
+</table>

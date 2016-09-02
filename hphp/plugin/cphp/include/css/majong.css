@@ -1,0 +1,64 @@
+body {
+	margin-top: 0px;
+	background-image: url();
+	background-repeat: repeat;
+	background-color: #1a541a;
+}
+.style1 {color: #FFFFFF}
+.style2 {
+	color: #FF0000;
+	font-weight: bold;
+}
+.style1 a {color: #FFFFFF; text-decoration:none; font-weight:bold}
+.style31 {
+	color: #FF0000;
+	font-weight: bold;
+	font-size: 24px;
+}
+.style3 {
+	color: #666666;
+	font-weight: bold;
+}
+.style32{
+	color: #666666;
+	font-weight: bold;
+	font-size:9pt;
+}
+
+.style4 {color: #000000}
+.style5 {color: #999999}
+.style14 {font-size: small}
+.style15 {font-size: 12px; vertical-align:middle}
+body,td,th {
+	
+}
+.style16 {color: #FF0099}
+.style19 {color: #FF0000; font-weight: bold; }
+.style7 {color: #FFFFFF; font-weight: bold; font-size: x-large; }
+div {
+text-align:left;
+}
+img {
+border:0px;
+}
+
+.rank_number {
+	font-size:10pt;
+	text-align: center;
+	font-family: "Century Gothic";
+	font-weight: bold;
+}
+.rank_nickname {
+	font-size:12pt;
+	text-indent: 10px;
+}
+.explain {
+	font-family: "Century Gothic";
+	font-size: 12pt;
+	font-weight: bold;
+	color: #FF0000;
+}
+
+#tier a:link { font-size:9pt; color: #0000FF; text-decoration:underline }
+#tier a:visited { font-size:9pt; color: #0000FF; text-decoration:underline }
+#tier a:hover { font-size:9pt; color:#c90026;text-decoration:underline; }

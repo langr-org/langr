@@ -1,0 +1,74 @@
+lagi 
+$Id: README 14 2011-12-07 05:48:31Z loghua@gmail.com $
+
+1． 编译
+2． 安装lagi.so
+3． 配置
+4． 测试
+
+1. 编译
+lagi 扩展已经有生成了 makefile 文件, 无需重头执行 ./configure 动作.
+即，如果需要在不同的php版本和不同的系统架构上，要重新生成新的php 扩展文件，只需如下动作即可：
+
+#cp lagi/ php-x.x.x/ext/
+#cd php-x.x.x/ext/lagi
+#make
+
+正常情况下，此时会在 lagi 当前目录生成 modules/lagi.so
+
+或者可执行 ./lagi.sh make 程序.
+此脚本自动执行修改一些版本相关信息和编译时相关信息, 并执行 make 动作.
+
+在全新的干净的环境上, 可能需要下载, 安装 php 开发工具, 和下载与目标版本相应的 php 完整源代码.
+将全部的 lagi 源码和配置放在 php-5.x.x/ext/lagi 目录里面, 然后再执行:
+#phpize
+#./configure --with-php-config=/usr/local/bin/php-config
+#make
+
+2. 安装
+将编译好的 modules/lagi.so 文件复制到 php 的扩展目录.
+并配置 php.ini 文件添加 lagi.so 扩展支持, 然后重新启动 web 服务器, 扩展便可正常被加载.
+
+#cp modules/lagi.so /usr/php-extension-path
+#vi php.ini
+extension=lagi.so
+#/etc/init.d/httpd restart
+
+3. 配置
+lagi 提供默认连接帐号登陆配置:
+在 php.ini 文件中, 可设置 asterisk PBX 服务器的 host, port, 及管理帐号密码.
+
+[lagi]
+lagi.max_links = -1
+lagi.default_host = 192.168.18.65
+lagi.default_port = 5038
+lagi.default_user = pbxuser
+lagi.default_pwd = pbxpwd
+
+如在php应用软件中, 使用 lagi_connect() 无参数, 或少部分参数连接时, lagi 会默认在 php.ini 
+配置文件中取得所缺少的参数信息, 此处如果不设置, 也是会有相应的默认值:
+
+lagi.max_links = -1
+lagi.default_host = localhost
+lagi.default_port = 5038
+lagi.default_user = 
+lagi.default_pwd = 
+
+4. 测试
+在php应用程序中调用 phpinfo() 会有如下类似信息显示, 则表示 lagi 正常被加载到 php 中, 并可以使用:
+
+lagi
+
+lagi support => enabled
+lagi version => 0.2.10 compile:2011-08-29 11:07:57
+report bugs => hua@langr.org
+
+Directive => Local Value => Master Value
+lagi.default_host => 192.168.18.65 => 192.168.18.65
+lagi.default_port => 5038 => 5038
+lagi.default_pwd => null => null
+lagi.default_user => null => null
+lagi.max_links => 6 => 6
+
+到此, 则可在 php 应用程序中正常调用 lag_xxx()接口函数来与 astersik PBX 进行通信.
+

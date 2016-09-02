@@ -1,0 +1,1 @@
+[2012-03-08 10:29:49] [info] start main: ok 3: file:main.cpp, line:27

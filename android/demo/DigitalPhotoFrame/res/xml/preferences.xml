@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+	<PreferenceCategory 
+		android:title="相框设置">
+
+	<!-- 自定议设置 -->
+	<!-- 选择图片，播放时间段 -->
+	<org.langr.util.DirDialogPreference
+		android:title="指定文件夹"
+		android:summary="选择要播放的相片文件夹"
+		android:key="photos_dir"/>
+	<org.langr.util.TimeDialogPreference
+		android:key="time_start"
+		android:title="开始时间"
+		android:summary="每天启动开始时间"
+		android:defaultValue="1418598055197"/>
+	<org.langr.util.TimeDialogPreference
+		android:key="time_end"
+		android:title="退出时间"
+		android:summary="每天关闭时间"
+		android:defaultValue="1418648408975"/>
+	<ListPreference
+		android:key="play_time"
+		android:title="相片轮播时间"
+		android:summary="设置相片切换时间"
+		android:dialogTitle="相片轮播时间"
+		android:entries="@array/auto_play_frequency_entry"
+		android:entryValues="@array/auto_play_frequency_value"/>
+	<CheckBoxPreference 
+		android:key="textcalendar_show"
+		android:title="显示文本日历"
+		android:summaryOn="在相片左下角显示文本日历"
+		android:summaryOff="不显示"
+		android:defaultValue="true"/>
+	</PreferenceCategory>
+
+	<PreferenceCategory 
+		android:title="个人信息设置"/>
+	
+	<!-- 通过输入框写用户名 -->
+	<EditTextPreference 
+		android:key="name"
+		android:title="填写用户名"
+		android:summary="填写您的用户名"
+		android:dialogTitle="您所使用的用户名为："/>
+	
+	<!-- 选择性别 -->
+	<ListPreference
+		android:key="gender"
+		android:title="性别"
+		android:summary="选择您的性别"
+		android:dialogTitle="ListPreference"
+		android:entries="@array/gender"
+		android:entryValues="@array/gender"
+		/>
+	
+	<PreferenceCategory 
+		android:title="模拟时钟设置"/>
+	<CheckBoxPreference 
+		android:key="night_analog_clock"
+		android:title="光线变暗时显示模拟时钟"
+		android:summaryOn="光线变暗或晚上时显示模拟时钟"
+		android:summaryOff="不显示"
+		android:defaultValue="true"/>
+	<CheckBoxPreference 
+		android:key="analog_clock"
+		android:title="相框退出时间到后显示模拟时钟"
+		android:summaryOn="相框到设定退出时间后显示模拟时钟"
+		android:summaryOff="退出时不显示模拟时钟"
+		android:defaultValue="true"/>
+	<CheckBoxPreference 
+		android:key="allow_dida"
+		android:title="秒钟滴答声"
+		android:summaryOn="显示秒钟滴答声音"
+		android:summaryOff="不显示秒钟滴答声"
+		android:defaultValue="true"/>
+		<!-- android:disableDependentsState="false" -->
+	<!-- 设置系统铃声 -->
+	<RingtonePreference 
+		android:key="ring_dida"
+		android:ringtoneType="all"
+		android:title="秒钟滴答声"
+		android:summary="选择秒钟滴答声"
+		android:dependency="allow_dida"
+		android:showDefault="true"
+		android:showSilent="true"/>
+
+	<PreferenceCategory android:title="系统功能设置">
+		<CheckBoxPreference 
+			android:key="horizontal_show"
+			android:title="横屏显示"
+			android:summaryOn="开启"
+			android:summaryOff="关闭"
+			android:defaultValue="true"/>
+		<CheckBoxPreference 
+			android:key="auto_start"
+			android:title="开机自动启动"
+			android:summaryOn="开机启动，开启"
+			android:summaryOff="开机启动，关闭"
+			android:defaultValue="true"/>
+		<CheckBoxPreference 
+			android:key="allow_push"
+			android:title="接收推送信息"
+			android:summaryOn="接收推送"
+			android:summaryOff="不接收推送"
+			android:defaultValue="false"/>
+	</PreferenceCategory>
+</PreferenceScreen>

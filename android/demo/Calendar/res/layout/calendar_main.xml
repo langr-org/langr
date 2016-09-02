@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+ -->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:id="@+id/main_layout">
+    <RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
+                    android:background="@drawable/title_bg"
+                    android:id="@+id/title_layout">
+        <Button android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_marginLeft="20dip"
+                android:layout_marginTop="6dip"
+                android:id="@+id/today_btn"
+                android:background="@drawable/today_selector" android:text="今天"></Button>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                  android:id="@+id/today_message"
+                  android:text="日历" android:textSize="19dip" android:textColor="@color/white"
+                  android:layout_centerInParent="true"></TextView>
+    </RelativeLayout>
+    <RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
+                    android:id="@+id/message_layout"
+                    android:layout_below="@+id/title_layout">
+        <ImageView android:layout_width="fill_parent" android:layout_height="wrap_content"
+                   android:background="@drawable/week_bg"></ImageView>
+        <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                   android:id="@+id/left_img"
+                   android:paddingTop="7dip"
+                   android:background="@drawable/left_selector"></ImageView>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                  android:id="@+id/day_message"
+                  android:paddingTop="7dip"
+                  android:layout_centerHorizontal="true"
+                  android:textSize="18dip"
+                  android:text="2012年11月13号"></TextView>
+        <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                   android:id="@+id/right_img"
+                   android:paddingTop="7dip"
+                   android:layout_alignParentRight="true"
+                   android:background="@drawable/right_selector"></ImageView>
+    </RelativeLayout>
+    <RelativeLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
+                    android:layout_below="@+id/message_layout" android:id="@+id/calendar_main">
+    </RelativeLayout>
+</RelativeLayout>

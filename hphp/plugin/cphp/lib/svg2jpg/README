@@ -1,0 +1,25 @@
+安装 SVG 导出图片插件
+
+请先在部署的机器上安装QT运行环境,
+yum install qt4 qt4-devel
+
+然后安装 xorg server: 
+yum install xorg xorg-x11-server-Xvfb
+
+(重要)安装中文字体:
+yum install fonts-ISO88591-2 fonts-chinese xorg-x11-fonts*
+或者直接复制 windows 系统字体,
+将字体文件夹放在 /usr/share/fonts/ 目录下:
+进入字体目录, 执行命令:
+mkfontscale
+mkfontdir
+fc-cache
+
+(重要)启动Xvfb:
+请确保在机器启动时, 自动(后台)运行如下命令:
+Xvfb :1 -screen 0 800x600x24 >/dev/null 2>&1 &
+或安装Xvfb为服务(无效, 现在svg.sh脚本已经会自动检测并启动 Xvfb Server)
+
+然后就可以正常在命令行和无图形界面下使用导出图片功能.
+
+(执行X程序示例: DISPLAY=localhost:1.0 ./program)

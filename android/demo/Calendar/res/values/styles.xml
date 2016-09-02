@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<style name="Theme.Light" parent="@android:style/Theme.Light">
+		<item name="android:windowBackground">@drawable/bg</item>
+		<item name="android:textColor">@color/Text</item>
+	</style>
+	<style name="Transparent" >
+		<!-- <item name="android:windowBackground">@android:drawable/toast_frame</item> -->
+		<!-- 设置窗口是透明的 -->
+		<item name="android:windowIsTranslucent">true</item>
+	</style>
+</resources>

@@ -1,0 +1,720 @@
+Last login: Tue Dec  6 19:17:33 2011 from 192.168.1.166
+
+                 Welcome to Wisetalk callcenter
+-----------------------------------------------------------------------
+
+Access to the Wisetalk callcenter web GUI use this URL:
+
+                     http://192.168.1.226
+
+-----------------------------------------------------------------------
+
+For help, please use shell command and type help-wise. 
+
+-----------------------------------------------------------------------
+
+[root@langr ~]# asterisk -rvvv
+Asterisk wisetalk-pbx-v1.0, Copyright (C) 1999 - 2010 Digium, Inc. and others.
+Created by Mark Spencer <markster@digium.com>
+Asterisk comes with ABSOLUTELY NO WARRANTY; type 'core show warranty' for details.
+This is free software, with components licensed under the GNU General Public
+License version 2 and other licenses; you are welcome to redistribute it under
+certain conditions. Type 'core show license' for details.
+=========================================================================
+Connected to Asterisk wisetalk-pbx-v1.0 currently running on langr (pid = 20632)
+Verbosity is at least 3
+  == Refreshing DNS lookups.
+langr*CLI> core show channels
+Channel                                  Location                       State   Application(Data)             
+0 active channels
+0 active calls
+    -- Registered SIP '805' at 192.168.1.166 port 5060
+    -- Executing [805@from-internal:1] Set("SIP/604-00000000", "__num=805") in new stack
+    -- Executing [805@from-internal:2] Macro("SIP/604-00000000", "exten-vm|novm|805") in new stack
+    -- Executing [s@macro-exten-vm:1] Macro("SIP/604-00000000", "user-callerid") in new stack
+    -- Executing [s@macro-user-callerid:1] GotoIf("SIP/604-00000000", "0?report") in new stack
+    -- Executing [s@macro-user-callerid:2] GotoIf("SIP/604-00000000", "0?start") in new stack
+    -- Executing [s@macro-user-callerid:3] Set("SIP/604-00000000", "REALCALLERIDNUM_INIT=604") in new stack
+    -- Executing [s@macro-user-callerid:4] Set("SIP/604-00000000", "REALCALLERIDNUM=604") in new stack
+    -- Executing [s@macro-user-callerid:5] Set("SIP/604-00000000", "__REALCAlLERIDNUM2=604") in new stack
+    -- Executing [s@macro-user-callerid:6] NoOp("SIP/604-00000000", "REALCALLERIDNUM is 604") in new stack
+    -- Executing [s@macro-user-callerid:7] Set("SIP/604-00000000", "AMPUSER=604") in new stack
+    -- Executing [s@macro-user-callerid:8] Set("SIP/604-00000000", "__FOLLOWMEUSER=s") in new stack
+    -- Executing [s@macro-user-callerid:9] Set("SIP/604-00000000", "AMPUSERCIDNAME=榛勫崕") in new stack
+    -- Executing [s@macro-user-callerid:10] GotoIf("SIP/604-00000000", "0?report") in new stack
+    -- Executing [s@macro-user-callerid:11] Set("SIP/604-00000000", "CALLERID(all)=榛勫崕 <604>") in new stack
+    -- Executing [s@macro-user-callerid:12] NoOp("SIP/604-00000000", "Using CallerID "榛勫崕" <604>") in new stack
+    -- Executing [s@macro-user-callerid:13] GotoIf("SIP/604-00000000", "0?ok:go") in new stack
+    -- Goto (macro-user-callerid,s,15)
+    -- Executing [s@macro-user-callerid:15] NoOp("SIP/604-00000000", "0") in new stack
+    -- Executing [s@macro-exten-vm:2] Set("SIP/604-00000000", "VMBOX=novm") in new stack
+    -- Executing [s@macro-exten-vm:3] Set("SIP/604-00000000", "EXTTOCALL=805") in new stack
+    -- Executing [s@macro-exten-vm:4] Set("SIP/604-00000000", "CFUEXT=") in new stack
+    -- Executing [s@macro-exten-vm:5] Set("SIP/604-00000000", "RT=20") in new stack
+    -- Executing [s@macro-exten-vm:6] Macro("SIP/604-00000000", "record-enable|805|IN") in new stack
+    -- Executing [s@macro-record-enable:1] GotoIf("SIP/604-00000000", "0 > 0?2:4") in new stack
+    -- Goto (macro-record-enable,s,4)
+    -- Executing [s@macro-record-enable:4] GotoIf("SIP/604-00000000", "0?out:in") in new stack
+    -- Goto (macro-record-enable,s,7)
+    -- Executing [s@macro-record-enable:7] GotoIf("SIP/604-00000000", "1?record:exit") in new stack
+    -- Goto (macro-record-enable,s,8)
+    -- Executing [s@macro-record-enable:8] MixMonitor("SIP/604-00000000", "11-12/07/1323220696.0.WAV|b|") in new stack
+    -- Executing [s@macro-record-enable:9] NoOp("SIP/604-00000000", ""Not need record"") in new stack
+    -- Executing [s@macro-exten-vm:7] GotoIf("SIP/604-00000000", "0?dolocaldial|1") in new stack
+    -- Executing [s@macro-exten-vm:8] Set("SIP/604-00000000", "CALLERID(name)=805") in new stack
+    -- Executing [s@macro-exten-vm:9] Macro("SIP/604-00000000", "dial|20|Tt|805") in new stack
+    -- Executing [s@macro-dial:1] AGI("SIP/604-00000000", "dialparties.agi") in new stack
+    -- Launched AGI Script /var/lib/asterisk/agi-bin/dialparties.agi
+  == Begin MixMonitor Recording SIP/604-00000000
+    --  dialparties.agi: priority = 1
+    --  dialparties.agi: callingani2 = 0
+    --  dialparties.agi: accountcode = 
+    --  dialparties.agi: channel = SIP/604-00000000
+    --  dialparties.agi: callerid = 604
+    --  dialparties.agi: context = macro-dial
+    --  dialparties.agi: callington = 0
+    --  dialparties.agi: dnid = 805
+    --  dialparties.agi: request = dialparties.agi
+    --  dialparties.agi: calleridname = 805
+    --  dialparties.agi: extension = s
+    --  dialparties.agi: language = cn
+    --  dialparties.agi: uniqueid = 1323220696.0
+    --  dialparties.agi: callingpres = 0
+    --  dialparties.agi: type = SIP
+    --  dialparties.agi: rdnis = unknown
+    --  dialparties.agi: callingtns = 1
+    --  dialparties.agi: enhanced = 0.0
+  dialparties.agi: Caller ID name and number are '604'
+  dialparties.agi: Methodology of ring is  'none'
+    --  dialparties.agi: Added extension 805 to extension map
+    --  dialparties.agi: Extension 805 cf is disabled
+    --  dialparties.agi: Extension 805 do not disturb is disabled
+    --  dialparties.agi: Checking CW and CFB status for extension 805
+    --  dialparties.agi: Correct AMPMGRUSER and AMPMGRPASS
+  dialparties.agi: extstate: 0 extnum: 805 device: 805
+  dialparties.agi: Extension 805 is available...skipping checks
+    --  dialparties.agi: DbSet CALLTRACE/805 to 604
+    -- AGI Script dialparties.agi completed, returning 0
+    -- Executing [s@macro-dial:10] Dial("SIP/604-00000000", "SIP/805|20|Tt") in new stack
+    -- Called 805
+    -- SIP/805-00000001 is ringing
+    -- SIP/805-00000001 answered in dial SIP/604-00000000
+  == Refreshing DNS lookups.
+langr*CLI> core show channels
+Channel                                  Location                       State   Application(Data)             
+SIP/805-00000001                         (None)                         Up      Bridged Call(SIP/604-00000000)                    
+SIP/604-00000000                         s@macro-dial:10                Up      Dial(SIP/805|20|Tt)                               
+2 active channels
+1 active call
+langr*CLI> core show channels
+Channel                                  Location                       State   Application(Data)             
+SIP/805-00000001                         (None)                         Up      Bridged Call(SIP/604-00000000)                    
+SIP/604-00000000                         s@macro-dial:10                Up      Dial(SIP/805|20|Tt)                               
+2 active channels
+1 active call
+Unable to open DAHDI pseudo device
+call meetme_get to search 604's conf
+I will check the 604's device's status
+the status is 3 of 604
+OK,the conference(*aa) is not used, so we use it
+    -- Executing [808@from-internal:1] Set("Local/808@from-internal-2b1d,2", "__num=808") in new stack
+    -- Executing [808@from-internal:2] Macro("Local/808@from-internal-2b1d,2", "exten-vm|novm|808") in new stack
+    -- Executing [s@macro-exten-vm:1] Macro("Local/808@from-internal-2b1d,2", "user-callerid") in new stack
+    -- Executing [s@macro-user-callerid:1] GotoIf("Local/808@from-internal-2b1d,2", "1?report") in new stack
+    -- Goto (macro-user-callerid,s,12)
+    -- Executing [s@macro-user-callerid:12] NoOp("Local/808@from-internal-2b1d,2", "Using CallerID "" <604>") in new stack
+    -- Executing [s@macro-user-callerid:13] GotoIf("Local/808@from-internal-2b1d,2", "0?ok:go") in new stack
+    -- Goto (macro-user-callerid,s,15)
+    -- Executing [s@macro-user-callerid:15] NoOp("Local/808@from-internal-2b1d,2", "2") in new stack
+    -- Executing [s@macro-exten-vm:2] Set("Local/808@from-internal-2b1d,2", "VMBOX=novm") in new stack
+    -- Executing [s@macro-exten-vm:3] Set("Local/808@from-internal-2b1d,2", "EXTTOCALL=808") in new stack
+    -- Executing [s@macro-exten-vm:4] Set("Local/808@from-internal-2b1d,2", "CFUEXT=") in new stack
+    -- Executing [s@macro-exten-vm:5] Set("Local/808@from-internal-2b1d,2", "RT=20") in new stack
+    -- Executing [s@macro-exten-vm:6] Macro("Local/808@from-internal-2b1d,2", "record-enable|808|IN") in new stack
+    -- Executing [s@macro-record-enable:1] GotoIf("Local/808@from-internal-2b1d,2", "0 > 0?2:4") in new stack
+    -- Goto (macro-record-enable,s,4)
+    -- Executing [s@macro-record-enable:4] GotoIf("Local/808@from-internal-2b1d,2", "0?out:in") in new stack
+    -- Goto (macro-record-enable,s,7)
+    -- Executing [s@macro-record-enable:7] GotoIf("Local/808@from-internal-2b1d,2", "1?record:exit") in new stack
+    -- Goto (macro-record-enable,s,8)
+    -- Executing [s@macro-record-enable:8] MixMonitor("Local/808@from-internal-2b1d,2", "11-12/07/1323220740.3.WAV|b|") in new stack
+    -- Executing [s@macro-record-enable:9] NoOp("Local/808@from-internal-2b1d,2", ""Not need record"") in new stack
+    -- Executing [s@macro-exten-vm:7] GotoIf("Local/808@from-internal-2b1d,2", "1?dolocaldial|1") in new stack
+    -- Goto (macro-exten-vm,dolocaldial,1)
+    -- Executing [dolocaldial@macro-exten-vm:1] Macro("Local/808@from-internal-2b1d,2", "dial||Tt|808") in new stack
+    -- Executing [s@macro-dial:1] AGI("Local/808@from-internal-2b1d,2", "dialparties.agi") in new stack
+  == Begin MixMonitor Recording Local/808@from-internal-2b1d,2
+    -- Launched AGI Script /var/lib/asterisk/agi-bin/dialparties.agi
+    --  dialparties.agi: priority = 1
+    --  dialparties.agi: callingani2 = 0
+    --  dialparties.agi: accountcode = 
+    --  dialparties.agi: channel = Local/808@from-internal-2b1d,2
+    --  dialparties.agi: callerid = 604
+    --  dialparties.agi: context = macro-dial
+    --  dialparties.agi: callington = 0
+    --  dialparties.agi: dnid = unknown
+    --  dialparties.agi: request = dialparties.agi
+    --  dialparties.agi: calleridname = unknown
+    --  dialparties.agi: extension = s
+    --  dialparties.agi: language = en
+    --  dialparties.agi: uniqueid = 1323220740.3
+    --  dialparties.agi: callingpres = 0
+    --  dialparties.agi: type = Local
+    --  dialparties.agi: rdnis = unknown
+    --  dialparties.agi: callingtns = 0
+    --  dialparties.agi: enhanced = 0.0
+  dialparties.agi: Caller ID name and number are '604'
+  dialparties.agi: Methodology of ring is  'none'
+    --  dialparties.agi: Added extension 808 to extension map
+    --  dialparties.agi: Extension 808 cf is disabled
+    --  dialparties.agi: Extension 808 do not disturb is disabled
+    --  dialparties.agi: Checking CW and CFB status for extension 808
+    --  dialparties.agi: Correct AMPMGRUSER and AMPMGRPASS
+  dialparties.agi: extstate: 0 extnum: 808 device: 808
+  dialparties.agi: Extension 808 is available...skipping checks
+    --  dialparties.agi: DbSet CALLTRACE/808 to 604
+    -- AGI Script dialparties.agi completed, returning 0
+    -- Executing [s@macro-dial:10] Dial("Local/808@from-internal-2b1d,2", "SIP/808||Tt") in new stack
+    -- Called 808
+langr*CLI> core show channels
+Channel                                  Location                       State   Application(Data)             
+SIP/808-00000002                         808@from-internal:1            Down    AppDial((Outgoing Line))                          
+Local/808@from-internal-2b1d,2           s@macro-dial:10                Ring    Dial(SIP/808||Tt)                                 
+Local/808@from-internal-2b1d,1           808@from-internal:1            Down    (None)                                            
+SIP/805-00000001                         (None)                         Up      Bridged Call(SIP/604-00000000)                    
+SIP/604-00000000                         s@macro-dial:10                Up      Dial(SIP/805|20|Tt)                               
+5 active channels
+2 active calls
+    -- SIP/808-00000002 is ringing
+    -- SIP/808-00000002 answered in dial Local/808@from-internal-2b1d,2
+gaga, threewaycalling so mark Local/808@from-internal-2b1d,1
+Originate successfully queued
+i have found myself(604) and the name is SIP/604-00000000
+gaga, threewaycalling so mark SIP/805-00000001
+    -- Executing [h@from-internal:1] Macro("SIP/604-00000000", "hangupcall") in new stack
+    -- Executing [s@macro-hangupcall:1] NoOp("SIP/604-00000000", "from macro-hangupcall ANSWER") in new stack
+    -- Executing [s@macro-hangupcall:2] Hangup("SIP/604-00000000", "") in new stack
+  == Spawn extension (macro-hangupcall, s, 2) exited non-zero on 'SIP/604-00000000' in macro 'hangupcall'
+  == Spawn h extension (from-internal, h, 1) exited non-zero on 'SIP/604-00000000'
+bridgeed is over chan SIP/604-00000000 transfer is  shift is (null)
+    -- Executing [*aa@from-internal:1] Set("Local/808@from-internal-2b1d,1", "CHANNEL(language)=cn") in new stack
+    -- Executing [*aa@from-internal:2] Set("Local/808@from-internal-2b1d,1", "MEETME_RECORDINGFILE=/var/spool/asterisk/monitor/11-12/07/meetme-1323220740.2") in new stack
+    -- Executing [*aa@from-internal:3] Set("Local/808@from-internal-2b1d,1", "MEETME_RECORDINGFORMAT=WAV") in new stack
+    -- Executing [*aa@from-internal:4] Set("Local/808@from-internal-2b1d,1", "MEETME_ROOMNUM=*aa") in new stack
+    -- Executing [*aa@from-internal:5] GotoIf("Local/808@from-internal-2b1d,1", "?USER") in new stack
+    -- Executing [*aa@from-internal:6] Answer("Local/808@from-internal-2b1d,1", "") in new stack
+    -- Executing [*aa@from-internal:7] Wait("Local/808@from-internal-2b1d,1", "1") in new stack
+    -- Executing [*aa@from-internal:1] Set("SIP/805-00000001", "CHANNEL(language)=cn") in new stack
+  == Spawn extension (from-internal, *aa, 0) exited non-zero on 'SIP/604-00000000' in macro 'dial'
+  == Spawn extension (from-internal, *aa, 0) exited non-zero on 'SIP/604-00000000' in macro 'exten-vm'
+  == Spawn extension (from-internal, *aa, 0) exited non-zero on 'SIP/604-00000000'
+    -- Executing [*aa@from-internal:1] Set("SIP/604-00000000", "CHANNEL(language)=cn") in new stack
+    -- Executing [*aa@from-internal:2] Set("SIP/604-00000000", "MEETME_RECORDINGFILE=/var/spool/asterisk/monitor/11-12/07/meetme-1323220696.0") in new stack
+    -- Executing [*aa@from-internal:3] Set("SIP/604-00000000", "MEETME_RECORDINGFORMAT=WAV") in new stack
+    -- Executing [*aa@from-internal:4] Set("SIP/604-00000000", "MEETME_ROOMNUM=*aa") in new stack
+    -- Executing [*aa@from-internal:5] GotoIf("SIP/604-00000000", "1?USER") in new stack
+    -- Goto (from-internal,*aa,8)
+    -- Executing [*aa@from-internal:8] Set("SIP/604-00000000", "MEETME_OPTS=rqd") in new stack
+    -- Executing [*aa@from-internal:9] Goto("SIP/604-00000000", "STARTMEETME|1") in new stack
+    -- Goto (from-internal,STARTMEETME,1)
+    -- Executing [STARTMEETME@from-internal:1] Set("SIP/604-00000000", "CHANNEL(language)=cn") in new stack
+    -- Executing [STARTMEETME@from-internal:2] MeetMe("SIP/604-00000000", "*aa|rqd|") in new stack
+    -- Executing [*aa@from-internal:2] Set("SIP/805-00000001", "MEETME_RECORDINGFILE=/var/spool/asterisk/monitor/11-12/07/meetme-1323220747.5") in new stack
+    -- Executing [*aa@from-internal:3] Set("SIP/805-00000001", "MEETME_RECORDINGFORMAT=WAV") in new stack
+    -- Executing [*aa@from-internal:4] Set("SIP/805-00000001", "MEETME_ROOMNUM=*aa") in new stack
+    -- Executing [*aa@from-internal:5] GotoIf("SIP/805-00000001", "?USER") in new stack
+    -- Executing [*aa@from-internal:6] Answer("SIP/805-00000001", "") in new stack
+    -- Executing [*aa@from-internal:7] Wait("SIP/805-00000001", "1") in new stack
+    -- Executing [h@macro-dial:1] NoOp("Local/808@from-internal-2b1d,2", " from h exten Dial faild with DIALSTATUS is ANSWER") in new stack
+    -- Executing [h@macro-dial:2] Hangup("Local/808@from-internal-2b1d,2", "") in new stack
+  == Spawn h extension (macro-dial, h, 2) exited non-zero on 'Local/808@from-internal-2b1d,2'
+bridgeed is over chan Local/808@from-internal-2b1d,2 transfer is  shift is (null)
+cdr_mysql: it's a Local call, channel:Local/808@from-internal-2b1d,2, no need to insert into cdr
+  == Spawn extension (macro-dial, s, 10) exited non-zero on 'Local/808@from-internal-2b1d,2' in macro 'dial'
+  == Spawn extension (macro-exten-vm, dolocaldial, 1) exited non-zero on 'Local/808@from-internal-2b1d,2' in macro 'exten-vm'
+  == Spawn extension (from-internal, 808, 2) exited non-zero on 'Local/808@from-internal-2b1d,2'
+    -- <SIP/604-00000000> Playing 'conf-invalid' (language 'cn')
+    -- Executing [*aa@from-internal:8] Set("SIP/805-00000001", "MEETME_OPTS=rqd") in new stack
+    -- Executing [*aa@from-internal:9] Goto("SIP/805-00000001", "STARTMEETME|1") in new stack
+    -- Goto (from-internal,STARTMEETME,1)
+    -- Executing [STARTMEETME@from-internal:1] Set("SIP/805-00000001", "CHANNEL(language)=cn") in new stack
+    -- Executing [STARTMEETME@from-internal:2] MeetMe("SIP/805-00000001", "*aa|rqd|") in new stack
+    -- Executing [*aa@from-internal:8] Set("SIP/808-00000002", "MEETME_OPTS=rqd") in new stack
+    -- <SIP/805-00000001> Playing 'conf-invalid' (language 'cn')
+    -- Executing [*aa@from-internal:9] Goto("SIP/808-00000002", "STARTMEETME|1") in new stack
+    -- Goto (from-internal,STARTMEETME,1)
+    -- Executing [STARTMEETME@from-internal:1] Set("SIP/808-00000002", "CHANNEL(language)=cn") in new stack
+    -- Executing [STARTMEETME@from-internal:2] MeetMe("SIP/808-00000002", "*aa|rqd|") in new stack
+    -- <SIP/808-00000002> Playing 'conf-invalid' (language 'cn')
+langr*CLI> core show channels
+Channel                                  Location                       State   Application(Data)             
+SIP/805-00000001                         STARTMEETME@from-int           Up      MeetMe(*aa|rqd|)                                  
+SIP/808-00000002                         STARTMEETME@from-int           Up      MeetMe(*aa|rqd|)                                  
+SIP/604-00000000                         STARTMEETME@from-int           Up      MeetMe(*aa|rqd|)                                  
+3 active channels
+3 active calls
+  == Spawn extension (from-internal, STARTMEETME, 2) exited non-zero on 'SIP/604-00000000'
+  == MixMonitor close filestream
+  == End MixMonitor Recording SIP/604-00000000
+langr*CLI> core show channels
+Channel                                  Location                       State   Application(Data)             
+SIP/805-00000001                         STARTMEETME@from-int           Up      MeetMe(*aa|rqd|)                                  
+SIP/808-00000002                         STARTMEETME@from-int           Up      MeetMe(*aa|rqd|)                                  
+2 active channels
+2 active calls
+  == Spawn extension (from-internal, STARTMEETME, 2) exited non-zero on 'SIP/805-00000001'
+    -- Executing [h@from-internal:1] Macro("SIP/805-00000001", "hangupcall") in new stack
+    -- Executing [s@macro-hangupcall:1] NoOp("SIP/805-00000001", "from macro-hangupcall ") in new stack
+    -- Executing [s@macro-hangupcall:2] Hangup("SIP/805-00000001", "") in new stack
+  == Spawn extension (macro-hangupcall, s, 2) exited non-zero on 'SIP/805-00000001' in macro 'hangupcall'
+  == Spawn extension (from-internal, h, 1) exited non-zero on 'SIP/805-00000001'
+  == Spawn extension (from-internal, STARTMEETME, 2) exited non-zero on 'SIP/808-00000002'
+    -- Executing [h@from-internal:1] Macro("SIP/808-00000002", "hangupcall") in new stack
+    -- Executing [s@macro-hangupcall:1] NoOp("SIP/808-00000002", "from macro-hangupcall ") in new stack
+    -- Executing [s@macro-hangupcall:2] Hangup("SIP/808-00000002", "") in new stack
+  == Spawn extension (macro-hangupcall, s, 2) exited non-zero on 'SIP/808-00000002' in macro 'hangupcall'
+  == Spawn extension (from-internal, h, 1) exited non-zero on 'SIP/808-00000002'
+  == MixMonitor close filestream
+  == End MixMonitor Recording Local/808@from-internal-2b1d,2
+langr*CLI> core show channels
+Channel                                  Location                       State   Application(Data)             
+0 active channels
+0 active calls
+
+=============================
+转接: 604->拔805, 604=>转808, 805接808
+  == Refreshing DNS lookups.
+langr*CLI> core show channels
+Channel                                  Location                       State   Application(Data)             
+0 active channels
+0 active calls
+  == Refreshing DNS lookups.
+    -- Executing [805@from-internal:1] Set("SIP/604-00000003", "__num=805") in new stack
+    -- Executing [805@from-internal:2] Macro("SIP/604-00000003", "exten-vm|novm|805") in new stack
+    -- Executing [s@macro-exten-vm:1] Macro("SIP/604-00000003", "user-callerid") in new stack
+    -- Executing [s@macro-user-callerid:1] GotoIf("SIP/604-00000003", "0?report") in new stack
+    -- Executing [s@macro-user-callerid:2] GotoIf("SIP/604-00000003", "0?start") in new stack
+    -- Executing [s@macro-user-callerid:3] Set("SIP/604-00000003", "REALCALLERIDNUM_INIT=604") in new stack
+    -- Executing [s@macro-user-callerid:4] Set("SIP/604-00000003", "REALCALLERIDNUM=604") in new stack
+    -- Executing [s@macro-user-callerid:5] Set("SIP/604-00000003", "__REALCAlLERIDNUM2=604") in new stack
+    -- Executing [s@macro-user-callerid:6] NoOp("SIP/604-00000003", "REALCALLERIDNUM is 604") in new stack
+    -- Executing [s@macro-user-callerid:7] Set("SIP/604-00000003", "AMPUSER=604") in new stack
+    -- Executing [s@macro-user-callerid:8] Set("SIP/604-00000003", "__FOLLOWMEUSER=s") in new stack
+    -- Executing [s@macro-user-callerid:9] Set("SIP/604-00000003", "AMPUSERCIDNAME=榛勫崕") in new stack
+    -- Executing [s@macro-user-callerid:10] GotoIf("SIP/604-00000003", "0?report") in new stack
+    -- Executing [s@macro-user-callerid:11] Set("SIP/604-00000003", "CALLERID(all)=榛勫崕 <604>") in new stack
+    -- Executing [s@macro-user-callerid:12] NoOp("SIP/604-00000003", "Using CallerID "榛勫崕" <604>") in new stack
+    -- Executing [s@macro-user-callerid:13] GotoIf("SIP/604-00000003", "0?ok:go") in new stack
+    -- Goto (macro-user-callerid,s,15)
+    -- Executing [s@macro-user-callerid:15] NoOp("SIP/604-00000003", "3") in new stack
+    -- Executing [s@macro-exten-vm:2] Set("SIP/604-00000003", "VMBOX=novm") in new stack
+    -- Executing [s@macro-exten-vm:3] Set("SIP/604-00000003", "EXTTOCALL=805") in new stack
+    -- Executing [s@macro-exten-vm:4] Set("SIP/604-00000003", "CFUEXT=") in new stack
+    -- Executing [s@macro-exten-vm:5] Set("SIP/604-00000003", "RT=20") in new stack
+    -- Executing [s@macro-exten-vm:6] Macro("SIP/604-00000003", "record-enable|805|IN") in new stack
+    -- Executing [s@macro-record-enable:1] GotoIf("SIP/604-00000003", "0 > 0?2:4") in new stack
+    -- Goto (macro-record-enable,s,4)
+    -- Executing [s@macro-record-enable:4] GotoIf("SIP/604-00000003", "0?out:in") in new stack
+    -- Goto (macro-record-enable,s,7)
+    -- Executing [s@macro-record-enable:7] GotoIf("SIP/604-00000003", "1?record:exit") in new stack
+    -- Goto (macro-record-enable,s,8)
+    -- Executing [s@macro-record-enable:8] MixMonitor("SIP/604-00000003", "11-12/07/1323221190.6.WAV|b|") in new stack
+    -- Executing [s@macro-record-enable:9] NoOp("SIP/604-00000003", ""Not need record"") in new stack
+    -- Executing [s@macro-exten-vm:7] GotoIf("SIP/604-00000003", "0?dolocaldial|1") in new stack
+    -- Executing [s@macro-exten-vm:8] Set("SIP/604-00000003", "CALLERID(name)=805") in new stack
+    -- Executing [s@macro-exten-vm:9] Macro("SIP/604-00000003", "dial|20|Tt|805") in new stack
+    -- Executing [s@macro-dial:1] AGI("SIP/604-00000003", "dialparties.agi") in new stack
+    -- Launched AGI Script /var/lib/asterisk/agi-bin/dialparties.agi
+  == Begin MixMonitor Recording SIP/604-00000003
+    --  dialparties.agi: priority = 1
+    --  dialparties.agi: callingani2 = 0
+    --  dialparties.agi: accountcode = 
+    --  dialparties.agi: channel = SIP/604-00000003
+    --  dialparties.agi: callerid = 604
+    --  dialparties.agi: context = macro-dial
+    --  dialparties.agi: callington = 0
+    --  dialparties.agi: dnid = 805
+    --  dialparties.agi: request = dialparties.agi
+    --  dialparties.agi: calleridname = 805
+    --  dialparties.agi: extension = s
+    --  dialparties.agi: language = cn
+    --  dialparties.agi: uniqueid = 1323221190.6
+    --  dialparties.agi: callingpres = 0
+    --  dialparties.agi: type = SIP
+    --  dialparties.agi: rdnis = unknown
+    --  dialparties.agi: callingtns = 1
+    --  dialparties.agi: enhanced = 0.0
+  dialparties.agi: Caller ID name and number are '604'
+  dialparties.agi: Methodology of ring is  'none'
+    --  dialparties.agi: Added extension 805 to extension map
+    --  dialparties.agi: Extension 805 cf is disabled
+    --  dialparties.agi: Extension 805 do not disturb is disabled
+    --  dialparties.agi: Checking CW and CFB status for extension 805
+    --  dialparties.agi: Correct AMPMGRUSER and AMPMGRPASS
+  dialparties.agi: extstate: 0 extnum: 805 device: 805
+  dialparties.agi: Extension 805 is available...skipping checks
+    --  dialparties.agi: DbSet CALLTRACE/805 to 604
+    -- AGI Script dialparties.agi completed, returning 0
+    -- Executing [s@macro-dial:10] Dial("SIP/604-00000003", "SIP/805|20|Tt") in new stack
+    -- Called 805
+    -- SIP/805-00000004 is ringing
+    -- SIP/805-00000004 answered in dial SIP/604-00000003
+langr*CLI> core show channels
+Channel                                  Location                       State   Application(Data)             
+SIP/805-00000004                         (None)                         Up      Bridged Call(SIP/604-00000003)                    
+SIP/604-00000003                         s@macro-dial:10                Up      Dial(SIP/805|20|Tt)                               
+2 active channels
+1 active call
+web transfer: transferee is SIP/805-00000004 and transferer is SIP/604-00000003,the trans_code is 808
+SIP/604-00000003 wants web transfer SIP/805-00000004 to 808
+    -- Started music on hold, class 'default', on SIP/805-00000004
+    -- <SIP/604-00000003> Playing 'pbx-transfer' (language 'cn')
+    -- Executing [808@from-internal:1] Set("Local/808@from-internal-de39,2", "__num=808") in new stack
+    -- Executing [808@from-internal:2] Macro("Local/808@from-internal-de39,2", "exten-vm|novm|808") in new stack
+    -- Executing [s@macro-exten-vm:1] Macro("Local/808@from-internal-de39,2", "user-callerid") in new stack
+    -- Executing [s@macro-user-callerid:1] GotoIf("Local/808@from-internal-de39,2", "1?report") in new stack
+    -- Goto (macro-user-callerid,s,12)
+    -- Executing [s@macro-user-callerid:12] NoOp("Local/808@from-internal-de39,2", "Using CallerID "" <805>") in new stack
+    -- Executing [s@macro-user-callerid:13] GotoIf("Local/808@from-internal-de39,2", "0?ok:go") in new stack
+    -- Goto (macro-user-callerid,s,15)
+    -- Executing [s@macro-user-callerid:15] NoOp("Local/808@from-internal-de39,2", "2") in new stack
+    -- Executing [s@macro-exten-vm:2] Set("Local/808@from-internal-de39,2", "VMBOX=novm") in new stack
+    -- Executing [s@macro-exten-vm:3] Set("Local/808@from-internal-de39,2", "EXTTOCALL=808") in new stack
+    -- Executing [s@macro-exten-vm:4] Set("Local/808@from-internal-de39,2", "CFUEXT=") in new stack
+    -- Executing [s@macro-exten-vm:5] Set("Local/808@from-internal-de39,2", "RT=20") in new stack
+    -- Executing [s@macro-exten-vm:6] Macro("Local/808@from-internal-de39,2", "record-enable|808|IN") in new stack
+    -- Executing [s@macro-record-enable:1] GotoIf("Local/808@from-internal-de39,2", "0 > 0?2:4") in new stack
+    -- Goto (macro-record-enable,s,4)
+    -- Executing [s@macro-record-enable:4] GotoIf("Local/808@from-internal-de39,2", "0?out:in") in new stack
+    -- Goto (macro-record-enable,s,7)
+    -- Executing [s@macro-record-enable:7] GotoIf("Local/808@from-internal-de39,2", "1?record:exit") in new stack
+    -- Goto (macro-record-enable,s,8)
+    -- Executing [s@macro-record-enable:8] MixMonitor("Local/808@from-internal-de39,2", "11-12/07/1323221223.9.WAV|b|") in new stack
+    -- Executing [s@macro-record-enable:9] NoOp("Local/808@from-internal-de39,2", ""Not need record"") in new stack
+  == Begin MixMonitor Recording Local/808@from-internal-de39,2
+    -- Executing [s@macro-exten-vm:7] GotoIf("Local/808@from-internal-de39,2", "1?dolocaldial|1") in new stack
+    -- Goto (macro-exten-vm,dolocaldial,1)
+    -- Executing [dolocaldial@macro-exten-vm:1] Macro("Local/808@from-internal-de39,2", "dial||Tt|808") in new stack
+    -- Executing [s@macro-dial:1] AGI("Local/808@from-internal-de39,2", "dialparties.agi") in new stack
+    -- Launched AGI Script /var/lib/asterisk/agi-bin/dialparties.agi
+    --  dialparties.agi: priority = 1
+    --  dialparties.agi: callingani2 = 0
+    --  dialparties.agi: accountcode = 
+    --  dialparties.agi: channel = Local/808@from-internal-de39,2
+    --  dialparties.agi: callerid = 805
+    --  dialparties.agi: context = macro-dial
+    --  dialparties.agi: callington = 0
+    --  dialparties.agi: dnid = unknown
+    --  dialparties.agi: request = dialparties.agi
+    --  dialparties.agi: calleridname = unknown
+    --  dialparties.agi: extension = s
+    --  dialparties.agi: language = cn
+    --  dialparties.agi: uniqueid = 1323221223.9
+    --  dialparties.agi: callingpres = 0
+    --  dialparties.agi: type = Local
+    --  dialparties.agi: rdnis = unknown
+    --  dialparties.agi: callingtns = 0
+    --  dialparties.agi: enhanced = 0.0
+  dialparties.agi: Caller ID name and number are '805'
+  dialparties.agi: Methodology of ring is  'none'
+    --  dialparties.agi: Added extension 808 to extension map
+    --  dialparties.agi: Extension 808 cf is disabled
+    --  dialparties.agi: Extension 808 do not disturb is disabled
+    --  dialparties.agi: Checking CW and CFB status for extension 808
+    --  dialparties.agi: Correct AMPMGRUSER and AMPMGRPASS
+  dialparties.agi: extstate: 0 extnum: 808 device: 808
+  dialparties.agi: Extension 808 is available...skipping checks
+    --  dialparties.agi: DbSet CALLTRACE/808 to 805
+    -- AGI Script dialparties.agi completed, returning 0
+    -- Executing [s@macro-dial:10] Dial("Local/808@from-internal-de39,2", "SIP/808||Tt") in new stack
+    -- Called 808
+    -- SIP/808-00000005 is ringing
+    -- Local/808@from-internal-de39,1 is ringing
+langr*CLI> core show channels
+Channel                                  Location                       State   Application(Data)             
+SIP/808-00000005                         808@from-internal:1            Ringing AppDial((Outgoing Line))                          
+Local/808@from-internal-de39,2           s@macro-dial:10                Ring    Dial(SIP/808||Tt)                                 
+Local/808@from-internal-de39,1           808@from-internal:1            Ringing (None)                                            
+SIP/805-00000004                         (None)                         Up      Bridged Call(SIP/604-00000003)                    
+SIP/604-00000003                         s@macro-dial:10                Up      Dial(SIP/805|20|Tt)                               
+5 active channels
+2 active calls
+    -- SIP/808-00000005 answered in dial Local/808@from-internal-de39,2
+langr*CLI> core show channels
+Channel                                  Location                       State   Application(Data)             
+SIP/808-00000005                         (None)                         Up      Bridged Call(Local/808@from-internal-de           
+Local/808@from-internal-de39,2           s@macro-dial:10                Up      Dial(SIP/808||Tt)                                 
+Local/808@from-internal-de39,1           808@from-internal:1            Up      Bridged Call(SIP/604-00000003)                    
+SIP/805-00000004                         (None)                         Up      Bridged Call(SIP/604-00000003)                    
+SIP/604-00000003                         s@macro-dial:10                Up      Dial(SIP/805|20|Tt)                               
+5 active channels
+2 active calls
+    -- Executing [h@macro-dial:1] NoOp("SIP/604-00000003", " from h exten Dial faild with DIALSTATUS is ANSWER") in new stack
+    -- Executing [h@macro-dial:2] Hangup("SIP/604-00000003", "") in new stack
+  == Spawn h extension (macro-dial, h, 2) exited non-zero on 'SIP/604-00000003'
+bridgeed is over chan SIP/604-00000003 transfer is 808 shift is (null)
+    -- Stopped music on hold on SIP/805-00000004
+    -- <Local/808@from-internal-de39,1> Playing 'beep' (language 'cn')
+    -- Executing [h@macro-dial:1] NoOp("SIP/604-00000003", " from h exten Dial faild with DIALSTATUS is ANSWER") in new stack
+    -- Executing [h@macro-dial:2] Hangup("SIP/604-00000003", "") in new stack
+  == Spawn h extension (macro-dial, h, 2) exited non-zero on 'SIP/604-00000003'
+bridgeed is over chan SIP/604-00000003 transfer is 808 shift is (null)
+  == CDR on channel 'SIP/604-00000003' not posted
+  == CDR on channel 'SIP/604-00000003' lacks end
+  == Spawn extension (macro-dial, s, 10) exited non-zero on 'SIP/604-00000003' in macro 'dial'
+  == Spawn extension (macro-exten-vm, s, 9) exited non-zero on 'SIP/604-00000003' in macro 'exten-vm'
+  == Spawn extension (from-internal, 805, 2) exited non-zero on 'SIP/604-00000003'
+  == MixMonitor close filestream
+  == End MixMonitor Recording SIP/604-00000003
+langr*CLI> core show channels
+Channel                                  Location                       State   Application(Data)             
+SIP/805-00000004                         s@from-internal:1              Up      Transferred Call(Local/808@from-interna           
+SIP/808-00000005                         (None)                         Up      Bridged Call(Local/808@from-internal-de           
+Local/808@from-internal-de39,2           s@macro-dial:10                Up      Dial(SIP/808||Tt)                                 
+Local/808@from-internal-de39,1           808@from-internal:1            Up      Bridged Call(SIP/805-00000004)                    
+4 active channels
+1 active call
+langr*CLI> core show channels
+Channel                                  Location                       State   Application(Data)             
+SIP/805-00000004                         s@from-internal:1              Up      Transferred Call(Local/808@from-interna           
+SIP/808-00000005                         (None)                         Up      Bridged Call(Local/808@from-internal-de           
+Local/808@from-internal-de39,2           s@macro-dial:10                Up      Dial(SIP/808||Tt)                                 
+Local/808@from-internal-de39,1           808@from-internal:1            Up      Bridged Call(SIP/805-00000004)                    
+4 active channels
+1 active call
+  == Refreshing DNS lookups.
+    -- Executing [h@from-internal:1] Macro("SIP/805-00000004", "hangupcall") in new stack
+    -- Executing [s@macro-hangupcall:1] NoOp("SIP/805-00000004", "from macro-hangupcall ") in new stack
+    -- Executing [s@macro-hangupcall:2] Hangup("SIP/805-00000004", "") in new stack
+  == Spawn extension (macro-hangupcall, s, 2) exited non-zero on 'SIP/805-00000004' in macro 'hangupcall'
+  == Spawn h extension (from-internal, h, 1) exited non-zero on 'SIP/805-00000004'
+bridgeed is over chan SIP/805-00000004 transfer is  shift is (null)
+  == CDR on channel 'SIP/805-00000004' not posted
+  == CDR on channel 'SIP/805-00000004' lacks end
+    -- Executing [h@macro-dial:1] NoOp("Local/808@from-internal-de39,2", " from h exten Dial faild with DIALSTATUS is ANSWER") in new stack
+    -- Executing [h@macro-dial:2] Hangup("Local/808@from-internal-de39,2", "") in new stack
+  == Spawn h extension (macro-dial, h, 2) exited non-zero on 'Local/808@from-internal-de39,2'
+bridgeed is over chan Local/808@from-internal-de39,2 transfer is  shift is (null)
+  == Spawn extension (macro-dial, s, 10) exited non-zero on 'Local/808@from-internal-de39,2' in macro 'dial'
+  == Spawn extension (macro-exten-vm, dolocaldial, 1) exited non-zero on 'Local/808@from-internal-de39,2' in macro 'exten-vm'
+  == Spawn extension (from-internal, 808, 2) exited non-zero on 'Local/808@from-internal-de39,2'
+  == MixMonitor close filestream
+  == End MixMonitor Recording Local/808@from-internal-de39,2
+langr*CLI> core show channels
+Channel                                  Location                       State   Application(Data)             
+0 active channels
+0 active calls
+langr*CLI>
+
+========================
+转接, core show channels, show channels 返回稍许不同. core show 被截断.
+转接: 604->拔805, 604=>转808, 805接808
+Action: command
+command: show channels
+
+Response: Follows
+Privilege: Command
+Channel                                  Location                       State   Application(Data)             
+SIP/805-0000000a                         s@from-internal:1              Up      Transferred Call(Local/808@from-internal-579a,1)  
+SIP/808-0000000b                         (None)                         Up      Bridged Call(Local/808@from-internal-579a,2)      
+Local/808@from-internal-579a,2           s@macro-dial:10                Up      Dial(SIP/808||Tt)                                 
+Local/808@from-internal-579a,1           808@from-internal:1            Up      Bridged Call(SIP/805-0000000a)                    
+4 active channels
+1 active call
+--END COMMAND--
+
+Action: command
+command: core show channels
+
+Response: Follows
+Privilege: Command
+Channel                                  Location                       State   Application(Data)             
+SIP/805-0000000d                         (None)                         Up      Bridged Call(SIP/604-0000000c)                    
+SIP/604-0000000c                         s@macro-dial:10                Up      Dial(SIP/805|20|Tt)                               
+2 active channels
+1 active call
+--END COMMAND--
+
+Action: command
+command: core show channels
+
+Response: Follows
+Privilege: Command
+Channel                                  Location                       State   Application(Data)             
+SIP/805-0000000d                         (None)                         Up      Bridged Call(SIP/604-0000000c)                    
+SIP/604-0000000c                         s@macro-dial:10                Up      Dial(SIP/805|20|Tt)                               
+2 active channels
+1 active call
+--END COMMAND--
+
+Action: command
+command: core show channels
+
+Response: Follows
+Privilege: Command
+Channel                                  Location                       State   Application(Data)             
+SIP/808-0000000f                         808@from-internal:1            Ringing AppDial((Outgoing Line))                          
+Local/808@from-internal-177a,2           s@macro-dial:10                Ring    Dial(SIP/808||Tt)                                 
+Local/808@from-internal-177a,1           808@from-internal:1            Ringing (None)                                            
+SIP/805-0000000d                         (None)                         Up      Bridged Call(SIP/604-0000000c)                    
+SIP/604-0000000c                         s@macro-dial:10                Up      Dial(SIP/805|20|Tt)                               
+5 active channels
+2 active calls
+--END COMMAND--
+
+Action: command
+command: core show channels
+
+Response: Follows
+Privilege: Command
+Channel                                  Location                       State   Application(Data)             
+SIP/808-0000000f                         (None)                         Up      Bridged Call(Local/808@from-internal-17           
+Local/808@from-internal-177a,2           s@macro-dial:10                Up      Dial(SIP/808||Tt)                                 
+Local/808@from-internal-177a,1           808@from-internal:1            Up      Bridged Call(SIP/604-0000000c)                    
+SIP/805-0000000d                         (None)                         Up      Bridged Call(SIP/604-0000000c)                    
+SIP/604-0000000c                         s@macro-dial:10                Up      Dial(SIP/805|20|Tt)                               
+5 active channels
+2 active calls
+--END COMMAND--
+
+Action: command
+command: core show channels
+
+Response: Follows
+Privilege: Command
+Channel                                  Location                       State   Application(Data)             
+SIP/805-0000000d                         s@from-internal:1              Up      Transferred Call(Local/808@from-interna           
+SIP/808-0000000f                         (None)                         Up      Bridged Call(Local/808@from-internal-17           
+Local/808@from-internal-177a,2           s@macro-dial:10                Up      Dial(SIP/808||Tt)                                 
+Local/808@from-internal-177a,1           808@from-internal:1            Up      Bridged Call(SIP/805-0000000d)                    
+4 active channels
+1 active call
+--END COMMAND--
+
+Action: command
+command: show channels
+
+Response: Follows
+Privilege: Command
+Channel                                  Location                       State   Application(Data)             
+SIP/805-0000000d                         s@from-internal:1              Up      Transferred Call(Local/808@from-internal-177a,1)  
+SIP/808-0000000f                         (None)                         Up      Bridged Call(Local/808@from-internal-177a,2)      
+Local/808@from-internal-177a,2           s@macro-dial:10                Up      Dial(SIP/808||Tt)                                 
+Local/808@from-internal-177a,1           808@from-internal:1            Up      Bridged Call(SIP/805-0000000d)                    
+4 active channels
+1 active call
+--END COMMAND--
+
+====================
+通话保持 604->808, 604 保持
+Action: command
+command: show parkedcalls
+
+Response: Follows
+Privilege: Command
+ Num                   Channel (Context         Extension    Pri ) Timeout 
+0 parked calls.
+--END COMMAND--
+
+Action: command
+command: show channels
+
+Response: Follows
+Privilege: Command
+Channel                                  Location                       State   Application(Data)             
+SIP/808-00000035                         (None)                         Up      Bridged Call(SIP/604-00000034)                    
+SIP/604-00000034                         s@macro-dial:10                Up      Dial(SIP/808|20|Tt)                               
+2 active channels
+1 active call
+--END COMMAND--
+
+------------------
+Action: command
+command: show parkedcalls
+
+Response: Follows
+Privilege: Command
+ Num                   Channel (Context         Extension    Pri ) Timeout 
+71                  SIP/808-00000035 (from-internal   s            1   )    523s
+1 parked call.
+--END COMMAND--
+
+Action: command
+command: show channels
+
+Response: Follows
+Privilege: Command
+Channel                                  Location                       State   Application(Data)             
+SIP/808-00000035                         s@from-internal:1              Up      (None)                                            
+1 active channel
+0 active calls
+--END COMMAND--
+
+------------------
+Action: command
+command: show parkedcalls
+
+Response: Follows
+Privilege: Command
+ Num                   Channel (Context         Extension    Pri ) Timeout 
+0 parked calls.
+--END COMMAND--
+
+Action: command
+command: show channels
+
+Response: Follows
+Privilege: Command
+Channel                                  Location                       State   Application(Data)             
+SIP/604-00000036                         71@from-internal:1             Up      ParkedCall(71)                                    
+SIP/808-00000035                         s@from-internal:1              Up      Bridged Call(SIP/604-00000036)                    
+2 active channels
+1 active call
+--END COMMAND--
+
+======================
+action: command
+command: core show hints
+
+Response: Follows
+Privilege: Command
+
+    -= Registered Asterisk Dial Plan Hints =-
+                    841@ext-local           : IAX2/841              State:Idle            Watchers  0
+                    840@ext-local           : SIP/840               State:Idle            Watchers  0
+                    808@ext-local           : SIP/808               State:Idle            Watchers  0
+                    805@ext-local           : SIP/805               State:Idle            Watchers  0
+                    804@ext-local           : SIP/804               State:Idle            Watchers  0
+                    806@ext-local           : SIP/806               State:Idle            Watchers  0
+                    801@ext-local           : SIP/801               State:Idle            Watchers  0
+                    800@ext-local           : SIP/800               State:Idle            Watchers  0
+                    803@ext-local           : SIP/803               State:Idle            Watchers  0
+                    802@ext-local           : SIP/802               State:Idle            Watchers  0
+                    603@ext-local           : SIP/603               State:Idle            Watchers  0
+                    602@ext-local           : SIP/602               State:Idle            Watchers  0
+                    601@ext-local           : SIP/601               State:Idle            Watchers  0
+                    701@ext-local           : SIP/701               State:Idle            Watchers  0
+                    605@ext-local           : SIP/605               State:Idle            Watchers  0
+                    604@ext-local           : SIP/604               State:Idle            Watchers  0
+----------------
+- 16 hints registered
+--END COMMAND--
+
+
+队列:
+langr*CLI> show queue
+902          has 0 calls (max  ((null))unlimited) in 'rrmemory' strategy (0s holdtime), W:0, C:0, A:0, SL:0.0% within 0s
+   Members: 
+      SIP/701 (0) (Unavailable) has taken no calls yet
+      SIP/808 (1) (Busy) has taken no calls yet
+   No Callers
+
+901          has 0 calls (max  ((null))unlimited) in 'rrmemory' strategy (0s holdtime), W:0, C:0, A:0, SL:0.0% within 0s
+   Members: 
+      SIP/802 (0) (Unavailable) has taken no calls yet
+      SIP/803 (1) (Unavailable) has taken no calls yet
+      SIP/806 (2) (Unavailable) has taken no calls yet
+   No Callers
+
+langr*CLI>
+

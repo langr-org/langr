@@ -1,0 +1,381 @@
+/*-------------------------------------------------------------------------
+ * 适用网站: www.8591.com.tw
+ * 最后修改: 18:32 2004-10-21
+ * CSS 版本: CSS 2.0
+ -------------------------------------------------------------------------*/
+
+/*-------------------------------------------------------------------------
+ * 根元素重构及全局样式定义
+ -------------------------------------------------------------------------*/
+body
+{
+	MARGIN: 0px;
+	PADDING: 0px;
+	BORDER: 0px;
+	FONT: 11pt Arial;
+	COLOR: #000000;
+}
+a:link,a:visited{
+	color:#0044DD;
+	text-decoration:underline;
+}
+a:hover,a:active{
+	color:#FF5500;
+	text-decoration:underline;
+}
+
+form { padding: 0px; margin: 0px;}
+
+.a3 {
+	FONT-SIZE: 10pt; LINE-HEIGHT: 1.7; FONT-FAMILY: Verdana
+}
+.a4 {
+	FONT-SIZE: 10pt;
+	LINE-HEIGHT: 1.7;
+	FONT-FAMILY: Verdana;
+	color: #333333;
+}
+
+.small910 {
+	FONT: 9pt Arial; FONT-STYLE: normal;
+}
+.small913 {
+	FONT: 9pt Arial; LINE-HEIGHT: 130%; FONT-STYLE: normal;
+}
+.small915 {
+	FONT: 9pt Arial; LINE-HEIGHT: 150%; FONT-STYLE: normal;
+}
+.small1013 {
+	FONT: 10pt Arial; LINE-HEIGHT: 130%; FONT-STYLE: normal;
+}
+.small1015 {
+	FONT: 10pt Arial; LINE-HEIGHT: 180%; FONT-STYLE: normal;
+}
+.small1113 {
+	FONT: 11pt Arial; LINE-HEIGHT: 130%; FONT-STYLE: normal;
+}
+.small1115 {
+	FONT: 11pt Arial; LINE-HEIGHT: 150%; FONT-STYLE: normal;
+}
+.small1210 {
+	FONT: 12pt Arial; FONT-STYLE: normal;
+}
+.small1213 {
+	FONT: 10pt Arial; LINE-HEIGHT: 130%; FONT-STYLE: normal;
+}
+.small1215 {
+	FONT: 12pt Arial; LINE-HEIGHT: 150%; FONT-STYLE: normal;
+}
+.dealPay
+{
+	color: #E87400;
+	font-size: 9pt;
+	padding-top:2px;
+	padding-left:2px;
+	border-top : 1px solid #E87400;
+	border-left : 1px solid #E87400;
+	border-right : 1px solid #E87400;
+	border-bottom : 1px solid #E87400;
+}
+.dealRemove
+{
+	color: #FF24FF;
+	font-size: 9pt;
+	padding-top:2px;
+	padding-left:2px;
+	border-top : 1px solid #FF24FF;
+	border-left : 1px solid #FF24FF;
+	border-right : 1px solid #FF24FF;
+	border-bottom : 1px solid #FF24FF;
+}
+.dealDram
+{
+	color:#990000;
+	font-size: 9pt;
+	padding-top:2px;
+	padding-left:2px;
+	border-top : 1px solid #990000;
+	border-left : 1px solid #990000;
+	border-right : 1px solid #990000;
+	border-bottom : 1px solid #990000;
+}
+.dealAppraise
+{
+	color: #006699;
+	font-size: 9pt;
+	padding-top:2px;
+	padding-left:2px;
+	border-top : 1px solid #006699;
+	border-left : 1px solid #006699;
+	border-right : 1px solid #006699;
+	border-bottom : 1px solid #006699;
+}
+
+.dealend
+{
+	color: #3D7E04;
+	font-size: 9pt;
+	padding-top:2px;
+	padding-left:2px;
+	border-top : 1px solid #3D7E04;
+	border-left : 1px solid #3D7E04;
+	border-right : 1px solid #3D7E04;
+	border-bottom : 1px solid #3D7E04;
+}
+.dealcancel
+{
+	color: #ff0000;
+	font-size: 9pt;
+	padding-top:2px;
+	padding-left:2px;
+	border-top : 1px solid ff0000;
+	border-left : 1px solid ff0000;
+	border-right : 1px solid ff0000;
+	border-bottom : 1px solid ff0000;
+}
+.register
+{
+	width: 767px;
+    height:500px;
+	padding-top: 6px;
+	TEXT-ALIGN: left;
+	font-size: 10pt;
+	padding:4px;
+	line-height:16px;
+	overflow-y:scroll;
+	BACKGROUND: #EEEEEE;
+	border-top : 1px solid #000000;
+	border-left : 1px solid #000000;
+	border-right : 1px solid #000000;
+	border-bottom : 1px solid #000000;
+}
+.guestBook
+{
+	width: 767px;
+	padding-top: 6px;
+	TEXT-ALIGN: left;
+	font-size: 10pt;
+	padding:4px;
+	line-height:16px;
+	overflow-y:scroll;
+	BACKGROUND: #FFFFFF;
+	border-top : 1px solid #000000;
+	border-left : 1px solid #000000;
+	border-right : 1px solid #000000;
+	border-bottom : 1px solid #000000;
+}
+.tranHanMoney {
+	BORDER-RIGHT: 0px; BORDER-TOP: 0px; BACKGROUND: none transparent scroll repeat 0% 0%; FONT: 9pt; BORDER-LEFT: 0px; COLOR: #ff0000; BORDER-BOTTOM: 0px
+}
+.foot {
+	FONT-SIZE: 10pt; LINE-HEIGHT: 130%; COLOR:#666666; FONT-FAMILY:Verdana,Arial,Helvetica,sans-serif;
+}
+.table1 {
+	BORDER-RIGHT: 1px inset; PADDING-RIGHT: 3px; BORDER-TOP: 1px inset; PADDING-LEFT: 3px; BACKGROUND: #dddddd; PADDING-BOTTOM: 3px; FONT: 9pt Arial; BORDER-LEFT: 1px inset; COLOR: #333333; PADDING-TOP: 3px; BORDER-BOTTOM: 1px inset;
+}
+.table2 {
+	PADDING-RIGHT: 2px; PADDING-LEFT: 2px; PADDING-BOTTOM: 2px; PADDING-TOP: 2px; TEXT-ALIGN: center; FONT-SIZE: 12pt;
+}
+.history_table {
+	border-collapse:collapse;FONT-SIZE: 9pt; LINE-HEIGHT: 130%;
+}
+.page {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; FONT: 8pt Arial; COLOR: #927c49; PADDING-TOP: 0px; LETTER-SPACING: 0px; TEXT-ALIGN: center
+}
+.verygood1 {
+	font-family: "宋体";
+	font-size: 15;
+	color: #FF0000;
+	text-decoration: none;
+}
+.deal_action_leaveWord
+{
+	color: #ff0000;
+	font-size: 9pt;
+	padding-top:2px;
+	padding-left:2px;
+	border-top : 1px solid ff0000;
+	border-left : 1px solid ff0000;
+	border-right : 1px solid ff0000;
+	border-bottom : 1px solid ff0000;
+}
+.deal_action_itemTitle {
+	CLEAR: both; BORDER-TOP: #ff7e00 2px solid; PADDING-LEFT: 15px; FONT-WEIGHT: bold; FONT-SIZE: 12px; BACKGROUND: url("../../images/index/deal_action_bk1.gif") repeat-x left top; MARGIN-BOTTOM: 20px; COLOR: #0066ff; LINE-HEIGHT: 25px; BORDER-BOTTOM: #eee 1px solid; POSITION: relative; HEIGHT: 25px
+}
+.brokenLine{
+	BORDER-BOTTOM-STYLE: dotted; BORDER-LEFT-STYLE: dotted; BORDER-RIGHT-STYLE: dotted; BORDER-TOP-STYLE: dotted
+}
+.input_accounts {
+	font-family:Verdana;font-size:9pt;color:Green;
+}
+.input_pwd {
+	font-family:Verdana;font-size:9pt;color:Red;
+}
+.help2_title {font-family: "宋体";
+	font-size: 11pt;
+	color: #ff6600;
+	text-decoration: none;
+	letter-spacing: 1pt;
+}
+.help12_title {font-family: "宋体";
+	font-size: 11pt;
+	color: #0066CC;
+	text-decoration: none;
+	letter-spacing: 1pt;
+}
+.ware_deal_ad {
+	PADDING-RIGHT: 3px;
+	PADDING-LEFT: 3px;
+	BACKGROUND: #FAFAFA;
+	PADDING-BOTTOM: 3px;
+	FONT: 9pt Arial;
+	COLOR: #333333;
+	PADDING-TOP: 3px;
+	border: 1px solid;
+}
+.noShow {
+	DISPLAY: none
+}
+.sell_ad {
+	CLEAR: both; BORDER-TOP: #ED8611 2px solid; PADDING-LEFT: 15px; FONT: 11pt Arial; LINE-HEIGHT: 130%; FONT-STYLE: normal; BACKGROUND: url("../../images/index/deal_action_bk1.gif") repeat-x left top; MARGIN-BOTTOM: 20px; COLOR: #ED8611; LINE-HEIGHT: 25px; BORDER-BOTTOM: #eee 1px solid; POSITION: relative; HEIGHT: 25px
+}
+.buy_ad {
+	CLEAR: both; BORDER-TOP: #4E8AC6 2px solid; PADDING-LEFT: 15px; FONT: 11pt Arial; LINE-HEIGHT: 130%; FONT-STYLE: normal; BACKGROUND: url("../../images/index/deal_action_bk1.gif") repeat-x left top; MARGIN-BOTTOM: 20px; COLOR: #4E8AC6; LINE-HEIGHT: 25px; BORDER-BOTTOM: #eee 1px solid; POSITION: relative; HEIGHT: 25px
+}
+.sell_ad_table1 {
+	border-top: 1px none #999999;
+	border-right: 1px none #999999;
+	border-bottom: 1px dashed #999999;
+	border-left: 1px dashed #999999;
+	text-indent: 8px;
+	FONT: 9pt Arial; LINE-HEIGHT: 150%; FONT-STYLE: normal;
+}
+.sell_ad_table2 {
+	border-top: 1px none #999999;
+	border-right: 1px dashed #999999;
+	border-bottom: 1px none #999999;
+	border-left: 1px none #999999;
+	text-indent: 8px;
+	FONT: 9pt Arial; LINE-HEIGHT: 150%; FONT-STYLE: normal;
+}
+.sell_gameList {
+	CLEAR: both; BORDER-TOP: #ED8611 2px solid; PADDING-LEFT: 15px; FONT: 11pt Arial; LINE-HEIGHT: 130%; FONT-STYLE: normal; BACKGROUND: url("../../images/index/deal_action_bk1.gif") repeat-x left top; MARGIN-BOTTOM: 20px; COLOR: #ED8611; LINE-HEIGHT: 25px; BORDER-BOTTOM: #eee 1px solid; POSITION: relative; HEIGHT: 25px
+}
+.buy_gameList {
+	CLEAR: both; BORDER-TOP: #4E8AC6 2px solid; PADDING-LEFT: 15px; FONT: 11pt Arial; LINE-HEIGHT: 130%; FONT-STYLE: normal; BACKGROUND: url("../../images/index/deal_action_bk1.gif") repeat-x left top; MARGIN-BOTTOM: 20px; COLOR: #4E8AC6; LINE-HEIGHT: 25px; BORDER-BOTTOM: #eee 1px solid; POSITION: relative; HEIGHT: 25px
+}
+.gameList_table1 {
+	border-top: 1px none #999999;
+	border-right: 1px dashed #999999;
+	border-bottom: 1px none #999999;
+	border-left: 1px none #999999;
+	text-indent: 8px;
+	FONT: 9pt Arial; LINE-HEIGHT: 150%; FONT-STYLE: normal;
+}
+.gameList_table2 {
+	border-top: 1px none #999999;
+	border-right: 1px none #999999;
+	border-bottom: 1px dashed #999999;
+	border-left: 1px dashed #999999;
+	text-indent: 8px;
+	FONT: 9pt Arial; LINE-HEIGHT: 150%; FONT-STYLE: normal;
+}.table_susang {
+	border-top-width: 1px;
+	border-right-width: 1px;
+	border-bottom-width: 1px;
+	border-left-width: 1px;
+	border-right-style: none;
+	border-bottom-style: dashed;
+	border-left-style: none;
+	border-top-color: #666666;
+	border-right-color: #666666;
+	border-bottom-color: #666666;
+	border-left-color: #666666;
+}
+.table_left {
+	border-right-width: 1px;
+	border-left-width: 1px;
+	border-right-style: solid;
+	border-left-style: solid;
+	border-right-color: #666666;
+	border-left-color: #666666;
+}
+.butter01 {
+	background-color: #336699;
+	border: 1px outset #000000;
+	margin: 1px;
+	padding: 1px;
+	clip: rect(3px,3px,3px,3px);
+	color: #FFFFFF;
+	font-weight: bold;
+	cursor: hand;
+}
+.butter02 {
+	background-color: #CC6633;
+	border: 1px outset #000000;
+	margin: 1px;
+	padding: 1px;
+	clip: rect(20pt,20pt,3pt,3pt);
+	color: #FFFFFF;
+	font-weight: bold;
+	cursor: hand;
+}
+.bannertext1 {
+	font-family: Verdana;
+	font-size: 11pt;
+	color: #FFFFFF;
+	background-color: #0066CC;
+	font-weight: bold;
+}
+.title1 {
+	CLEAR: both; BORDER-TOP: #ff7e00 2px solid; PADDING-LEFT: 15px; FONT-WEIGHT: bold; FONT-SIZE: 11pt; BACKGROUND: url("../../images/index/deal_action_bk1.gif") repeat-x left top; MARGIN-BOTTOM: 20px; COLOR: #000000; LINE-HEIGHT: 25px; BORDER-BOTTOM: #eee 1px solid; POSITION: relative; HEIGHT: 25px
+}
+.redfont01 {
+	word-spacing: 1pt;
+	font-family: Verdana;
+	font-size: 16px;
+	color: #FF0000;
+	text-decoration: underline;
+}
+.otherfont02 {
+	word-spacing: 1pt;
+	font-family: Verdana;
+	font-size: 16px;
+	color: #001fbb;
+	text-decoration: underline;
+}
+.otherfont03 {
+	font-family: Verdana;
+	font-size: 15px;
+	color: #FFFFFF;
+	text-decoration: none;
+	word-spacing: 1pt;
+	font-weight: bold;
+}
+.otherfont04 {
+	font-family: Verdana;
+	font-size: 16px;
+	color: #FFFFFF;
+	text-decoration: none;
+	word-spacing: 1pt;
+	font-weight: bold;
+}
+.otherfont05 {
+	font-family: Verdana;
+	font-size: 16px;
+	color: #333333;
+	text-decoration: none;
+	word-spacing: 1pt;
+	font-weight: bold;
+}
+.text1010 {
+	color: #333333;
+	font-family: Verdana;
+	font-size: 9pt;
+}
+.text2 {
+	color: #FF0000;
+	font-family: Verdana;
+	font-size: 9pt;
+	font-weight: bold;
+}

@@ -1,0 +1,33 @@
+
+org/json
+org/*
+包是直接复制的android-sdk源代码目录里面的代码
+
+打包org/json:
+jar cvf json2.jar org
+
+编译
+javac -cp ./json2.jar Jsontest.java
+Jsontest 不要写 package org.langr.xxx
+执行
+java -cp .;json2.jar Jsontest
+
+/**
+ * FilesMap2Json 格式为3: map-array.
+ * 1. array-array: [[time,n,s,h],[time,n,s,h],[time,n,s,h]]
+ * 2. array-map: [{"time":time,"n":n,"s":s},{"time":time,"n":n,"s":s},{"time":time,"n":n,"s":s}]
+ * 3. map-array: {"id1":[time,n,s],"id2":[time,n,s],"id3":[time,n,s]}
+ * 4. map-map: {"id1":{"time":time,"n":n,"s":s},"id2":{"time":time,"n":n,"s":s},"id3":{"time":time,"n":n,"s":s}}
+ *
+ * map-array: {"filename":[90,1],"filename2":[90,3],"filename3":[90,1]}
+ * map-map: {"filename":{"rotate":90,"count":1},"filename2":{"rotate":90,"count":3},"filename3":{"rotate":90,"count":1}}
+ */
+
+坐标记录
+timestamp,lng(纬度),lat(经度),height(离地平线高度)
+[
+[1415860494000,22.502412986242,113.93832783228,21],
+[1415860594000,22.505057071739,113.94976812923,21],
+[1415860694000,22.499374931276,113.9431826306,20],
+...
+]

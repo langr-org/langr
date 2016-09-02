@@ -1,0 +1,8 @@
+conque_2.3.tar.gz		vim shell 窗口
+cpp_src.tar.bz2			(X) cpp ide
+cvim.zip			(X) c ide
+neocomplcache-6.1.zip		自动补全插件，很快
+omnicppcomplete-0.41.zip	omni全能补全
+taglist_45.zip			Tlist,  配合ctags, 列表代码函数
+ctags58.zip			ctags
+fencview.vim			文件编码转换

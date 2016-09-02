@@ -1,0 +1,64 @@
+
+credits:{enabled:false}		是否(在右下角)显示所有者信息和连接.
+xAxis:{categories:["1月","2月","2012-03月"]}	x轴各数据栏显示名, 没有则依次显示索引数字, 与 series:[{data:[1,2,{y:3}]}] 对应.
+xAxis:{allowDecimals:false}	x轴栏分段值不允许小数.
+yAxis:{align:'high'}		align = 'high' 'low'	y轴名字显示位置: 高, 低, 中间
+yAxis:{rotation:0}		0~360	y轴名字显示旋转角度
+yAxis:{min:0}			y轴最小刻度值
+yAxis:[{title:{text:'次',align:'high',rotation:0}},
+	{title:{text:'分<br/>钟',style:{color:'#aa4643'},align:'high',rotation:0},min:0,opposite:true}]
+
+legend:{layout:'vertical'}	竖直排列图例(默认为水平排列)
+legend:{align:'right',verticalAlign:'top',x:-100,y:50,floating:true,layout:'vertical'}		图例位置及排列
+exporting:{enabled:false}	不显示导出/打印图片图标
+
+
+tooltip:{formatter:function(){return 'tip:'+this.y;}}		鼠标滑过时的提示字
+tooltip:{formatter:function(){
+		unit={'通话量':'次','通话时间':'分钟'}[this.series.name];
+		return '<b>'+((this.point.name) ? 
+				this.point.name+' '+Math.floor(this.percentage*100)/100+'%</b><br/>' :
+				this.x+' ') + 
+			'通话量: '+(unit=='次'?this.y:Math.floor(this.y/60))+unit+'<br/>';}
+	}
+				设置鼠标滑过时的提示字.
+
+plotOptions:{column:{dataLabels:{enabled:true}}}	显示column图各数据Labels提示.
+plotOptions:{
+	line:{dataLabels:{enabled:true,
+		formatter:function(){unit={'通话量':'次','通话时间':'分钟'}[this.series.name];
+			return (unit=='次'?this.y:Math.floor(this.y/60))+unit;}} },
+	column:{dataLabels:{enabled:true,
+		formatter:function(){unit={'通话量':'次','通话时间':'分钟'}[this.series.name];
+			return (unit=='次'?this.y:Math.floor(this.y/60))+unit;}} },
+	pie:{cursor:'pointer',
+		dataLabels:{enabled:true,
+			formatter:function(){return this.point.name+' 通话:'+this.y+'次';}},
+		showInLegend:true}
+	}
+				设置各图型的dataLabels是否显示及显示内容(在data的顶部显示), 风格等.
+
+series:[{wtSelect:true}]	此条数据可以(在图例中点击)选中是否在统计表中显示/隐藏此条数据, @by hua@langr.org hacked.
+series:[{pointWidth:50}]	column 宽度.
+series:[{data:[1,2,3,4]},{data:[1,2,3,4]}]	一个data表示一个统计线, 可有自己的显示类型, 风格等
+series:[{"name":"通话量","wtSelect":false,"pointWidth":50,
+		"data":[1112,637,706,{name:'',y:23,sliced:true,selected:true}]
+	},
+	{"name":"通话时间","type":"line","wtSelect":true,"pointWidth":50,"yAxis":1,
+		"data":[72622,34553,36016,{name:'',y:377,sliced:true,selected:true}]
+	}]
+
+xAxis: {
+maxZoom:3600000,
+startOnTick:'yes',
+endOnTick:'yes',
+minorTickInterval: 'auto',//设置是否出现纵向小标尺
+minorGridLineColor:'#E0E0E0',
+lineColor: '#197F07',//设置X轴颜色
+tickWidth: 1,//设置X轴坐标点是否出现占位及其宽度
+tickPixelInterval:40,//设置横坐标密度
+gridLineColor: '#E0E0E0',//设置纵向标尺颜色
+gridLineWidth: 1,//设置纵向标尺宽度
+title: {text: '时段（计时点）'}
+}
+

@@ -1,0 +1,13 @@
+// $Id$
+// vim:ft=javascript
+
+// If your extension references something external, use ARG_WITH
+// ARG_WITH("lagi", "for lagi support", "no");
+
+// Otherwise, use ARG_ENABLE
+// ARG_ENABLE("lagi", "enable lagi support", "no");
+
+if (PHP_LAGI != "no") {
+	EXTENSION("lagi", "lagi.c");
+}
+
