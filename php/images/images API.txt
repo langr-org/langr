@@ -1,0 +1,140 @@
+Images 公用服务器 API 说明
+$Id: images API.txt 774 2014-10-28 02:40:32Z huanghua $
+
+服务器接口地址：http://img.h8.com/api/
+
+1. 向服务器发送图片。
+向接口提交POST数据：
+$_POST['paths']		(数组，可选，删除或覆盖操作时提供)
+$_POST['files']		(数组，必选，可以是input 'file'属性，可以是base64编码格式文件数据，删除操作时不用提供)
+$_POST['chksum']	(依服务器可选)
+$_POST['callback']	(可选，处理完后的回调程序地址)
+
+图片上传时的默认命名规则为：http://图片主机/路径/年月/日时/分秒微秒.后缀
+http://server.host/images/YYYYmm/ddHH/iiss00000000.png
+支持的文件主要为：png, gif, jpg 
+注：服务器配置目前并没有打算支持bmp格式图片。
+
+0).校检码生成：
+	校检时需要向服务器管理申请用户名和密钥;
+	校检码生成方法：chksum = 用户名@随机数@md5(随机数+密钥);
+
+1).上传：
+	上传动作时，paths 参数必须为空；通过POST表单或者HTTP socket 发送POST数据到服务器接口;
+	提交参数：
+	$_POST['files'] 数组，类型为input file 或者 input text的base64(遵循rfc2397)文件内容。
+	$_POST['chksum'] 
+	$_POST['callback'] 可选，文件上传完成后的回调程序地址。
+
+2).覆盖：
+	覆盖动作必须提供 paths和files 参数；通过POST表单或者HTTP socket 发送POST数据到服务器接口;
+	提交参数：
+	$_POST['paths'] 数组，需要覆盖(之前上传)的文件完整url路径。
+	$_POST['files'] 数组，类型为input file 或者 input text的base64(遵循rfc2397)文件内容。
+	$_POST['chksum'] 
+	$_POST['callback'] 可选，文件上传完成后的回调程序地址。
+
+3).删除：
+	删除动作时，files 参数必须为空；通过POST表单或者HTTP socket 发送POST数据到服务器接口;
+	提交参数：
+	$_POST['paths'] 数组，需要覆盖(之前上传)的文件完成url路径。
+	$_POST['chksum'] 
+	$_POST['callback'] 可选，文件上传完成后的回调程序地址。
+
+4).回调：
+	回调的作用是，某个上传客户，不方便直接在上传后接收处理上传结果的，可以通过回调程序在后台来接受处理结果数据；
+	如果用户需要此功能，需在以上操作时提供callback参数，为了方便客户端处理区分，建议在每次的回调url中加入唯一ID;
+	如: <input type='hidden' name='callback' value='http://admin.h8.com/path/?do=img_callback&uid=1234567'>
+	接口服务会在处理完上传数据后，将上传结果以POST方式传给回调程序，参数名'ret'，内容为json，格式为如5)。
+
+5).返回：
+	正常情况，在上传处理完成后会直接在页面show如下格式json: 
+	{"errno":0,"errmsg":"ok!","ret":["http:\/\/img.h8.hua\/images\/201410\/2416\/16515073008800.gif","110 null","http:\/\/img.h8.hua\/images\/201410\/2416\/16515073082600.jpg"]}
+	解释：
+	不管上传文件数组有多少，只要参数，操作，校检码正确，errno就返回0, errmsg返回'ok', ret 返回上传成功后对应的图片地址数组; 
+	否则errno返回出错号，ret返回空数组; 
+	如果上传文件数组中有部分上传错，errno同样返回0,	但在'ret'参数里面对应出错的图片就会返回出错号和出错原因，正常的上传会对应的返回图片的url地址；
+	如果调用者传递了callback参数，callback程序同样会收到相同的返回数据。
+
+2. 读取图片
+
+直接使用上传图片时返回的url地址就可以读取图片，如果使用者需要使用缩略图，可以直接以图片名加尺寸后缀再加文件名后缀，就可使用对应大小的缩略图；
+缩略命命名规则为：原图片名.宽x高.后缀。其中间是字母'xyz'的'x'。
+如：
+原图：		http://img.h8.hua/images/201410/2416/16515073008800.gif
+默认缩略图：	http://img.h8.hua/images/201410/2416/16515073008800.small.gif (默认150x150)
+任意尺寸图：	http://img.h8.hua/images/201410/2416/16515073008800.200x200.gif
+
+3. 范例
+1).增加 FILE 图片
+客户端： 
+<form action="http://img.h8.hua/api/" method="post" enctype="multipart/form-data">
+	<input type="hidden" name="chksum" value='zkc01@3235@346a54a3bc3df29de3' /><br/>
+	<input type="file" name="files[]" />
+	<input type="file" name="files[]" />
+	<input type="file" name="files[]" />
+	<!--input type="hidden" name="callback"	value='http://admin.h8.com/doimages?uid=123456'/-->
+	<input type="submit" value="Send" />
+</form>
+
+服务器返回：
+{"errno":0,"errmsg":"ok!","ret":["http:\/\/img.h8.hua\/images\/201410\/2416\/16515073008800.gif","110 null","http:\/\/img.h8.hua\/images\/201410\/2416\/16515073082600.jpg"]}
+
+2).增加 data:image base64 直接编码的图片
+客户端：
+<form action="http://img.h8.hua/api/" method="post">
+	<input type="hidden" name="chksum" value='zkc01@3235@346a54a3bc3df29de3' /><br/>
+	<input type="hidden" name="files[]" value="data:image/gif;base64,R0lGODlhAQAcALMAAMXh96HR97XZ98Hf98Xg97DX97nb98Lf97vc98Tg973d96rU97ba97/e96XS9wAAACH5BAAAAAAALAAAAAABABwAAAQVMLhVBDNItXESAURyDI2CGIxQLE4EADs="/>
+	<input type="hidden" name="files[]" value="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAANCAYAAABy6%2BR8AAAAlElEQVR42oWQQRHEIAxF10ElVAISVgo3bCABCUhYCZWAhEpAQpoD6bzJhNnDO0DyyA8fEXkppXyVCpLViDUfyqVIQN9JFMY637hrlCySFauL21E7KVWbAIGx56rnSLqc5KPXSLo3kySalPhTygFhRDtFC09EIsMeZJSGBj7Qveh3OJW89syImiH%2BIO2BOJX0XwA2%2BQEL4pAhSX4aBQAAAABJRU5ErkJggg=="/>
+	<input type="hidden" name="files[]" value="data:image/gif;base64,R0lGODlhDwAPAJEAAAAAAAMDA////wAAACH/C1hNUCBEYXRhWE1QPD94cGFja2V0IGJlZ2luPSLvu78iIGlkPSJXNU0wTXBDZWhpSHpyZVN6TlRjemtjOWQiPz4gPHg6eG1wbWV0YSB4bWxuczp4PSJhZG9iZTpuczptZXRhLyIgeDp4bXB0az0iQWRvYmUgWE1QIENvcmUgNS4wLWMwNjAgNjEuMTM0Nzc3LCAyMDEwLzAyLzEyLTE3OjMyOjAwICAgICAgICAiPiA8cmRmOlJERiB4bWxuczpyZGY9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkvMDIvMjItcmRmLXN5bnRheC1ucyMiPiA8cmRmOkRlc2NyaXB0aW9uIHJkZjphYm91dD0iIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtbG5zOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIiB4bWxuczpzdFJlZj0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL3NUeXBlL1Jlc291cmNlUmVmIyIgeG1wOkNyZWF0b3JUb29sPSJBZG9iZSBQaG90b3Nob3AgQ1M1IFdpbmRvd3MiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6MUQxMjc1MUJCQUJDMTFFMTk0OUVGRjc3QzU4RURFNkEiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6MUQxMjc1MUNCQUJDMTFFMTk0OUVGRjc3QzU4RURFNkEiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDoxRDEyNzUxOUJBQkMxMUUxOTQ5RUZGNzdDNThFREU2QSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDoxRDEyNzUxQUJBQkMxMUUxOTQ5RUZGNzdDNThFREU2QSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PgH//v38+/r5+Pf29fTz8vHw7+7t7Ovq6ejn5uXk4+Lh4N/e3dzb2tnY19bV1NPS0dDPzs3My8rJyMfGxcTDwsHAv769vLu6ubi3trW0s7KxsK+urayrqqmop6alpKOioaCfnp2cm5qZmJeWlZSTkpGQj46NjIuKiYiHhoWEg4KBgH9+fXx7enl4d3Z1dHNycXBvbm1sa2ppaGdmZWRjYmFgX15dXFtaWVhXVlVUU1JRUE9OTUxLSklIR0ZFRENCQUA/Pj08Ozo5ODc2NTQzMjEwLy4tLCsqKSgnJiUkIyIhIB8eHRwbGhkYFxYVFBMSERAPDg0MCwoJCAcGBQQDAgEAACH5BAAAAAAALAAAAAAPAA8AAAIdjI6JZqotoJPR1fnsgRR3C2jZl3Ai9aWZZooV+RQAOw=="/>
+	<!--input type="hidden" name="callback"	value='http://admin.h8.com/doimages?uid=123456'/-->
+	<input type="submit" value="Send" />
+</form>
+
+服务器返回：
+{"errno":0,"errmsg":"ok!","ret":["http:\/\/img.h8.hua\/images\/201410\/2416\/16515073008800.gif","110 null","http:\/\/img.h8.hua\/images\/201410\/2416\/16515073082600.jpg"]}
+
+3).删除之前上传的图片 [待确认开发]
+客户端： 
+<form action="http://img.h8.hua/api/" method="post" enctype="multipart/form-data">
+	<input type="hidden" name="chksum" value='zkc01@3235@346a54a3bc3df29de3' /><br/>
+	<input type="hidden" name="paths[]" value="http:\/\/img.h8.hua\/images\/201410\/2416\/16515073008800.gif"/>
+	<input type="hidden" name="paths[]" value="http:\/\/img.h8.hua\/images\/201410\/2416\/16515073082600.jpg"/>
+	<!--input type="hidden" name="callback"	value='http://admin.h8.com/doimages?uid=123456'/-->
+	<input type="submit" value="Send" />
+</form>
+
+服务器返回：
+{"errno":0,"errmsg":"ok!","ret":["http:\/\/img.h8.hua\/images\/201410\/2416\/16515073008800.gif","http:\/\/img.h8.hua\/images\/201410\/2416\/16515073082600.jpg"]}
+
+4).覆盖之前上传的图片
+客户端： 
+<form action="http://img.h8.hua/api/" method="post" enctype="multipart/form-data">
+	<input type="hidden" name="chksum" value='zkc01@3235@346a54a3bc3df29de3' /><br/>
+	<input type="hidden" name="paths[]" value="http:\/\/img.h8.hua\/images\/201410\/2416\/16515073008800.gif"/>
+	<input type="hidden" name="paths[]" value="http:\/\/img.h8.hua\/images\/201410\/2416\/16515073082600.jpg"/>
+	<input type="file" name="files[]" />
+	<input type="file" name="files[]" />
+	<!--input type="hidden" name="callback"	value='http://admin.h8.com/doimages?uid=123456'/-->
+	<input type="submit" value="Send" />
+</form>
+
+服务器返回：
+{"errno":0,"errmsg":"ok!","ret":["http:\/\/img.h8.hua\/images\/201410\/2416\/16515073008800.gif","http:\/\/img.h8.hua\/images\/201410\/2416\/16515073082600.jpg"]}
+
+4. 出错号列表
+	const E_OK = 0;
+	const E_ARGS = 100;
+	const E_DATA_INVALID = 103;
+	const E_NOOP = 104;
+	const E_IP_DENY = 105;
+	const E_DATA_EMPTY = 110;
+	const E_OP_FAIL = 111;
+	const E_CHECKSUM = 150;
+	const E_KEY_NO_EXIST = 403;
+	const E_API_NO_EXIST = 404;
+	const E_MAX_SIZE = 410;
+	const E_INVALID_TYPE = 411;
+	const E_SYS_1 = 503;
+	const E_SYS = 505;
+	const E_UNKNOW = 999;
