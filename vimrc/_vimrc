@@ -29,70 +29,71 @@ function MyDiff()
   silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
 endfunction
 
-" huaµÄvimrcÎÄ¼ş
+" huaçš„vimrcæ–‡ä»¶
 "
 set nu
-"ÉèÖÃÎÄ¼ş±àÂëµÄ¼ì²âË³Ğò (Ë³Ğò±È½ÏÖØÒª)
+"è®¾ç½®æ–‡ä»¶ç¼–ç çš„æ£€æµ‹é¡ºåº (é¡ºåºæ¯”è¾ƒé‡è¦)
 "set fileencoding=utf-8
 set fileencodings=ucs-bom,utf-8,gb18030,cp936,big5,euc-jp,euc-kr,latin1
-set foldmethod=marker				"Ô´ÎÄ¼ş°´±êÇ©ÕÛĞĞ
-set autoindent					"ÔÚ»»ĞĞÊ±×Ô¶¯¶ÔÆëÉÏÒ»ĞĞ
-set showcmd					"ÔÚÓÒÏÂ½ÇÏÔÊ¾ÃüÁî
-set incsearch					"¼´Ê±ËÑË÷
-set hlsearch					"²éÕÒ½á¹û¸ßÁÁ¶ÈÏÔÊ¾
+set foldmethod=marker				"æºæ–‡ä»¶æŒ‰æ ‡ç­¾æŠ˜è¡Œ
+set autoindent					"åœ¨æ¢è¡Œæ—¶è‡ªåŠ¨å¯¹é½ä¸Šä¸€è¡Œ
+set showcmd					"åœ¨å³ä¸‹è§’æ˜¾ç¤ºå‘½ä»¤
+set incsearch					"å³æ—¶æœç´¢
+set hlsearch					"æŸ¥æ‰¾ç»“æœé«˜äº®åº¦æ˜¾ç¤º
 
 "syn on
-"set guifont=Monospace\ 11			"ÉèÖÃÓÃÓÚGUIÍ¼ĞÎÓÃ»§½çÃæµÄ×ÖÌåÁĞ±í
+"set guifont=Monospace\ 11			"è®¾ç½®ç”¨äºGUIå›¾å½¢ç”¨æˆ·ç•Œé¢çš„å­—ä½“åˆ—è¡¨
 "set mouse=a
-"set autochdir					"×Ô¶¯ÇĞ»»µ±Ç°Ä¿Â¼Îªµ±Ç°ÎÄ¼şËùÔÚµÄÄ¿Â¼ 
-" tab¿í¶È
-set tabstop=8
-set cindent shiftwidth=8
-set autoindent shiftwidth=8
-winpos 250 120					"ÉèÖÃgvimÆô¶¯Ê±µÄÎ»ÖÃ
-"set lines=25 columns=108			"gvimÆô¶¯Ê±µÄ´°¿Ú´óĞ¡
-set lines=37 columns=140			"gvimÆô¶¯Ê±µÄ´°¿Ú´óĞ¡
-colorscheme pablo				"gvimÅäÉ«·½°¸
+"set autochdir					"è‡ªåŠ¨åˆ‡æ¢å½“å‰ç›®å½•ä¸ºå½“å‰æ–‡ä»¶æ‰€åœ¨çš„ç›®å½• 
+" tabå®½åº¦
+set tabstop=4
+set expandtab					"tabæ›¿æ¢ä¸ºç©ºæ ¼
+set cindent shiftwidth=4
+set autoindent shiftwidth=4
+winpos 250 120					"è®¾ç½®gvimå¯åŠ¨æ—¶çš„ä½ç½®
+"set lines=25 columns=108			"gvimå¯åŠ¨æ—¶çš„çª—å£å¤§å°
+set lines=37 columns=140			"gvimå¯åŠ¨æ—¶çš„çª—å£å¤§å°
+colorscheme pablo				"gvimé…è‰²æ–¹æ¡ˆ
 
-"== ctagsÉèÖÃ===========================================
-"==Ó³Éä¿ì½İ¼üÓÃÓÚ´´½¨tags ÎÄ¼ş==========================
+"== ctagsè®¾ç½®===========================================
+"==æ˜ å°„å¿«æ·é”®ç”¨äºåˆ›å»ºtags æ–‡ä»¶==========================
 map <C-F12>	:!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
 map <C-F1>	:!ctags -R --java-kinds=+p --fields=+iaS --extra=+q .<CR>
-" ÔöÇ¿¼ìË÷¹¦ÄÜ
+" å¢å¼ºæ£€ç´¢åŠŸèƒ½
 "set tags+=$VIMRUNTIME\..\cpp.tags
 set tags+=./tags,./../tags,./../../tags,./../../../tags,./../../../../tags
-"==½øĞĞTlistµÄÉèÖÃ===========================================
+"==è¿›è¡ŒTlistçš„è®¾ç½®===========================================
 map <F11> :silent! Tlist<CR>
-let Tlist_Ctags_Cmd='ctags'		"ÒòÎªÎÒÃÇ·ÅÔÚ»·¾³±äÁ¿Àï£¬ËùÒÔ¿ÉÒÔÖ±½ÓÖ´ĞĞ
-let Tlist_Use_Right_Window=1		"ÈÃ´°¿ÚÏÔÊ¾ÔÚÓÒ±ß£¬0µÄ»°¾ÍÊÇÏÔÊ¾ÔÚ×ó±ß
-let Tlist_Show_One_File=0		"ÈÃtaglist¿ÉÒÔÍ¬Ê±Õ¹Ê¾¶à¸öÎÄ¼şµÄº¯ÊıÁĞ±í£¬Èç¹ûÏëÖ»ÓĞ1¸ö£¬ÉèÖÃÎª1
-let Tlist_File_Fold_Auto_Close=1	"·Çµ±Ç°ÎÄ¼ş£¬º¯ÊıÁĞ±íÕÛµşÒş²Ø
-let Tlist_Exit_OnlyWindow=1		"µ±taglistÊÇ×îºóÒ»¸ö·Ö¸î´°¿ÚÊ±£¬×Ô¶¯ÍÆ³övim
-let Tlist_Process_File_Always=1		"ÊÇ·ñÒ»Ö±´¦Àítags.1:´¦Àí;0:²»´¦Àí
-let Tlist_WinHeight=100			"ÉèÖÃ´°¿Ú¸ß¶È
-let Tlist_WinWidth=24			"ÉèÖÃ´°¿Ú¿í¶È
+let Tlist_Ctags_Cmd='ctags'		"å› ä¸ºæˆ‘ä»¬æ”¾åœ¨ç¯å¢ƒå˜é‡é‡Œï¼Œæ‰€ä»¥å¯ä»¥ç›´æ¥æ‰§è¡Œ
+let Tlist_Use_Right_Window=1		"è®©çª—å£æ˜¾ç¤ºåœ¨å³è¾¹ï¼Œ0çš„è¯å°±æ˜¯æ˜¾ç¤ºåœ¨å·¦è¾¹
+let Tlist_Show_One_File=0		"è®©taglistå¯ä»¥åŒæ—¶å±•ç¤ºå¤šä¸ªæ–‡ä»¶çš„å‡½æ•°åˆ—è¡¨ï¼Œå¦‚æœæƒ³åªæœ‰1ä¸ªï¼Œè®¾ç½®ä¸º1
+let Tlist_File_Fold_Auto_Close=1	"éå½“å‰æ–‡ä»¶ï¼Œå‡½æ•°åˆ—è¡¨æŠ˜å éšè—
+let Tlist_Exit_OnlyWindow=1		"å½“taglistæ˜¯æœ€åä¸€ä¸ªåˆ†å‰²çª—å£æ—¶ï¼Œè‡ªåŠ¨æ¨å‡ºvim
+let Tlist_Process_File_Always=1		"æ˜¯å¦ä¸€ç›´å¤„ç†tags.1:å¤„ç†;0:ä¸å¤„ç†
+let Tlist_WinHeight=100			"è®¾ç½®çª—å£é«˜åº¦
+let Tlist_WinWidth=24			"è®¾ç½®çª—å£å®½åº¦
 let Tlist_Inc_Winwidth=0
-let tlist_php_settings='php;c:class;f:function'			"²»ÏÔÊ¾ variable
-"let tlist_cpp_settings='c++;c:class;s:struct;f:function'	"²»ÏÔÊ¾ variable
-"let tlist_c_settings='c;s:struct;f:function'			"²»ÏÔÊ¾ variable
-"==ÅäÖÃomniÈ«ÄÜ²¹È«====================================
+let tlist_php_settings='php;c:class;f:function'			"ä¸æ˜¾ç¤º variable
+"let tlist_cpp_settings='c++;c:class;s:struct;f:function'	"ä¸æ˜¾ç¤º variable
+"let tlist_c_settings='c;s:struct;f:function'			"ä¸æ˜¾ç¤º variable
+"==é…ç½®omniå…¨èƒ½è¡¥å…¨====================================
 let OmniCpp_MayCompleteScope = 1
 let OmniCpp_DefaultNamespaces = ["std"]
-set completeopt=longest,menu "¹Ø±Õ×Ô¶¯²¹È«Ê±µÄÔ¤ÀÀ´°¿Ú
+set completeopt=longest,menu "å…³é—­è‡ªåŠ¨è¡¥å…¨æ—¶çš„é¢„è§ˆçª—å£
 
-"set cpt=.,w,b,u,t,i,k				"×Ô¶¯²¹È«ËÑË÷Â·¾¶ºÍË³Ğò
-"set complete+=k; set dictionary+=path		"×Öµä²¹È«
-". <C-X><C-NP>µ±Ç°»º³åÇø
-"w ÆäËü´°¿ÚµÄ»º³åÇø; b ÆäËüÔØÈëµÄ»º³åÇø; u Ğ¶ÔØµÄ»º³åÇø
-"t <C-X><C-]>tags; i <C-X><C-I>include; k <C-X><C-K>×Öµä
-"<C-X><C-L>ÕûĞĞ²¹È«, <C-X><C-F>ÎÄ¼şÃû²¹È«
+"set cpt=.,w,b,u,t,i,k				"è‡ªåŠ¨è¡¥å…¨æœç´¢è·¯å¾„å’Œé¡ºåº
+"set complete+=k; set dictionary+=path		"å­—å…¸è¡¥å…¨
+". <C-X><C-NP>å½“å‰ç¼“å†²åŒº
+"w å…¶å®ƒçª—å£çš„ç¼“å†²åŒº; b å…¶å®ƒè½½å…¥çš„ç¼“å†²åŒº; u å¸è½½çš„ç¼“å†²åŒº
+"t <C-X><C-]>tags; i <C-X><C-I>include; k <C-X><C-K>å­—å…¸
+"<C-X><C-L>æ•´è¡Œè¡¥å…¨, <C-X><C-F>æ–‡ä»¶åè¡¥å…¨
 set cpt=.,w,b,u,i
-let g:neocomplcache_enable_at_startup = 1	"NeoComplCache ×Ô¶¯²¹È«²å¼ş
-"ConqueTermSplit <command> ´ò¿ªÃüÁîĞĞ´°¿Ú²å¼ş
+let g:neocomplcache_enable_at_startup = 1	"NeoComplCache è‡ªåŠ¨è¡¥å…¨æ’ä»¶
+"ConqueTermSplit <command> æ‰“å¼€å‘½ä»¤è¡Œçª—å£æ’ä»¶
 
 "map E		<Esc>:e!~/.vimrc<CR>
 "map D		<Esc>:r!date<CR><Esc>
-map <F2>	<Esc><S-$>a	/*  */<Esc>	"×¢ÊÍ
+map <F2>	<Esc><S-$>a	/*  */<Esc>	"æ³¨é‡Š
 "map W		<Esc>:cd /usr/src/work/langr<CR><Esc>
 
 if (has("win32") || has("win64") || has("win32unix"))
@@ -101,7 +102,7 @@ else
 	let g:__ds = "/"
 endif
 
-"½øÈë±à¼­ÎÄ¼şµ±Ç°Ä¿Â¼, 
+"è¿›å…¥ç¼–è¾‘æ–‡ä»¶å½“å‰ç›®å½•, 
 function CdPwd()
 	let current_path = strpart(expand("%"), 0, strridx(expand("%"), g:__ds))
 	"let current_path = strpart(expand("%"), 0, strridx(expand("%"), "\\"))
@@ -110,7 +111,7 @@ function CdPwd()
 endfunction
 map ~	<Esc>:call CdPwd()<CR>
 
-" Éè¶¨ÎÄ¼şä¯ÀÀÆ÷Ä¿Â¼Îªµ±Ç°Ä¿Â¼
+" è®¾å®šæ–‡ä»¶æµè§ˆå™¨ç›®å½•ä¸ºå½“å‰ç›®å½•
 "set bsdir=buffer
 "set autochdir
 
@@ -124,7 +125,7 @@ endfunction
 map <F7> <Esc>i<Esc>:call ModifyTime()<CR>
 "map <F7> <Esc>i<Esc>:call ModifyTime2()<CR>
 
-"´òÓ¡ÎÄ¼şÍ·
+"æ‰“å°æ–‡ä»¶å¤´
 function HeadGPL()
 	call append(line("."), "/** ")
 	call append(line(".")+1, " * @file ".expand("%"))
