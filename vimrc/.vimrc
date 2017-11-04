@@ -1,6 +1,7 @@
 " hua的vimrc文件
 "
 set nu
+set ruler
 "设置文件编码的检测顺序 (顺序比较重要)
 "set fileencoding=utf-8
 set fileencodings=ucs-bom,utf-8,gb18030,cp936,big5,euc-jp,euc-kr,latin1
