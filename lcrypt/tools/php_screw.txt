@@ -1,0 +1,66 @@
+
+
+find ./ -name "*.php" -print|xargs -n1 screw //加密所有的.php文件
+find ./ -name "*.screw" -print|xargs -n1 rm //删除所有的.php源文件的备份文件
+
+
+0、减压 php_screw-1.5
+如果系统没有phpize则
+1、安装php-devel-5.1.6-23.SEL5_2.i386.rpm
+   rpm -ivh php-devel-5.1.6-23.SEL5_2.i386.rpm --force --nodeps
+2、cd php_screw-1.5 遇到phpize出错：
+   在php_screw-1.5目录下运行/usr/bin/phpize  ./configure时出现：
+Configuring for:
+PHP Api Version:         20041225
+Zend Module Api No:      20060613
+Zend Extension Api No:   220060519
+Cannot find autoconf. Please check your autoconf installation and the
+$PHP_AUTOCONF environment variable. Then, rerun this script.
+
+根据网上的解决办法是：
+
+# cd /usr/src
+# wget http://ftp.gnu.org/gnu/m4/m4-1.4.9.tar.gz
+# tar -zvxf m4-1.4.9.tar.gz
+# cd m4-1.4.9/
+# ./configure && make && make install
+# cd ../
+# 记得要用2.61 的autoconf,  2.62会有错误,郁闷死了
+# wget http://ftp.gnu.org/gnu/autoconf/autoconf-2.61.tar.gz
+# tar -zvxf autoconf-2.61.tar.gz
+# cd autoconf-2.61/
+# ./configure && make && make install
+
+3、cd /root/php_screw-1.5
+/usr/bin/phpize  ./configure
+
+vi php_screw.h 
+#define PM9SCREW        "\tPM9SCREW\t"  
+#define PM9SCREW_LEN     10    
+改为 
+#define PM9SCREW        "\tCOOL\t"  
+#define PM9SCREW_LEN     6
+
+完成后，设置自己用来加密的密码 这个重要，里面的改成你的，你要记住这一组数据 最多5位数字
+vi my_screw.h
+
+make
+
+4、cd tools 
+    make
+5、cp php_screw.so /usr/lib/php/modules/.
+
+   vim /etc/php5/apache2/php.ini
+
+   extension=php_screw.so
+
+重启apache,查看phpinfo()里面应该有php_screw的相关信息
+
+6、cd ../tools
+       make
+7、/root/php_screw-1.5/tools/screw testinfo.php 
+
+8.慎重！！！！！！！！！
+find ./ -name "*.php" -print|xargs -n1 screw //加密所有的.php文件
+find ./ -name "*.screw" -print|xargs -n1 rm //删除所有的.php源文件的备份文件
+
