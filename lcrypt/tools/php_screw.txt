@@ -32,7 +32,8 @@ $PHP_AUTOCONF environment variable. Then, rerun this script.
 # ./configure && make && make install
 
 3、cd /root/php_screw-1.5
-/usr/bin/phpize  ./configure
+/usr/bin/phpize  
+./configure
 
 vi php_screw.h 
 #define PM9SCREW        "\tPM9SCREW\t"  
