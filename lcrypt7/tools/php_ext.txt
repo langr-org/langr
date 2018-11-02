@@ -14,7 +14,6 @@ new exten:
 
 1). phpize 动态扩展
 cd extname
-[ext/xxx/] vim config.m4
 [ext/xxx/] phpize
 [ext/xxx/] ./configure --with-php-config=/usr/local/php/bin/php-config
 [ext/xxx/] make
@@ -35,6 +34,10 @@ cd ../../
 ./configure --prefix=/usr/local/php --enable-zip --enable-mbstring --enable-exif --enable-fastcgi --enable-fpm --enable-hello_hua
 
 
-
-mysql + nginx + php
-lnmp
+make tools:
+1. #cd tools
+       make
+2. #./lcrypt7 testinfo.php 
+3. 慎重！！！！！！！！！
+find ./ -name "*.php" -print|xargs -n1 lcrypt7 //加密所有的.php文件
+find ./ -name "*.old.php" -print|xargs -n1 rm //删除所有的.php源文件的备份文件
