@@ -1,0 +1,43 @@
+php exten modules
+
+new exten:
+./ext_skel --extname=xxx
+
+1.  $ cd ..
+2.  $ vi ext/lcrypt7/config.m4
+3.  $ ./buildconf
+4.  $ ./configure --[with|enable]-lcrypt7
+5.  $ make
+6.  $ ./sapi/cli/php -f ext/lcrypt7/lcrypt7.php
+7.  $ vi ext/lcrypt7/lcrypt7.c
+8.  $ make
+
+1). phpize 动态扩展
+cd extname
+[ext/xxx/] phpize
+[ext/xxx/] ./configure --with-php-config=/usr/local/php/bin/php-config
+[ext/xxx/] make
+[ext/xxx/] make install
+
+2). 静态编译进php程序
+1.  $ cd ..
+2.  $ vi ext/hello_hua/config.m4
+3.  $ ./buildconf --force
+4.  $ ./configure --[with|enable]-hello_hua
+5.  $ make
+6.  $ ./php -f ext/hello_hua/hello_hua.php
+7.  $ vi ext/hello_hua/hello_hua.c
+8.  $ make
+
+cd ../../
+./buildconf --force
+./configure --prefix=/usr/local/php --enable-zip --enable-mbstring --enable-exif --enable-fastcgi --enable-fpm --enable-hello_hua
+
+
+make tools:
+1. #cd tools
+       make
+2. #./lcrypt7 testinfo.php 
+3. 慎重！！！！！！！！！
+find ./ -name "*.php" -print|xargs -n1 lcrypt7 //加密所有的.php文件
+find ./ -name "*.old.php" -print|xargs -n1 rm //删除所有的.php源文件的备份文件

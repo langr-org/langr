@@ -21,10 +21,21 @@
 #ifndef PHP_LC7_H
 #define PHP_LC7_H
 
+#include "php.h"
+#include "php_ini.h"
+#include "ext/standard/info.h"
+#include "ext/standard/file.h"
+
 extern zend_module_entry lc7_module_entry;
 #define phpext_lc7_ptr &lc7_module_entry
 
-#define PHP_LC7_VERSION "0.1.0" /* Replace with version number for your extension */
+#define PHP_LC7_VERSION "0.3.5 (35)" /* Replace with version number for your extension */
+#define LAST_COMPILE_TIME "2018-11-02 20:03:47"
+
+static short lcrypt_key[] = {1102, 2018, 1701, 3128, 5893};
+
+#define HY_CRYPT        "HY\t"
+#define HY_CRYPT_LEN     3
 
 #ifdef PHP_WIN32
 #	define PHP_LC7_API __declspec(dllexport)

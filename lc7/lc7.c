@@ -33,6 +33,89 @@ ZEND_DECLARE_MODULE_GLOBALS(lc7)
 
 /* True global resources - no need for thread safety here */
 static int le_lc7;
+zend_op_array * (*org_compile_file)(zend_file_handle * file_handle, int type);
+zend_op_array * lcrypt_compile_file(zend_file_handle * file_handle, int type);
+FILE * lcrypt_ext_fopen(FILE * fp);
+
+/**
+ * ext_fopen
+ */
+FILE *lcrypt_ext_fopen(FILE *fp)
+{
+	struct	stat stat_buf;
+	char	*datap;
+	//char	*newdatap;
+	int	datalen;
+	//int newdatalen;
+	int	cryptkey_len = sizeof(lcrypt_key) / 2;
+	int	i;
+
+	/* fp 当前读指针已经指向 0 + HY_CRYPT_LEN */
+	fstat(fileno(fp), & stat_buf);
+	datalen = stat_buf.st_size - HY_CRYPT_LEN;
+	datap = (char *) malloc(datalen);
+	fread(datap, datalen, 1, fp);
+	fclose(fp);
+
+	/* */
+	for(i = 0; i < datalen; i++) {
+		datap[i] = (char) lcrypt_key[(datalen - i) % cryptkey_len] ^ (~(datap[i]));
+	}
+
+	/* 解 */
+	//newdatap = zdecode(datap, datalen, &newdatalen);
+
+	/* 解密后的代码写入临时文件，并返回临时文件指针 */
+	fp = tmpfile();
+	//fwrite(newdatap, newdatalen, 1, fp);
+	fwrite(datap, datalen, 1, fp);
+
+	free(datap);
+	//free(newdatap);
+
+	rewind(fp);
+	return fp;
+}
+
+/**
+ * compile
+ */
+zend_op_array *lcrypt_compile_file(zend_file_handle *file_handle, int type)
+{
+	FILE	*fp;
+	char	buf[HY_CRYPT_LEN + 1];
+	char	fname[32];
+
+	//php_printf("<!-- lc7: filename:%s fp:%s-->\r\n", file_handle->filename, file_handle->opened_path);
+
+	/* 打开要编译执行的文件，失败就调用原zend编译处理函数 */
+	fp = fopen(file_handle->filename, "r");
+	if (!fp) {
+		return org_compile_file(file_handle, type);
+	}
+
+	/* 检查标识头是否为加密过的文件，并去掉标识头，如果不是则转由原zend处理 */
+	fread(buf, HY_CRYPT_LEN, 1, fp);
+	if (memcmp(buf, HY_CRYPT, HY_CRYPT_LEN) != 0) {
+		fclose(fp);
+		return org_compile_file(file_handle, type);
+	}
+
+	/*  */
+	if (file_handle->type == ZEND_HANDLE_FP) {
+		fclose(file_handle->handle.fp);
+	}
+	if (file_handle->type == ZEND_HANDLE_FD) {
+		close(file_handle->handle.fd);
+	}
+	file_handle->handle.fp = lcrypt_ext_fopen(fp);
+	file_handle->type = ZEND_HANDLE_FP;
+	//file_handle->opened_path = expand_filepath(file_handle->filename, NULL);
+
+	//app_debug(DINFO"lc7 end: opened_path:%s, filename:%s", file_handle->opened_path, file_handle->filename);
+	php_printf("<!-- lc7 ok: filename:%s -->\r\n", file_handle->filename);
+	return org_compile_file(file_handle, type);
+}
 
 /* {{{ PHP_INI
  */
@@ -91,6 +174,8 @@ PHP_MINIT_FUNCTION(lc7)
 	/* If you have INI entries, uncomment these lines
 	REGISTER_INI_ENTRIES();
 	*/
+	org_compile_file = zend_compile_file;
+	zend_compile_file = lcrypt_compile_file;
 	return SUCCESS;
 }
 /* }}} */
@@ -102,6 +187,7 @@ PHP_MSHUTDOWN_FUNCTION(lc7)
 	/* uncomment this line if you have INI entries
 	UNREGISTER_INI_ENTRIES();
 	*/
+	zend_compile_file = org_compile_file;
 	return SUCCESS;
 }
 /* }}} */
@@ -133,6 +219,7 @@ PHP_MINFO_FUNCTION(lc7)
 {
 	php_info_print_table_start();
 	php_info_print_table_header(2, "lc7 support", "enabled");
+	php_info_print_table_row(2, "lc7 version", PHP_LC7_VERSION LAST_COMPILE_TIME);
 	php_info_print_table_end();
 
 	/* Remove comments if you have entries in php.ini
