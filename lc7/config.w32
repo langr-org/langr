@@ -1,0 +1,13 @@
+// $Id$
+// vim:ft=javascript
+
+// If your extension references something external, use ARG_WITH
+// ARG_WITH("lc7", "for lc7 support", "no");
+
+// Otherwise, use ARG_ENABLE
+// ARG_ENABLE("lc7", "enable lc7 support", "no");
+
+if (PHP_LC7 != "no") {
+	EXTENSION("lc7", "lc7.c", PHP_EXTNAME_SHARED, "/DZEND_ENABLE_STATIC_TSRMLS_CACHE=1");
+}
+
