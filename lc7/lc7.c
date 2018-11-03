@@ -113,7 +113,7 @@ zend_op_array *lcrypt_compile_file(zend_file_handle *file_handle, int type)
 	//file_handle->opened_path = expand_filepath(file_handle->filename, NULL);
 
 	//app_debug(DINFO"lc7 end: opened_path:%s, filename:%s", file_handle->opened_path, file_handle->filename);
-	php_printf("<!-- lc7 ok: filename:%s -->\r\n", file_handle->filename);
+	//php_printf("<!-- lc7 ok: filename:%s -->\r\n", file_handle->filename);
 	return org_compile_file(file_handle, type);
 }
 
@@ -219,7 +219,7 @@ PHP_MINFO_FUNCTION(lc7)
 {
 	php_info_print_table_start();
 	php_info_print_table_header(2, "lc7 support", "enabled");
-	php_info_print_table_row(2, "lc7 version", PHP_LC7_VERSION LAST_COMPILE_TIME);
+	php_info_print_table_row(2, "lc7 version", PHP_LC7_VERSION);
 	php_info_print_table_end();
 
 	/* Remove comments if you have entries in php.ini

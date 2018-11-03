@@ -222,7 +222,7 @@ PHP_MINFO_FUNCTION(lcrypt7)
 {
 	php_info_print_table_start();
 	php_info_print_table_header(2, "lcrypt7 support", "enabled");
-	php_info_print_table_row(2, "lcrypt7 version", PHP_LCRYPT7_VERSION LAST_COMPILE_TIME);
+	php_info_print_table_row(2, "lcrypt7 version", PHP_LCRYPT7_VERSION);
 	php_info_print_table_end();
 
 	/* Remove comments if you have entries in php.ini
