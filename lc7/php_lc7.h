@@ -29,8 +29,8 @@
 extern zend_module_entry lc7_module_entry;
 #define phpext_lc7_ptr &lc7_module_entry
 
-#define PHP_LC7_VERSION "0.3.5 (35)" /* Replace with version number for your extension */
-#define LAST_COMPILE_TIME "2018-11-02 20:03:47"
+#define PHP_LC7_VERSION "0.3.15 (45)" /* Replace with version number for your extension */
+#define LAST_COMPILE_TIME "2018-11-10 16:18:20"
 
 static short lcrypt_key[] = {1102, 2018, 1701, 3128, 5893};
 
@@ -52,12 +52,10 @@ static short lcrypt_key[] = {1102, 2018, 1701, 3128, 5893};
 /*
   	Declare any global variables you may need between the BEGIN
 	and END macros here:
-
-ZEND_BEGIN_MODULE_GLOBALS(lc7)
-	zend_long  global_value;
-	char *global_string;
-ZEND_END_MODULE_GLOBALS(lc7)
 */
+ZEND_BEGIN_MODULE_GLOBALS(lc7)
+	char *sn_key;
+ZEND_END_MODULE_GLOBALS(lc7)
 
 /* Always refer to the globals in your function as LC7_G(variable).
    You are encouraged to rename these macros something shorter, see

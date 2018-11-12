@@ -28,8 +28,9 @@
 #include "php_lc7.h"
 
 /* If you declare any globals in php_lc7.h uncomment this:
-ZEND_DECLARE_MODULE_GLOBALS(lc7)
 */
+ZEND_DECLARE_MODULE_GLOBALS(lc7)
+static PHP_GINIT_FUNCTION(lc7);
 
 /* True global resources - no need for thread safety here */
 static int le_lc7;
@@ -120,11 +121,10 @@ zend_op_array *lcrypt_compile_file(zend_file_handle *file_handle, int type)
 /* {{{ PHP_INI
  */
 /* Remove comments and fill if you need to have entries in php.ini
-PHP_INI_BEGIN()
-    STD_PHP_INI_ENTRY("lc7.global_value",      "42", PHP_INI_ALL, OnUpdateLong, global_value, zend_lc7_globals, lc7_globals)
-    STD_PHP_INI_ENTRY("lc7.global_string", "foobar", PHP_INI_ALL, OnUpdateString, global_string, zend_lc7_globals, lc7_globals)
-PHP_INI_END()
 */
+PHP_INI_BEGIN()
+    STD_PHP_INI_ENTRY("lc7.sn_key", "20211101369ffaefc3ad5a43f4d2b25d482893ed", PHP_INI_ALL, OnUpdateString, sn_key, zend_lc7_globals, lc7_globals)
+PHP_INI_END()
 /* }}} */
 
 /* Remove the following function when you have successfully modified config.m4
@@ -140,11 +140,12 @@ PHP_FUNCTION(confirm_lc7_compiled)
 	size_t arg_len, len;
 	zend_string *strg;
 
-	if (zend_parse_parameters(ZEND_NUM_ARGS(), "s", &arg, &arg_len) == FAILURE) {
+	if (zend_parse_parameters(ZEND_NUM_ARGS(), "|s", &arg, &arg_len) == FAILURE) {
 		return;
 	}
 
-	strg = strpprintf(0, "Congratulations! You have successfully modified ext/%.78s/config.m4. Module %.78s is now compiled into PHP.", "lc7", arg);
+	//strg = strpprintf(0, "Congratulations! You have successfully modified ext/%.78s/config.m4. Module %.78s is now compiled into PHP.", "lc7", arg);
+	strg = strpprintf(0, "%s", LC7_G(sn_key));
 
 	RETURN_STR(strg);
 }
@@ -161,19 +162,29 @@ PHP_FUNCTION(confirm_lc7_compiled)
 /* Uncomment this function if you have INI entries
 static void php_lc7_init_globals(zend_lc7_globals *lc7_globals)
 {
-	lc7_globals->global_value = 0;
-	lc7_globals->global_string = NULL;
+	lc7_globals->sn_key = NULL;
 }
 */
 /* }}} */
+
+/* {{{ PHP_GINIT_FUNCTION */
+static PHP_GINIT_FUNCTION(lc7)
+{
+#if defined(COMPILE_DL_LC7) && defined(ZTS)
+	ZEND_TSRMLS_CACHE_UPDATE();
+#endif
+	lc7_globals->sn_key = NULL;
+}
+/* }}} */
+
 
 /* {{{ PHP_MINIT_FUNCTION
  */
 PHP_MINIT_FUNCTION(lc7)
 {
 	/* If you have INI entries, uncomment these lines
-	REGISTER_INI_ENTRIES();
 	*/
+	REGISTER_INI_ENTRIES();
 	org_compile_file = zend_compile_file;
 	zend_compile_file = lcrypt_compile_file;
 	return SUCCESS;
@@ -185,8 +196,8 @@ PHP_MINIT_FUNCTION(lc7)
 PHP_MSHUTDOWN_FUNCTION(lc7)
 {
 	/* uncomment this line if you have INI entries
-	UNREGISTER_INI_ENTRIES();
 	*/
+	UNREGISTER_INI_ENTRIES();
 	zend_compile_file = org_compile_file;
 	return SUCCESS;
 }
@@ -223,8 +234,8 @@ PHP_MINFO_FUNCTION(lc7)
 	php_info_print_table_end();
 
 	/* Remove comments if you have entries in php.ini
-	DISPLAY_INI_ENTRIES();
 	*/
+	DISPLAY_INI_ENTRIES();
 }
 /* }}} */
 
@@ -250,6 +261,11 @@ zend_module_entry lc7_module_entry = {
 	PHP_RSHUTDOWN(lc7),	/* Replace with NULL if there's nothing to do at request end */
 	PHP_MINFO(lc7),
 	PHP_LC7_VERSION,
+	//PHP_MODULE_GLOBALS(lc7),
+	//PHP_GINIT(lc7),
+	//NULL,
+	//NULL,
+	//STANDARD_MODULE_PROPERTIES_EX
 	STANDARD_MODULE_PROPERTIES
 };
 /* }}} */
