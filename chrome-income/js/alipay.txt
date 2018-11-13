@@ -1,0 +1,22 @@
+
+https://auth.alipay.com/login/index.htm
+
+
+https://consumeprod.alipay.com/record/standard.htm
+
+POST /record/standard.htm HTTP/1.1
+Host: consumeprod.alipay.com
+Connection: keep-alive
+Content-Length: 1067
+Cache-Control: max-age=0
+Origin: https://consumeprod.alipay.com
+Upgrade-Insecure-Requests: 1
+Content-Type: application/x-www-form-urlencoded
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
+Referer: https://consumeprod.alipay.com/record/standard.htm
+Accept-Encoding: gzip, deflate, br
+Accept-Language: zh-CN,zh;q=0.9
+Cookie: JSESSIONID=GZ00yszEct5eKPt3e0CGwTOBw1FFchconsumeprodGZ00; cna=ZQp7EtXIvnoCAWfOyQc8UbJp; mobileSendTime=-1; credibleMobileSendTime=-1; ctuMobileSendTime=-1; riskMobileBankSendTime=-1; riskMobileAccoutSendTime=-1; riskMobileCreditSendTime=-1; riskCredibleMobileSendTime=-1; riskOriginalAccountMobileSendTime=-1; CLUB_ALIPAY_COM=2088922761391280; ali_apache_tracktmp="uid=2088922761391280"; session.cookieNameId=ALIPAYJSESSIONID; unicard1.vm="K1iSL1DZJux99gB5LtUHRA=="; ssl_upgrade=0; __lnkrntdmcvrd=-1; JSESSIONID=13FDB80CED3EC172A8E15D6122A6E833; spanner=IgBr0M9W/5oSNhJiZ7CfeGJ04tDoWXnRXt2T4qEYgj0=; LoginForm=alipay_login_auth; iw.userid="K1iSL1DZJux99gB5LtUHRA=="; ctoken=R-l45U4GB5FA3N7v; alipay="K1iSL1DZJux99gB5LtUHRH7yEAmgHRG143x5YriI7A=="; zone=GZ00D; ALIPAYJSESSIONID=RZ256fF0TK5SXElgbNwTRsPSy6LFaYauthRZ11GZ00; NEW_ALIPAY_TIP=1; rtk=yakXiEmf+5iVJO1SDa9DmrrtZXesazhawQkkfUwM7+SOelWkfB2
+
+dateType=createDate&dateRange=today&beginDate=2018.09.17&endDate=2018.09.17&beginTime=00%3A00&endTime=24%3A00&tradeType=ALL&status=all&fundFlow=all&keyword=&keyValue=&minAmount=&maxAmount=&pageNum=1&rdsToken=H5ggKQJ2zBTfG6o2TSj0sHbweq3dfItl&rdsUa=009LjNsPnkjZCEyYyUxOXlmLBI%3D%7CLTNsVAQuNjB5c2Jmey03fD1jKBUARQApUg%3D%3D%7CLDNsVBROEldBCkhXVQ0WUgBeBkICFF8SBAVdQAdQElcfWEpwWQ%3D%3D%7CKzZ0OxJZQUETBAMfAVoVCQQFGQQVQ1ZNDxAFRV9MX08RBk9FHkoeCUpLTBELDxpSUUQQRR9bXFICRxUJW0hMGRJJSlpWSlBVTA8YHlcCWBUKAAIKA1kcFA0ER1YZBRQCREdHAAkZXh0NDxQDHFd6Uw%3D%3D%7CKjd2OWlIDR5fc1Y6OTdZfntOEQ5IOg4QBkR4NjI0N215awQXDwtn%7CKT1iIzI0Ki1%2BdGUzcGsjDx4JAxwaWGBnNWV%2FNyU0IhRWEgVaHgwMTlIYTg5SGzAncjUjKnwN%7CKD1ieiogIiFmbTsnbTthc3wsfy0ucWJ3NiV9c3B%2FbHFnfCgidGh7Qg8fNSk0ITk9diByLC1ieThwf252IyEoIjE2c217YGdxam4zPDh%2BYyFwKWkzcCgsLzRxYiw1ais6ICN1aT9zeWp8Ij4qKyclc29TBW4wPntka3gzbzlRU1MGVEEdC0oUXw1VBxITUE1NExUTTQY7LmtFXw1ZQU8QUQFEFkBKDxpQCAxBSwYXEQxaUBVDSVoMDF0cQglbAxRHBxEMQV0eURFMEFVHFFBaUxQMUwBeBUZvNH8pfS03f2NtPW4san0iY2l6bTUpITYxYy0pHEUPCksydVFhPQs%2BKwJBEQILeg%3D%3D%7CJzplNWs1aSw7ZDwrLmpqLHYodjMa

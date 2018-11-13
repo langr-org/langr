@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <style>
+    button {
+        height: 30px;
+        width: 100px;
+        outline: none;
+        background: #8075ff;
+        margin: 10px auto 0;
+      }
+    .title {
+        height: 20px;
+        /* width: 100px; */
+        outline: none;
+        background: #8075e4;
+        margin-top:20px;
+        padding: 10px;
+      }
+      .item{
+        display: flex;
+        height: 30px;
+        line-height: 30px;
+        margin-top: 10px;
+      }
+      .item span {
+        width: 30px;
+        text-align: center;
+      }
+      .bt {
+        display: flex;
+      }
+    </style>
+</head>
+
+<body>
+  <div class="title">YCY 好饥渴 v1.1 </div>
+  <!-- <input type="text" name="ycy" id="ycy" maxlength="100" autocomplete="off" value="#0000f0"/> -->
+  <!-- <button id="changeColor" value="#">提交</button> -->
+  <div class="item">
+    <span>sn:</span> <input type="text" name="" id="sn" maxlength="100" autocomplete="off" value="w01">
+  </div>
+  <div class="item">
+    <span>key:</span> <input type="text" name="" id="key" maxlength="100" autocomplete="off" value="FJ7YFZNGFKPSVJHK">
+  </div>
+  <div class="item">
+    <span>url:</span> <input type="text" name="" id="url" size="60" maxlength="150" autocomplete="off" value="https://agentapiuser.guocaiapi.com/pay/auto_income">
+  </div>
+  <div class="item">
+    <span>xid:</span> <input type="text" name="" id="xid" maxlength="100" autocomplete="off" value="16">
+  </div>
+  <div class="bt">
+    <button id='btn1'>开始</button>
+    <span><input type="text" name="" id="page" maxlength="2" autocomplete="off" value="0" style="height:20px;width:20px"><button id='btn3' style="width:25px">页</button></span>
+    <button id='btn2'>暂停</button>
+  </div>
+  <script src="js/popup.js"></script>
+</body>
+
+</html>
