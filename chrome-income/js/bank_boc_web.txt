@@ -1,0 +1,249 @@
+中国银行
+第一步
+https://ebsnew.boc.cn/BII/PsnGetUserProfile.do?_locale=zh_CN
+POST /BII/PsnGetUserProfile.do?_locale=zh_CN HTTP/1.1
+Host: ebsnew.boc.cn
+Connection: keep-alive
+Content-Length: 299
+bfw-ctrl: json
+X-id: 20
+Origin: https://ebsnew.boc.cn
+X-Requested-With: XMLHttpRequest
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3528.4 Safari/537.36
+Content-Type: text/json;
+Accept: */*
+Referer: https://ebsnew.boc.cn/boc15/welcome_ele.html?v=20180823082329456&locale=zh&login=card&segment=1
+Accept-Encoding: gzip, deflate, br
+Accept-Language: zh-CN,zh;q=0.9
+Cookie: JSESSIONID=0000Cnth1588cJJ1KxrOx_S9bZ9:1875a6ahn
+
+{
+	"header": {
+		"local": "zh_CN",
+		"agent": "WEB15",
+		"bfw-ctrl": "json",
+		"version": "",
+		"device": "Google,Chrome,70.0.3528.4",
+		"platform": "Microsoft,Windows,10",
+		"plugins": "",
+		"page": "",
+		"ext": "",
+		"mac": "",
+		"serial": ""
+	},
+	"request": [{
+		"id": 19,
+		"method": "PsnAccBocnetCreateConversation",
+		"conversationId": null,
+		"params": null
+	}]
+}
+
+{
+	"header": {
+		"local": "zh_CN",
+		"agent": "WEB15",
+		"bfw-ctrl": "json",
+		"version": "",
+		"device": "Google,Chrome,70.0.3528.4",
+		"platform": "Microsoft,Windows,10",
+		"plugins": "",
+		"page": "",
+		"ext": "",
+		"mac": "",
+		"serial": ""
+	},
+	"response": [{
+		"id": "19",
+		"method": "PsnAccBocnetCreateConversation",
+		"status": "01",
+		"result": "eae55d35-33f4-4d7f-8275-ec8a4fb6c6a9",
+		"error": null
+	}]
+}
+
+第二步
+https://ebsnew.boc.cn/BII/PsnGetUserProfile.do?_locale=zh_CN
+POST /BII/PsnGetUserProfile.do?_locale=zh_CN HTTP/1.1
+Host: ebsnew.boc.cn
+Connection: keep-alive
+Content-Length: 485
+bfw-ctrl: json
+X-id: 22
+Origin: https://ebsnew.boc.cn
+X-Requested-With: XMLHttpRequest
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3528.4 Safari/537.36
+Content-Type: text/json;
+Accept: */*
+Referer: https://ebsnew.boc.cn/boc15/welcome_ele.html?v=20180823082329456&locale=zh&login=card&segment=1
+Accept-Encoding: gzip, deflate, br
+Accept-Language: zh-CN,zh;q=0.9
+Cookie: JSESSIONID=0000Cnth1588cJJ1KxrOx_S9bZ9:1875a6ahn
+
+{
+	"header": {
+		"local": "zh_CN",
+		"agent": "WEB15",
+		"bfw-ctrl": "json",
+		"version": "",
+		"device": "Google,Chrome,70.0.3528.4",
+		"platform": "Microsoft,Windows,10",
+		"plugins": "",
+		"page": "",
+		"ext": "",
+		"mac": "",
+		"serial": ""
+	},
+	"request": [{
+		"id": 21,
+		"method": "PsnAccBocnetQryDebitTransDetail",
+		"conversationId": "eae55d35-33f4-4d7f-8275-ec8a4fb6c6a9",
+		"params": {
+			"accountSeq": "45078061",
+			"currency": "",
+			"cashRemit": "",
+			"startDate": "2018/07/03",
+			"endDate": "2018/09/03",
+			"pageSize": "10",
+			"_refresh": "true",
+			"currentIndex": "0"
+		}
+	}]
+}
+
+{
+	"header": {
+		"local": "zh_CN",
+		"agent": "WEB15",
+		"bfw-ctrl": "json",
+		"version": "",
+		"device": "Google,Chrome,70.0.3528.4",
+		"platform": "Microsoft,Windows,10",
+		"plugins": "",
+		"page": "",
+		"ext": "",
+		"mac": "",
+		"serial": ""
+	},
+	"response": [{
+		"id": "21",
+		"method": "PsnAccBocnetQryDebitTransDetail",
+		"status": "01",
+		"result": {
+			"List": [{
+				"transChnl": "网上银行",
+				"chnlDetail": "",
+				"chargeBack": false,
+				"paymentDate": "2018/08/23",
+				"currency": "001",
+				"cashRemit": "",
+				"amount": -11.000,
+				"balance": 0.000,
+				"businessDigest": "转账支出",
+				"furInfo": "",
+				"payeeAccountName": "凌云辉",
+				"payeeAccountNumber": "6217***********2531",
+				"paymentTime": "03:43:24"
+			}, {
+				"transChnl": "网上银行",
+				"chnlDetail": "",
+				"chargeBack": false,
+				"paymentDate": "2018/08/23",
+				"currency": "001",
+				"cashRemit": "",
+				"amount": 11.000,
+				"balance": 11.000,
+				"businessDigest": "转账收入",
+				"furInfo": "",
+				"payeeAccountName": "吴宜龙",
+				"payeeAccountNumber": "6217***********1767",
+				"paymentTime": "03:41:31"
+			}, {
+				"transChnl": "网上银行",
+				"chnlDetail": "",
+				"chargeBack": false,
+				"paymentDate": "2018/07/29",
+				"currency": "001",
+				"cashRemit": "",
+				"amount": -100.000,
+				"balance": 0.000,
+				"businessDigest": "跨行转账",
+				"furInfo": "",
+				"payeeAccountName": "张玉民",
+				"payeeAccountNumber": "6217***********2164",
+				"paymentTime": "15:55:19"
+			}, {
+				"transChnl": "网上银行",
+				"chnlDetail": "",
+				"chargeBack": false,
+				"paymentDate": "2018/07/29",
+				"currency": "001",
+				"cashRemit": "",
+				"amount": 100.000,
+				"balance": 100.000,
+				"businessDigest": "跨行转账",
+				"furInfo": "",
+				"payeeAccountName": "胡亮",
+				"payeeAccountNumber": "6223***********1092",
+				"paymentTime": "15:51:51"
+			}, {
+				"transChnl": "网上银行",
+				"chnlDetail": "",
+				"chargeBack": false,
+				"paymentDate": "2018/07/18",
+				"currency": "001",
+				"cashRemit": "",
+				"amount": -2.000,
+				"balance": 0.000,
+				"businessDigest": "跨行转账",
+				"furInfo": "",
+				"payeeAccountName": "凌云辉",
+				"payeeAccountNumber": "6212***********1859",
+				"paymentTime": "16:55:10"
+			}, {
+				"transChnl": "网上银行",
+				"chnlDetail": "",
+				"chargeBack": false,
+				"paymentDate": "2018/07/16",
+				"currency": "001",
+				"cashRemit": "",
+				"amount": 2.000,
+				"balance": 2.000,
+				"businessDigest": "跨行转账",
+				"furInfo": "",
+				"payeeAccountName": "胡亮",
+				"payeeAccountNumber": "6223***********1092",
+				"paymentTime": "19:25:06"
+			}],
+			"recordNumber": 6
+		},
+		"error": null
+	}]
+}
+
+
+
+
+demo
+{
+	"header": {
+		"agent": "WEB15",
+		"bfw-ctrl": "json",
+		"device": "Google,Chrome,70.0.3528.4",
+		"ext": "",
+		"local": "zh_CN",
+		"mac": "",
+		"page": "",
+		"platform": "Microsoft,Windows,10",
+		"plugins": "",
+		"serial": "",
+		"version": ""
+	},
+	"response": [{
+		"id": "19",
+		"method": "PsnAccBocnetCreateConversation",
+		"status": "01",
+		"result": "e58a4199-78fe-47e2-9894-f37e6e856954",
+		"error": null
+	}]
+}
