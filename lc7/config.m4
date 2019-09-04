@@ -13,9 +13,9 @@ dnl [  --with-lc7             Include lc7 support])
 
 dnl Otherwise use enable:
 
-dnl PHP_ARG_ENABLE(lc7, whether to enable lc7 support,
+PHP_ARG_ENABLE(lc7, whether to enable lc7 support,
 dnl Make sure that the comment is aligned:
-dnl [  --enable-lc7           Enable lc7 support])
+[  --enable-lc7           Enable lc7 support])
 
 if test "$PHP_LC7" != "no"; then
   dnl Write more examples of tests here...

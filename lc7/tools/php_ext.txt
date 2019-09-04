@@ -19,7 +19,7 @@ new exten:
 
 1.  $ cd ..
 2.  $ vi ext/lcrypt7/config.m4
-3.  $ ./buildconf
+3.  $ ./buildconf [--force]
 4.  $ ./configure --[with|enable]-lcrypt7
 5.  $ make
 6.  $ ./sapi/cli/php -f ext/lcrypt7/lcrypt7.php
