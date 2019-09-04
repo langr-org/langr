@@ -1,8 +1,18 @@
 php exten modules
 
 环境(auto-config phpize):
-centos: yum install php-devel
 ubuntu: apt-get install php-dev
+centos: yum install php71w-devel
+查看 centos 版本
+# cat /etc/centos-release 
+删除之前的 php 版本
+# yum remove php* php-common 
+rpm 安装 Php7 相应的 yum源
+CentOS/RHEL 7.x:
+# rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+# rpm -Uvh https://mirror.webtatic.com/yum/el7/webtatic-release.rpm
+yum安装php7
+# yum install [php71w] php71w-devel
 
 new exten:
 ./ext_skel --extname=xxx
