@@ -1,5 +1,9 @@
 php exten modules
 
+环境(auto-config phpize):
+centos: yum install php-devel
+ubuntu: apt-get install php-dev
+
 new exten:
 ./ext_skel --extname=xxx
 
