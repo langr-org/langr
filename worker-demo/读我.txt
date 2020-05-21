@@ -1,0 +1,17 @@
+php start_web.php start
+
+php start_websocket.php start
+
+登陆
+
+创建房间/加入房间
+
+准备就绪 [准备就绪后牌局中途退出断线等，表示不出牌pass，直到此局结束结算]
+
+发牌
+
+打牌
+
+结束结算
+
+准备就绪/退出
