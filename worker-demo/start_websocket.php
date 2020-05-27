@@ -4,17 +4,21 @@
  * php start_websocket.php start
  * 启动 websocket 服务器端
  * 
+ * @author xxx <xxx@xxx.org> 2020/05/16 21:37
+ * 
  * $Id$
  */
 
 use Workerman\Worker;
 use Workerman\Lib\Timer;
-require_once __DIR__ . '/Workerman/Autoloader.php';
-require_once __DIR__ . '/app/lib.php';
-require_once __DIR__ . '/app/Room.class.php';
 
 const HEARTBEAT_TIME = 60;
 const DO_LOGIN_TIME = 10;
+const LOG_PATH = 'log/';
+
+require_once __DIR__ . '/Workerman/Autoloader.php';
+require_once __DIR__ . '/app/lib.php';
+require_once __DIR__ . '/app/Room.class.php';
 
 /**
  * 首先会查看用户是否有自定义\Protocols\Http协议类，
@@ -30,7 +34,7 @@ $room = new Room();
 /**
  * 新连接，登陆认证，保存连接信息。
  */
-$worker->onConnect = function(& $connection)
+$worker->onConnect = function($connection)
 {
     $connection->id = date('CHis');
     $connection->uid = '';
@@ -46,7 +50,7 @@ $worker->onConnect = function(& $connection)
     });
 };
 
-$worker->onMessage = function(& $connection, $data)
+$worker->onMessage = function($connection, $data)
 {
     global $room;
     //var_dump($_GET, $data);
@@ -54,7 +58,7 @@ $worker->onMessage = function(& $connection, $data)
     $room->run($connection, $data);
 };
 
-$worker->onClose = function(& $connection)
+$worker->onClose = function($connection)
 {
     echo $connection->id." cid \n";
     echo $connection->uid." connection closed\n";

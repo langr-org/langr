@@ -11,15 +11,21 @@
         width: 500px;
         overflow-y: scroll;
     }
+    #help {
+        height: 600px;
+        width: 300px;
+        position: relative;
+        left: 530px;
+        top: -600px;
+    }
 </style>
 </head>
 <body>
-hello ws
 
-<h1>WebSocket Demo</h1>
+<h1>WebSocket Demo - Dagong</h1>
 <!-- <section id="content"></section> -->
 <div id="content"></div>
-<input id="message" type="text"/>
+<input id="message" type="text" style="width:300px"/>
 <script>
 //$('#content').scrollTop = $('#content').scrollHeight;
 var divscroll = document.getElementById('content');
@@ -27,8 +33,8 @@ divscroll.scrollTop = divscroll.scrollHeight;
 
 var ws = $.websocket({
     url: "ws://127.0.0.1:8765/?token=abcdef",
-    onMessage: function(e, t) { 
-        $('#content').append(e + ' ' + t + '<br>');
+    onMessage: function(e) { 
+        $('#content').append(e + ' ' + '<br>');
     }
 });
 $('#message').change(function(){
@@ -38,5 +44,6 @@ $('#message').change(function(){
     console.log('scrollHeight' + divscroll.scrollHeight);
 });
 </script>
+<div id="help"><iframe src='api.txt' style="height:600px"> </iframe></div>
 </body>
 </html>

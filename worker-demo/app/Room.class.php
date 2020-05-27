@@ -24,7 +24,7 @@ require_once __DIR__ . '/Dagong.class.php';
 class Room
 {
     private $game = null;
-    private $pk = '<>ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+    //private $pk = '<>ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
     /* 房间总连接(人数) */
     private $links = [];
     /* 房号 及 房间人员，[room_id=>[link_id,link_id,link_id,link_id], room_id=>[]] */
@@ -33,7 +33,7 @@ class Room
     private $room_uids = [];        // [0=>'', 1=>'', 2=>'', 3=>''];
     private $room_uids_poker = [];  // [uid=>[], uid=>[], uid=>[], uid=>[]];
     /* 上局出牌第一名，下局做庄 */
-    private $room_game_prev = '';
+    private $room_prev_first = '';
     /* 当前局庄 */
     private $room_banker_uid = '';
     /* 当前局庄报的牌 */
@@ -45,16 +45,24 @@ class Room
     private $pk_power_timer_id = null;
     /**
      * 上一手牌，
-     * ['uid'=>'ABC']
+     * ['uid'=>'uid1', 'px'=>'AAEEIJ', 'px_type'=>POKER_TYPE2, 'px_len'=>3]
      * 为空表示该轮第一手牌，可出任意牌；
      * uid = 当前用户，表示上一圈都 pass, 可以出任意牌；
      */
     private $pk_prev = [];
     private $pk_prev_uid = '';
     private $pk_prev_px = '';
+    private $pk_prev_px_type = '';
+    private $pk_prev_px_len = 0;
     /* 当圈出现的分数 */
     private $pk_quan_point = 0;
-    /* 当局得分结果 */
+    /**
+     * 当局得分结果
+     * top => [uid1,uid2,uid3,uid4],
+     * point => [uid=>0,uid=>0,uid=>0,uid=>0],
+     * partner => [$this->room_banker_uid, $this->room_mingji_uid],
+     * win => [uid1=>3,uid2=>3,uid3=>-3,uid4=>-3]
+     */
     private $pk_res = [];
 
     public function __construct()
@@ -98,26 +106,35 @@ class Room
      *      room:add:room_id
      * @return 
      */
-    public function add(& $connection, $ret = []) /* {{{ */
+    public function joinRoom(& $connection, $ret = []) /* {{{ */
     {
-        if (empty($ret[2])) {
-            $connection->send(pencode(['10011', 'room id error!']));
+        if (empty($ret[2]) || $connection->room_id != 0) {
+            $connection->send(pencode(['10011', 'room id error! '.$connection->room_id]));
 	        return ;
         }
         $msg = 'join room';
         /* 检测房间人员 */
         if (empty($this->room_ids[$ret[2]])) {
+            if (count($this->room_ids) >= ROOM_NUM) {
+                $connection->send(pencode(['10012', 'server full!']));
+                $connection->close();
+	            return ;
+            }
             $msg = 'create room';
-            $this->room_game_prev = $connection->uid;
+            $this->room_prev_first = $connection->uid;
         } else if (count($this->room_ids[$ret[2]]) >= DESK_PEOPLE) {
             /* 满员 */
-            $connection->send(pencode(['10012', 'room full!']));
+            $connection->send(pencode(['10013', 'room full!']));
 	        return ;
         }
         $connection->room_id = $ret[2];
         $this->room_ids[$ret[2]][$connection->uid] = $connection;   /* room id */
         $this->room_uids[] = $connection->uid;                      /* room uid */
         $connection->send(pencode([0, $msg.' '.$ret[2].' ok!']));
+        //foreach ($this->room_ids[$connection->room_id] as $uid => $con) {
+        //    $con->send(pencode(['1', $connection->uid.' join room!']));
+        //}
+        $this->sendRoom($connection->room_id, pencode(['1', $connection->uid.' join room!']));
 	    return ;
     } /* }}} */
 
@@ -152,8 +169,17 @@ class Room
         /* 都准备好，发牌 */
         if ($all_ready && count($this->room_ids[$connection->room_id]) == DESK_PEOPLE) {
             /* 发牌后开始 标记庄家，叫牌，标记牌权，记每手牌超时时间，超时自动出牌：过牌/出最小单张 */
-            $this->room_banker_uid = $this->room_game_prev;
-            $this->room_poker = 'a';
+            $this->room_uids_poker = $this->game->sendPoker($this->room_uids, $this->room_prev_first);
+            $this->pk_power = $this->room_prev_first;
+            $this->room_banker_uid = $this->room_prev_first;
+            $this->room_prev_first = '';
+            $this->room_poker = $this->game->zhuang_poker;
+            wlog(LOG_PATH.'room-'.$connection->room_id.date('-Ym').'.log', json_encode([$this->room_poker, $this->room_uids_poker], JSON_UNESCAPED_UNICODE));
+            foreach ($this->room_ids[$connection->room_id] as $uid => $con) {
+                $msg = pencode(['1', $this->room_uids_poker[$uid]]);
+                $con->send($msg);
+                wlog(LOG_PATH.'room-'.$connection->room_id.date('-Ym').'.log', $uid.' '.$msg);
+            }
         }
 	    return ;
     } /* }}} */
@@ -174,19 +200,130 @@ class Room
     {
         /* 检测是否有牌权 */
         if ($connection->uid != $this->pk_power) {
-            $connection->send(pencode(['10031', $connection->uid.' have no right!']));
+            $connection->send(pencode(['10031', $connection->uid.' 没有出牌权!']));
             return ;
         }
         /* 打牌后开始清除当手牌超时时间，并设置下一手牌超时时间；超时自动出牌：过牌/出最小单张 */
         if (empty($ret[2]) || $ret[2] == 0) {
-            $connection->send(pencode(['1', 'pass!']));
-            $this->pk_power = '';
-	        return ;
+            /* pass */
+            $this->sendRoom($connection->room_id, pencode('1', $connection->uid.' pass!'));
+            /* 是否需要积分，是否需要转让牌权 */
+            /* 如果上一手牌是 下家 出的，当圈分数归下家；如果并且下家无牌了，转让出牌权给下家队友，如果没明鸡，则转给下家的下一家 */
+            /* 如果下家无牌，上一手牌是下家的下一家出的 */
+            /* 如果下家无牌，下家的下一家也无牌，上一手牌是上家出的 */
+
+            /* 设置下一次牌权，设置超时时间 */
+            /* 需要检测下家是否出完，已出完，则出牌权跳下一家 */
+            $this->pk_power = $this->nextPokerPower($connection->uid, true);
+        } else {
+            $tmp_prev = $this->pk_prev;
+            /* 检测上一手牌 uid，如果是自己出的，则===当圈分数归自己，并===可以出任意牌 */
+            if ($this->pk_prev_uid == $connection->uid) {
+                /*  */
+                $tmp_prev = [];
+            }
+            /* 检测规则，检测是否合法牌型，并且大于上一手牌 */
+            $ret = $this->game->checkRule($ret[2], $tmp_prev);
+            if ($ret === false) {
+                $connection->send(pencode(['10032', $connection->uid.' rule error!']));
+                return ;
+            }
+            /**
+             * 出牌，删掉用户出了的牌，用户无此牌则返回出错；
+             * 同时更新 当圈分数，是否明鸡，检查此用户是否出完，出完，记录出完顺序，检测是否结束；
+             */
+            if ($this->userDoPoker($connection->uid, $ret[2]) == false ) {
+                $connection->send(pencode(['10033', $connection->uid.' poker error!']));
+                return ;
+            }
+            /* 更新 出牌权，上一手牌 */
+            $this->sendRoom($connection->room_id, pencode('1', $connection->uid.'-'.$ret[2]));
+            $this->pk_prev_uid = $connection->uid;
+            $this->pk_prev_px = $ret[2];
+            /* 设置下一次牌权，设置超时时间 */
+            /* 需要检测下家是否出完，已出完，则出牌权跳下一家 */
+            $this->pk_power = $this->nextPokerPower($connection->uid);
+            wlog(LOG_PATH.'room-'.$connection->room_id.date('-Ym').'.log', json_encode([$connection->uid, $ret[2], $this->room_uids_poker[$connection->uid]]));
         }
-        $connection->room_id = $ret[2];
-        $this->room_ids[$ret[2]][] = $connection;      /* room id */
-        $connection->send(pencode([0, 'add room '.$ret[2].' ok!']));
 	    return ;
+    } /* }}} */
+
+    /**
+     * @fn
+     * @brief 
+     *  1.[普通出牌]跳过无牌玩家，设置下一次出牌权，重新设置超时；
+     *  2.[过牌]跳过无牌玩家，检测是否(都过了)牌权回到上一手牌玩家，并且上一手牌玩家是否出完，是否需要转让下一次出牌权，重新设置超时；
+     * @param $uid  当前用户
+     * @return $uid 找到的用户id
+     */
+    public function nextPokerPower($uid, $pass = false) /* {{{ */
+    {
+        if ($pass) {
+        }
+        /* 需要检测下家是否出完，已出完，则出牌权跳下一家 */
+        //如果下家无牌了，转让出牌权给下家队友，如果没明鸡，则转给下家的下一家
+        $this->pk_power = $this->nextUser($uid);
+        $this->pk_power_timer_id = null;
+        return true;
+    } /* }}} */
+
+    /**
+     * @fn
+     * @brief 
+     *  当前房间下一个用户
+     *  默认返回下家。
+     * @param $uid  当前用户
+     * @param $x    方位 0自己，1下家，2对家，3上家
+     * @return $uid 找到的用户id
+     */
+    public function nextUser($uid, $x = 1) /* {{{ */
+    {
+        $k = array_search($uid, $this->room_uids);
+        if ($k === false) {
+	        return '';
+        }
+        //$index = ($k + $x) % count($this->room_uids);
+        $index = ($k + $x) % DESK_PEOPLE;
+        return $this->room_uids[$index];
+    } /* }}} */
+
+    /**
+     * @fn
+     * @brief 
+     *  此用户出牌
+     *  检查用户是否有此牌，有就删除，没有就返回出错；
+     *  检查是否有明鸡牌；
+     *  检查是否有分；
+     * @param $uid  当前用户
+     * @param $pk   此手牌型
+     * @return true/false
+     */
+    public function userDoPoker($uid, $pk = '') /* {{{ */
+    {
+        $len = strlen($pk);
+        /* 检查是否有当手牌 */
+        for ($i = 0; $i < $len; $i++) {
+            $pos = strpos($this->room_uids_poker[$uid], $pk[$i]);
+            if ($pos === false) {
+	            return false;
+            }
+        }
+        for ($i = 0; $i < $len; $i++) {
+            /* 明鸡 */
+            if ($uid != $this->room_banker_uid && $pk[$i] == $this->room_poker) {
+                $this->room_mingji_uid = $uid;
+            }
+            /* 分 */
+            if (isset($this->game->pk_points[$pk[$i]])) {
+                $this->pk_quan_point += $this->game->pk_points[$pk[$i]];
+            }
+            /* 出牌，删除已出牌 */
+            $pos = strpos($this->room_uids_poker[$uid], $pk[$i]);
+            //$this->room_uids_poker[$uid] = str_replace($pk[$i], '', $this->room_uids_poker[$uid]);
+            $this->room_uids_poker[$uid] = substr_replace($this->room_uids_poker[$uid], '', $pos, 1);
+        }
+        /* 是否出完 */
+        return true;
     } /* }}} */
 
     /**
@@ -217,11 +354,15 @@ class Room
         } else if ($ret[0] == 'room') {
             if (empty($ret[1])) {
             } else if ($ret[1] == 'add') {
-                $this->token($connection, $ret);
+                $this->joinRoom($connection, $ret);
+            } else if ($ret[1] == 'ready') {
+                $this->ready($connection, $ret);
+            } else if ($ret[1] == 'play') {
+                $this->play($connection, $ret);
             }
         }
         $ret = json_encode($ret, JSON_UNESCAPED_UNICODE);
-        $connection->send(pencode(['r', 'm', $ret]));
+        $connection->send(pencode(['0', 'ok', $ret]));
 	    return ;
     } /* }}} */
 

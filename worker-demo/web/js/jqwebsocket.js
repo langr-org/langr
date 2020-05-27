@@ -55,10 +55,10 @@
                 socket.send(msg);
             },
             onMessage:function(msg){
-                t1 = t2;
-                t2 = new Date().getTime(); 
+                //t1 = t2;
+                //t2 = new Date().getTime(); 
                 if(opts.onMessage){
-                    opts.onMessage(msg.data,t2 - t1);
+                    opts.onMessage(msg.data);//,t2 - t1);
                 }
             },
             onError:function(event){
