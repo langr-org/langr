@@ -1,0 +1,40 @@
+<pre>
+
+登陆：
+token:uid:token-value
+
+聊天：
+hall:room-id:msg
+msg:
+@uid msg @提醒
+*uid msg 私聊
+
+创建/加入房间：
+room:add:room-id
+
+准备：
+room:ready:1
+
+出牌：
+room:play:play-info
+play-info:
+0   过
+A
+AB/<C/ABEF/<BEF
+AAB/AABEFG
+ABCD/<>EFG/Lfr/<>o
+
+
+退出房间：
+room:exit:1
+
+协议返回信息：
+0:msg           客户端请求响应信息，正常
+1:msg           广播信息
+2:action:data   主动向客户端发送数据
+100xx:msg       出错信息
+
+
+
+
+</pre>
