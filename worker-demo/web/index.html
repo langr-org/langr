@@ -3,7 +3,8 @@
 <head>
 <title>WebSocket Demo</title>
 <meta charset="UTF-8">
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<!--script src="https://code.jquery.com/jquery-3.5.1.min.js"></script-->
+<script src="js/jquery-3.5.1.js"></script>
 <script src="js/jqwebsocket.js"></script>
 <style>
     #content {
@@ -30,9 +31,10 @@
 //$('#content').scrollTop = $('#content').scrollHeight;
 var divscroll = document.getElementById('content');
 divscroll.scrollTop = divscroll.scrollHeight;
+var host = document.domain;
 
 var ws = $.websocket({
-    url: "ws://127.0.0.1:8765/?token=abcdef",
+    url: "ws://" + host + ":8765/?token=abcdef",
     onMessage: function(e) { 
         $('#content').append(e + ' ' + '<br>');
     }

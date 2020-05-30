@@ -66,10 +66,14 @@ class Dagong
     //private $xh_510k = 'Keq';   /* 杏花510k */
     //private $mh_510k = 'Jdp';   /* 梅花510k */
     //private $fh_510k = 'Ico';   /* 方花510k */
-    private $ht_510ks = ['Lfr', '<Lf', '<Lr', '<fr', '>Lf', '>Lr', '>fr', '<>L', '<>f', '<>r'];   /* 黑桃510k */
-    private $xh_510ks = ['Keq', '<Ke', '<Kq', '<eq', '>Ke', '>Kq', '>eq', '<>K', '<>e', '<>q'];   /* 杏花510k */
-    private $mh_510ks = ['Jdp', '<Jd', '<Jp', '<dp', '>Jd', '>Jp', '>dp', '<>J', '<>d', '<>p'];   /* 梅花510k */
-    private $fh_510ks = ['Ico', '<Ic', '<Io', '<co', '>Ic', '>Io', '>co', '<>I', '<>c', '<>o'];   /* 方花510k */
+    /* 黑桃510k */
+    private $ht_510ks = ['Lfr', '<Lf', '<Lr', '<fr', '>Lf', '>Lr', '>fr', '<>L', '<>f', '<>r', '<<L', '<<f', '<<r', '>>L', '>>f', '>>r'];
+    /* 杏花510k */
+    private $xh_510ks = ['Keq', '<Ke', '<Kq', '<eq', '>Ke', '>Kq', '>eq', '<>K', '<>e', '<>q', '<<K', '<<e', '<<q', '>>K', '>>e', '>>q'];
+    /* 梅花510k */
+    private $mh_510ks = ['Jdp', '<Jd', '<Jp', '<dp', '>Jd', '>Jp', '>dp', '<>J', '<>d', '<>p', '<<J', '<<d', '<<p', '>>J', '>>d', '>>p'];
+    /* 方花510k */
+    private $fh_510ks = ['Ico', '<Ic', '<Io', '<co', '>Ic', '>Io', '>co', '<>I', '<>c', '<>o', '<<I', '<<c', '<<o', '>>I', '>>c', '>>o'];
     //private $pk_510k = [5 => 'IJKL', 10 => 'cdef', 13 => 'opqr'];
 
     public function __construct()
@@ -156,8 +160,8 @@ class Dagong
      */
     public function checkRule($pk, $pk_prev = []) /* {{{ */
     {
+        wlog(LOG_PATH.'room-'.date('Ym').'.log', json_encode(['checkRule1:', $pk, $pk_prev]));
         $len = strlen($pk);
-        $len2 = strlen($pk_prev);
         $is_big = false;
         $ret = ['uid' => '', 'pk' => $pk, 'px_type' => POKER_TYPE1, 'px_len' => 1];
 
@@ -171,28 +175,36 @@ class Dagong
 	            return false;
             }
         }
+        wlog(LOG_PATH.'room-'.date('Ym').'.log', json_encode(['checkRule2:', $pk_str]));
         /* 当手为天王 直接通过，上手为天王 直接返回 false； */
         if ($len == 4 && $pk_str[0] == '<' && $pk_str[1] == '<' && $pk_str[2] == '>' && $pk_str[3] == '>') {
             $ret = ['uid' => '', 'pk' => $pk_str, 'px_type' => POKER_TYPE4, 'px_len' => 4];
             return $ret;
-        } else if ($pk_prev['px_len'] == 4 && $pk_prev['pk'][0] == '<' && $pk_prev['pk'][1] == '<' 
+        } else if (!empty($pk_prev) && $pk_prev['px_len'] == 4 && $pk_prev['pk'][0] == '<' && $pk_prev['pk'][1] == '<' 
                 && $pk_prev['pk'][2] == '>' && $pk_prev['pk'][3] == '>') {
             return false;
         }
         /* 先检测牌类型，再比较大小 */
         if ($len == 1) {
             //$ret = ['uid' => '', 'pk' => $pk_str, 'px_type' => POKER_TYPE1, 'px_len' => 1];
+            if (empty($pk_prev)) {
+                return $ret;
+            }
             if ($pk_prev['px_type'] != $ret['px_type'] || $pk_prev['px_len'] != $ret['px_len']) {
                 return false;
-            } else if ($pk_prev['pk'] >= $ret['pk']) {
-                return false;
+            } else if ($this->pk_point[$ret['pk']] > $this->pk_point[$pk_prev['pk']]) {
+                return $ret;
             }
-            return $ret;
+            return false;
         }
         /* 炸弹？ */
         $ret = $this->isType4($pk_str);
+        wlog(LOG_PATH.'room-'.date('Ym').'.log', json_encode(['checkRule3: isType4', $ret]));
         if ($ret != false) {
             $ret['pk'] = $pk_str;
+            if (empty($pk_prev)) {
+                return $ret;
+            }
             if ($pk_prev['px_type'] != $ret['px_type']) {
                 return $ret;
             } else if ($pk_prev['px_type'] == $ret['px_type'] && $pk_prev['px_len'] < $ret['px_len']) {
@@ -228,8 +240,12 @@ class Dagong
         /* 对子/连对？ */
         if ($len % 2 == 0) {
             $ret = $this->isType2($pk_str);
+            wlog(LOG_PATH.'room-'.date('Ym').'.log', json_encode(['checkRule5: isType2', $ret]));
             if ($ret != false) {
                 $ret['pk'] = $pk_str;
+                if (empty($pk_prev)) {
+                    return $ret;
+                }
                 /* 长度相同 且 比上一手大 */
                 if ($ret['px_len'] == $pk_prev['px_len'] 
                         && $this->pk_point[$ret['pk'][$ret['px_len'] - 1]] > $this->pk_point[$pk_prev['pk'][$pk_prev['px_len'] - 1]]) {
@@ -240,8 +256,12 @@ class Dagong
         /* 3条/连3条？ */
         if ($len % 3 == 0) {
             $ret = $this->isType3($pk_str);
+            wlog(LOG_PATH.'room-'.date('Ym').'.log', json_encode(['checkRule6: isType3', $ret]));
             if ($ret != false) {
                 $ret['pk'] = $pk_str;
+                if (empty($pk_prev)) {
+                    return $ret;
+                }
                 /* 长度相同 且 比上一手大 */
                 if ($ret['px_len'] == $pk_prev['px_len'] 
                         && $this->pk_point[$ret['pk'][$ret['px_len'] - 1]] > $this->pk_point[$pk_prev['pk'][$pk_prev['px_len'] - 1]]) {
@@ -251,86 +271,6 @@ class Dagong
         }
         /* error */
         return false;
-
-        $px_type = POKER_TYPE1;
-        $px_len = 1;
-        switch ($len) {
-            case 1:
-                if (empty($pk_prev)) {
-                    $is_big = true;
-                } else if ($this->pk_point[$pk] > $this->pk_point[$pk_prev['pk']]) {
-                    $is_big = true;
-                }
-                break;
-            case 2:
-                /* 检测类型，不为对子 */
-                if ($this->pk_point[$pk[0]] != $this->pk_point[$pk[1]]) {
-                    break;
-                }
-                /* 第一手牌 */
-                if (empty($pk_prev)) {
-                    $is_big = true;
-                } else if ($this->pk_point[$pk[0]] == $this->pk_point[$pk[1]] && $this->pk_point[$pk[0]] > $this->pk_point[$pk_prev['pk'][0]]) {
-                    $is_big = true;
-                }
-                $px_type = POKER_TYPE2;
-                $px_len = 1;
-                break;
-            case 3:
-                break;
-            case 4:
-                break;
-            case 5:
-                break;
-            case 6:
-                break;
-            case 7:
-                break;
-            case 8:
-                break;
-            case 9:
-                break;
-            case 10:
-                break;
-            case 11:
-                break;
-            case 12:
-                break;
-            //case 13:
-            //    break;
-            case 14:
-                break;
-            case 15:
-                break;
-            case 16:
-                break;
-            case 17:
-                break;
-            case 18:
-                break;
-            //case 19:
-            //    break;
-            case 20:
-                break;
-            case 21:
-                break;
-            case 22:
-                break;
-            //case 23:
-            //    break;
-            case 24:
-                break;
-            //case 25:
-            //    break;
-            //case 26:
-            //    break;
-            case 27:
-                break;
-            default :
-                break;
-        }
-
-	    return $is_big;
     } /* }}} */
 
     /**
@@ -364,6 +304,7 @@ class Dagong
      */
     public function isType2($poker = '') /* {{{ */
     {
+        wlog(LOG_PATH.'room-'.date('Ym').'.log', json_encode(['isType2: ', $poker]));
         $px = ['px_type' => POKER_TYPE2, 'px_len' => 1];
         $len = strlen($poker);
         if (($len % 2) != 0) {
@@ -380,6 +321,7 @@ class Dagong
                 break;
             }
         }
+        wlog(LOG_PATH.'room-'.date('Ym').'.log', json_encode(['isType2: 1', $wang]));
         /* 替换 */
         for ($i = $wang; $i < $len + $wang; $i = $i + 2) {
             if ($wang == $use_wang) {
@@ -398,6 +340,7 @@ class Dagong
                 $poker = substr($poker, 0, $i).$poker[$i].substr($poker, $i);
             }
         }
+        wlog(LOG_PATH.'room-'.date('Ym').'.log', json_encode(['isType2: 2', $wang, $use_wang, $poker]));
         if ($wang > 0) {
             $poker = substr($poker, $wang);
         }
@@ -410,6 +353,7 @@ class Dagong
                 return false;
             }
         }
+        wlog(LOG_PATH.'room-'.date('Ym').'.log', json_encode(['isType2: 3', $wang, $use_wang, $poker, $px]));
 
 	    return $px;
     } /* }}} */
@@ -425,6 +369,7 @@ class Dagong
      */
     public function isType3($poker = '') /* {{{ */
     {
+        wlog(LOG_PATH.'room-'.date('Ym').'.log', json_encode(['isType3: 1', $poker]));
         $px = ['px_type' => POKER_TYPE3, 'px_len' => 1];
         $len = strlen($poker);
         if (($len % 3) != 0) {
@@ -441,6 +386,7 @@ class Dagong
                 break;
             }
         }
+        wlog(LOG_PATH.'room-'.date('Ym').'.log', json_encode(['isType3: 2', $wang]));
         /* 替换 */
         for ($i = $wang; $i < $len + $wang; $i = $i + 3) {
             if ($wang == $use_wang) {
@@ -467,6 +413,7 @@ class Dagong
                 $poker = substr($poker, 0, $i).$poker[$i].substr($poker, $i);
             }
         }
+        wlog(LOG_PATH.'room-'.date('Ym').'.log', json_encode(['isType3: 3', $wang, $use_wang, $poker, $px]));
         if ($wang > 0) {
             $poker = substr($poker, $wang);
         }
@@ -482,6 +429,7 @@ class Dagong
                 return false;
             }
         }
+        wlog(LOG_PATH.'room-'.date('Ym').'.log', json_encode(['isType3: 4', $px]));
 
 	    return $px;
     } /* }}} */
@@ -502,6 +450,7 @@ class Dagong
      */
     public function isType4($poker = '') /* {{{ */
     {
+        wlog(LOG_PATH.'room-'.date('Ym').'.log', json_encode(['isType4: 1', $poker]));
         $px = ['px_type' => POKER_TYPE4, 'px_len' => 3];
         $len = strlen($poker);
         if ($len < 3) {
@@ -517,6 +466,7 @@ class Dagong
                 break;
             }
         }
+        wlog(LOG_PATH.'room-'.date('Ym').'.log', json_encode(['isType4: 2', $wang, $px]));
         /* 510k */
         if ($len == 3) {
             if ($wang > 2) {
@@ -539,6 +489,7 @@ class Dagong
             }
 	        return false;
         }
+        wlog(LOG_PATH.'room-'.date('Ym').'.log', json_encode(['isType4: 3', $wang, $poker, $px]));
         if (($len == 4 && $wang == 4) || ($len == 5 && $wang == 4) || ($len == 4 && $wang == 3)) {
 	        //return $px;
         }

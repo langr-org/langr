@@ -1,21 +1,35 @@
 <pre>
+API 文档
 
 登陆：
+请求：
 token:uid:token-value
 
-聊天：
+[TODO]聊天：
 hall:room-id:msg
 msg:
 @uid msg @提醒
 *uid msg 私聊
 
 创建/加入房间：
+请求：
 room:add:room-id
+返回：
+0:msg:[room-uids]
+100xx:msg
+
+[TODO]获取房间信息：
+请求：
+room:get:room-id
+返回：
+0:ok:{room-info-json}
 
 准备：
+请求：
 room:ready:1
 
 出牌：
+请求：
 room:play:play-info
 play-info:
 0   过
@@ -23,10 +37,16 @@ A
 AB/<C/ABEF/<BEF
 AAB/AABEFG
 ABCD/<>EFG/Lfr/<>o
+返回：
+0:ok
 
-
-退出房间：
+[TODO]退出房间：
+请求：
 room:exit:1
+
+测试：
+test:action:arg1:arg2...
+
 
 协议返回信息：
 0:msg           客户端请求响应信息，正常
