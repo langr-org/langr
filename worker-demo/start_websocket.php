@@ -60,8 +60,10 @@ $worker->onMessage = function($connection, $data)
 
 $worker->onClose = function($connection)
 {
-    echo $connection->id." cid \n";
+    global $room;
+    //echo $connection->id." cid \n";
     echo $connection->uid." connection closed\n";
+    $room->onClose($connection);
 };
 
 // 如果不是在根目录启动，则运行runAll方法

@@ -17,7 +17,7 @@ const DESK_PEOPLE = 4;
 /* 最多允许的房间数 */
 const ROOM_NUM = 1000;
 /* 每手牌超时时间 */
-const PALY_TIMEOUT = 15;
+const PK_POWER_TIMEOUT = 15;
 
 require_once __DIR__ . '/Dagong.class.php';
 
@@ -32,7 +32,7 @@ class Room
     /* 桌座位顺序，每桌人员按加入时间逆时针排序 */
     private $room_uids = [];        // [0=>'', 1=>'', 2=>'', 3=>''];
     private $room_uids_poker = [];  // [uid=>[], uid=>[], uid=>[], uid=>[]];
-    /* 上局出牌第一名，下局做庄 */
+    /* 上局出牌第一名，下局做庄，在上局游戏结束时标记，下局游戏开始时清空 */
     private $room_prev_first = '';
     /* 当前局庄 */
     private $room_banker_uid = '';
@@ -60,7 +60,7 @@ class Room
      * 当局得分结果
      * top => [uid1,uid2,uid3,uid4],
      * point => [uid=>0,uid=>0,uid=>0,uid=>0],
-     * partner => [$this->room_banker_uid, $this->room_mingji_uid],
+     * partner => [2个庄家的对手(明鸡后有值)],
      * win => [uid1=>3,uid2=>3,uid3=>-3,uid4=>-3]
      */
     private $pk_res = ['top' => [], 'point' => [], 'partner' => [], 'win' => []];
@@ -80,7 +80,7 @@ class Room
      * @param 
      *  request:
      *      c:a:args...
-     *      controller:action:arg1:arg2:arg n...
+     *      token:uid:user-token
      *  response:
      * @return 
      */
@@ -92,6 +92,36 @@ class Room
             $connection->room_id = 0;       /* 房间号 */
             $connection->is_ready = false;  /* 准备好？ */
             $this->links[$ret[1]] = $connection;
+        }
+	    return ;
+    } /* }}} */
+
+    /**
+     * @fn
+     * @brief 
+     *  客户端[异常]断线重连。
+     *  重连不需要重新登陆，只需要更新用户连接信息。
+     *  找到 $this->links 旧连接对象，复制对象 id,uid,room_id,is_ready,
+     *  更新 $this->links[$uid]，$this->room_ids[$room_id][$uid] 对象；
+     *  用户异常退出： unset $this->room_ids[$room_id][$uid]；TODO:异常断开时，指定时间内发起重连，则清除定时。
+     * @param 
+     *  request:
+     *      c:a:args...
+     *      room:reconnection:uid:token
+     *  response:
+     * @return 
+     */
+    public function reConnection(& $connection, $ret = []) /* {{{ */
+    {
+        if (!empty($ret[2]) && !empty($ret[3])) {
+            $connection->uid = $ret[2];                     /* uid */
+            $connection->id = $this->links[$ret[2]]->id;    /* token */
+            $connection->room_id = $this->links[$ret[2]]->room_id;      /* 房间号 */
+            $connection->is_ready = $this->links[$ret[2]]->is_ready;    /* 准备好？ */
+            $this->links[$ret[2]] = $connection;
+            if ($connection->room_id) {
+                $this->room_ids[$connection->room_id][$connection->uid] = $connection;
+            }
         }
 	    return ;
     } /* }}} */
@@ -112,22 +142,23 @@ class Room
     public function joinRoom(& $connection, $ret = []) /* {{{ */
     {
         if (empty($ret[2]) || $connection->room_id != 0) {
-            $connection->send(pencode(['10011', 'room id error! '.$connection->room_id]));
+            $connection->send(pencode(['50110', 'room id error! '.$connection->room_id]));
 	        return ;
         }
         $msg = 'join room';
         /* 检测房间人员 */
         if (empty($this->room_ids[$ret[2]])) {
             if (count($this->room_ids) >= ROOM_NUM) {
-                $connection->send(pencode(['10012', 'server full!']));
+                $connection->send(pencode(['50120', 'server full!']));
                 $connection->close();
 	            return ;
             }
             $msg = 'create room';
-            $this->room_prev_first = $connection->uid;
+            wlog(LOG_PATH.'room-'.date('Ym').'.log', 'create room:'.$ret[2].' uid:'.$connection->uid);
         } else if (count($this->room_ids[$ret[2]]) >= DESK_PEOPLE) {
             /* 满员 */
-            $connection->send(pencode(['10013', 'room full!']));
+            $connection->send(pencode(['50130', 'room full!']));
+            wlog(LOG_PATH.'room-'.date('Ym').'.log', json_encode(['joinRoom:', $this->room_ids[$ret[2]], $this->room_uids], JSON_UNESCAPED_UNICODE));
 	        return ;
         }
         $connection->room_id = $ret[2];
@@ -138,6 +169,7 @@ class Room
         //    $con->send(pencode(['1', $connection->uid.' join room!']));
         //}
         $this->sendRoom($connection->room_id, pencode(['1', $connection->uid.' join room!']));
+        wlog(LOG_PATH.'room-'.$connection->room_id.date('-Ym').'.log', $connection->uid.' join room');
 	    return ;
     } /* }}} */
 
@@ -174,7 +206,7 @@ class Room
     public function ready(& $connection, $ret = []) /* {{{ */
     {
         if (empty($ret[2])) {
-            $connection->send(pencode(['10021', 'ready?']));
+            $connection->send(pencode(['50210', 'ready?']));
 	        return ;
         } else {
             $connection->is_ready = true;
@@ -189,20 +221,22 @@ class Room
         }
         /* 都准备好，发牌 */
         if ($all_ready && count($this->room_ids[$connection->room_id]) == DESK_PEOPLE) {
-            /* 发牌后开始 标记庄家，叫牌，标记牌权，记每手牌超时时间，超时自动出牌：过牌/出最小单张 */
+            if (empty($this->room_prev_first)) {
+                $this->room_prev_first = $this->room_uids[0];
+            }
+            /* 发牌后开始 标记庄家，叫牌，标记牌权，清除准备状态，TODO: 记每手牌超时时间，超时自动出牌：过牌/出最小单张 */
             $this->room_uids_poker = $this->game->sendPoker($this->room_uids, $this->room_prev_first);
             $this->pk_power = $this->room_prev_first;
             $this->room_banker_uid = $this->room_prev_first;
             $this->room_prev_first = '';
             $this->room_poker = $this->game->zhuang_poker;
-            $this->pk_res = ['top' => [], 'point' => [], 'partner' => [$this->room_banker_uid], 'win' => []];
-            wlog(LOG_PATH.'room-'.$connection->room_id.date('-Ym').'.log', json_encode([$this->room_poker, $this->room_uids_poker], JSON_UNESCAPED_UNICODE));
+            $this->pk_res = ['top' => [], 'point' => [], 'partner' => [], 'win' => []];
+            wlog(LOG_PATH.'room-'.$connection->room_id.date('-Ym').'.log', 'game-start:'.json_encode([$this->room_poker, $this->room_uids_poker]));
             foreach ($this->room_ids[$connection->room_id] as $uid => $con) {
                 $this->pk_res['point'][$uid] = 0;
                 $this->pk_res['win'][$uid] = 0;
-                $msg = pencode(['1', $this->room_uids_poker[$uid]]);
-                $con->send($msg);
-                wlog(LOG_PATH.'room-'.$connection->room_id.date('-Ym').'.log', $uid.' '.$msg);
+                $con->is_ready = false;
+                $con->send(pencode(['1', $this->room_uids_poker[$uid]]));
             }
         }
 	    return ;
@@ -224,7 +258,7 @@ class Room
     {
         /* 检测是否有牌权 */
         if ($connection->uid != $this->pk_power) {
-            $connection->send(pencode(['10031', $connection->uid.' 没有出牌权!', $this->pk_power]));
+            $connection->send(pencode(['50310', $connection->uid.' 没有出牌权!', $this->pk_power]));
             return ;
         }
         wlog(LOG_PATH.'room-'.date('Ym').'.log', json_encode(['play:', $this->pk_power, $connection->uid, $ret, $this->pk_prev]));
@@ -232,33 +266,24 @@ class Room
         if (empty($ret[2]) || $ret[2] == '0') {
             /* pass */
             if (empty($this->pk_prev['uid']) || $connection->uid == $this->pk_prev['uid']) {
-                $connection->send(pencode(['10032', $connection->uid.' 无上家牌!', $this->pk_power]));
+                $connection->send(pencode(['50320', $connection->uid.' 无上家牌!', $this->pk_power]));
                 return ;
             }
-            /* 是否需要积分，是否需要转让牌权 */
-            /* 如果上一手牌是 下家 出的，当圈分数归下家；如果并且下家无牌了，转让出牌权给下家队友，如果没明鸡，则转给下家的下一家 */
-            /* 如果下家无牌，上一手牌是下家的下一家出的 */
-            /* 如果下家无牌，下家的下一家也无牌，上一手牌是上家出的 */
-
             /* 设置下一次牌权，设置超时时间 */
-            /* 需要检测下家是否出完，已出完，则出牌权跳下一家 */
-        wlog(LOG_PATH.'room-'.date('Ym').'.log', json_encode(['play:0 ', $connection->uid, $ret, empty($ret[2]), $ret[2] == '0']));
             $this->nextPokerPower($connection->uid, true);
-            $this->sendRoom($connection->room_id, pencode(['1', $connection->uid.' pass!'.$ret[2]]));
-        wlog(LOG_PATH.'room-'.date('Ym').'.log', json_encode(['play:01 ', $connection->uid, $this->pk_power]));
+            $this->sendRoom($connection->room_id, pencode(['1', $connection->uid.' pass!', $this->pk_power]));
+        //wlog(LOG_PATH.'room-'.date('Ym').'.log', json_encode(['play:1 ', $connection->uid, $this->pk_power]));
         } else {
-            $tmp_prev = $this->pk_prev;
             /* 检测上一手牌 uid，如果是自己出的，则===当圈分数归自己，并===可以出任意牌 */
             if (!empty($this->pk_prev['uid']) && $this->pk_prev['uid'] == $connection->uid) {
-                /*  */
-                $tmp_prev = [];
+                $this->pk_prev = [];
             }
-        wlog(LOG_PATH.'room-'.date('Ym').'.log', json_encode(['play:2 ', $connection->uid, $ret]));
+        //wlog(LOG_PATH.'room-'.date('Ym').'.log', json_encode(['play:2 ', $connection->uid, $ret]));
             /* 检测规则，检测是否合法牌型，并且大于上一手牌 */
-            $ret = $this->game->checkRule($ret[2], $tmp_prev);
-        wlog(LOG_PATH.'room-'.date('Ym').'.log', json_encode(['play:3 ', $connection->uid, $ret]));
+            $ret = $this->game->checkRule($ret[2], $this->pk_prev);
+        //wlog(LOG_PATH.'room-'.date('Ym').'.log', json_encode(['play:3 ', $connection->uid, $ret]));
             if ($ret === false) {
-                $connection->send(pencode(['10033', $connection->uid.' rule error!']));
+                $connection->send(pencode(['50330', $connection->uid.' rule error!']));
                 return ;
             }
             /**
@@ -266,20 +291,23 @@ class Room
              * 同时更新 当圈分数，是否明鸡，检查此用户是否出完，出完，记录出完顺序，检测是否结束；
              */
             if ($this->userDoPoker($connection->uid, $ret['pk']) == false) {
-                $connection->send(pencode(['10034', $connection->uid.' poker error!']));
+                $connection->send(pencode(['50340', $connection->uid.' poker error!']));
+                return ;
+            }
+            wlog(LOG_PATH.'room-'.$connection->room_id.date('-Ym').'.log', 'play:'.json_encode([$connection->uid, $ret['pk'], $this->room_uids_poker[$connection->uid]]));
+            /* 当局结束 */
+            if (!empty($this->room_prev_first)) {
+                $this->sendRoom($connection->room_id, pencode(['201', 'game-over', json_encode($this->pk_res, JSON_UNESCAPED_UNICODE)]));
+                wlog(LOG_PATH.'room-'.$connection->room_id.date('-Ym').'.log', 'game-over:'.json_encode($this->pk_res));
                 return ;
             }
             /* 更新 出牌权，上一手牌 */
-            $this->sendRoom($connection->room_id, pencode(['1', $connection->uid.'-'.$ret['pk']]));
-            //$this->pk_prev_uid = $connection->uid;
-            //$this->pk_prev_px = $ret['pk'];
+            //$this->sendRoom($connection->room_id, pencode(['1', $connection->uid.'-'.$ret['pk']]));
             $this->pk_prev = $ret;
             $this->pk_prev['uid'] = $connection->uid;
-            /* 设置下一次牌权，设置超时时间 */
-            /* 需要检测下家是否出完，已出完，则出牌权跳下一家 */
+            /* 设置下一次牌权，设置超时时间；需要检测下家是否出完，已出完，则出牌权跳下一家 */
             $this->nextPokerPower($connection->uid);
         wlog(LOG_PATH.'room-'.date('Ym').'.log', json_encode(['play:4 ', $this->pk_power, $this->pk_prev]));
-            wlog(LOG_PATH.'room-'.$connection->room_id.date('-Ym').'.log', json_encode([$connection->uid, $ret['pk'], $this->room_uids_poker[$connection->uid]]));
             $this->sendRoom($connection->room_id, pencode(['1', $connection->uid.' '.$ret['pk'], $this->pk_power]));
         }
 	    return ;
@@ -295,7 +323,7 @@ class Room
      */
     public function nextPokerPower($uid, $pass = false) /* {{{ */
     {
-        wlog(LOG_PATH.'room-'.date('Ym').'.log', json_encode(['nextPokerPower:1 ', $uid, $pass]));
+        //wlog(LOG_PATH.'room-'.date('Ym').'.log', json_encode(['nextPokerPower:1 ', $uid, $pass]));
         $next_user = $this->nextUser($uid);
         if ($pass) {
             /* 下家有牌->牌权，上手牌是下家出，[1得分]/下家无牌，上手牌是下家出，[1得分]->转让出牌权 */
@@ -309,6 +337,7 @@ class Room
                     $next_user = $this->nextPartner($next_user);
                     $this->pk_power = $next_user;
                     $this->pk_power_timer_id = null;
+                    $this->pk_prev = [];
                     return true;
                 }
                 $next_user = $this->nextUser($next_user);
@@ -320,6 +349,7 @@ class Room
                         $next_user = $this->nextPartner($next_user);
                         $this->pk_power = $next_user;
                         $this->pk_power_timer_id = null;
+                        $this->pk_prev = [];
                         return true;
                     }
                 }
@@ -356,15 +386,13 @@ class Room
      */
     public function nextUser($uid, $x = 1) /* {{{ */
     {
-        wlog(LOG_PATH.'room-'.date('Ym').'.log', json_encode(['nextUser:1 ', $uid, $x, $this->room_uids]));
         $k = array_search($uid, $this->room_uids);
-        wlog(LOG_PATH.'room-'.date('Ym').'.log', json_encode(['nextUser:2 ', $k]));
+        //wlog(LOG_PATH.'room-'.date('Ym').'.log', json_encode(['nextUser:2 ', $k]));
         if ($k === false) {
 	        return '';
         }
         //$index = ($k + $x) % count($this->room_uids);
         $index = ($k + $x) % DESK_PEOPLE;
-        wlog(LOG_PATH.'room-'.date('Ym').'.log', json_encode(['nextUser:3 ', $k, $index]));
         if (!isset($this->room_uids[$index])) {
 	        return $this->nextUser($uid, $x + 1);
         }
@@ -389,10 +417,15 @@ class Room
         } else {
             if (in_array($next_user, $this->pk_res['partner'])) {
                 $v = array_diff($this->pk_res['partner'], [$next_user]);
+                $next_user = $v[key($v)];
             } else {
-                $v = array_diff($this->room_uids, [$this->room_banker_uid, $this->room_mingji_uid, $next_user]);
+                //$v = array_diff($this->room_uids, [$this->room_banker_uid, $this->room_mingji_uid, $next_user]);
+                if ($uid == $this->room_banker_uid) {
+                    $next_user = $this->room_mingji_uid;
+                } else {
+                    $next_user = $this->room_banker_uid;
+                }
             }
-            $next_user = $v[key($v)];
         }
         return $next_user;
     } /* }}} */
@@ -410,7 +443,7 @@ class Room
      */
     public function userDoPoker($uid, $pk = '') /* {{{ */
     {
-        wlog(LOG_PATH.'room-'.date('Ym').'.log', json_encode(['userDoPower:1 ', $uid, $pk]));
+        //wlog(LOG_PATH.'room-'.date('Ym').'.log', json_encode(['userDoPower:1 ', $uid, $pk]));
         $len = strlen($pk);
         /* 检查是否有当手牌 */
         for ($i = 0; $i < $len; $i++) {
@@ -423,6 +456,7 @@ class Room
             /* 明鸡 */
             if ($uid != $this->room_banker_uid && $pk[$i] == $this->room_poker) {
                 $this->room_mingji_uid = $uid;
+                $this->pk_res['partner'] = array_values(array_diff($this->room_uids, [$this->room_banker_uid, $this->room_mingji_uid]));
             }
             /* 分 */
             if (isset($this->game->pk_points[$pk[$i]])) {
@@ -433,7 +467,142 @@ class Room
             //$this->room_uids_poker[$uid] = str_replace($pk[$i], '', $this->room_uids_poker[$uid]);
             $this->room_uids_poker[$uid] = substr_replace($this->room_uids_poker[$uid], '', $pos, 1);
         }
-        /* 是否出完 */
+        /* 是否出完？出完 记录出牌顺序，检测是否结束； */
+        if (empty($this->room_uids_poker[$uid])) {
+            $this->pk_res['top'][] = $uid;
+            if ($this->isGameOver()) {
+                /* 当局结束 */
+                $this->room_uids_poker = [];
+            }
+        }
+        return true;
+    } /* }}} */
+
+    /**
+     * @fn
+     * @brief 
+     *  当前局结束，返回结果
+     * @param $
+     * @return true/false
+     */
+    public function isGameOver() /* {{{ */
+    {
+        $c = count($this->pk_res['top']);
+        if ($c <= 1) {
+            return false;
+        } else if ($c == 2) {
+            if (empty($this->room_mingji_uid)) {
+                /* 没明鸡，2个都必须为庄对手，否则游戏没结束 */
+                if (in_array($this->room_banker_uid, $this->pk_res['top'])) {
+                    return false;
+                }
+                /* 庄输 通子 */
+                $this->pk_res['top'][2] = $this->room_banker_uid;
+                $v = array_diff($this->room_uids, [$this->room_banker_uid, $this->pk_res['top'][0], $this->pk_res['top'][1]]);
+                $this->pk_res['top'][3] = $v[key($v)];
+                $this->pk_res['partner'] = [$this->pk_res['top'][0], $this->pk_res['top'][1]];
+            } else {
+                /* 明鸡，2个都必须为庄对手，或者都必须为庄和庄队友，否则游戏没结束 */
+                if (in_array($this->room_banker_uid, $this->pk_res['top']) && in_array($this->room_mingji_uid, $this->pk_res['top'])) {
+                    /* 庄赢 通子 */
+                    $this->pk_res['top'][2] = $this->pk_res['partner'][0];
+                    $this->pk_res['top'][3] = $this->pk_res['partner'][1];
+                } else if (in_array($this->pk_res['partner'][0], $this->pk_res['top']) && in_array($this->pk_res['partner'][1], $this->pk_res['top'])) {
+                    /* 庄输 通子 */
+                    $this->pk_res['top'][2] = $this->room_banker_uid;
+                    $this->pk_res['top'][3] = $this->room_mingji_uid;
+                } else {
+                    return false;
+                }
+            }
+            $score1 = $this->pk_res['point'][$this->pk_res['top'][2]] + $this->pk_res['point'][$this->pk_res['top'][3]];
+            if ($score1 == 0) {
+                $this->pk_res['win'][$this->pk_res['top'][0]] = 6;
+                $this->pk_res['win'][$this->pk_res['top'][1]] = 6;
+                $this->pk_res['win'][$this->pk_res['top'][2]] = -6;
+                $this->pk_res['win'][$this->pk_res['top'][3]] = -6;
+            } else {
+                $this->pk_res['win'][$this->pk_res['top'][0]] = 3;
+                $this->pk_res['win'][$this->pk_res['top'][1]] = 3;
+                $this->pk_res['win'][$this->pk_res['top'][2]] = -3;
+                $this->pk_res['win'][$this->pk_res['top'][3]] = -3;
+            }
+        } else if ($c == 3) {
+            /* 必定结束 */
+            if (empty($this->room_mingji_uid)) {
+                /* 没明鸡，3个中2个必须为庄对手，另一个为庄家，第4名队友为庄，并找出庄第几个出玩牌 */
+                $this->pk_res['partner'] = array_values(array_diff($this->pk_res['top'], [$this->room_banker_uid]));
+                $v = array_diff($this->room_uids, $this->pk_res['top']);
+                $this->pk_res['top'][3] = $v[key($v)];
+                $i = array_search($this->room_banker_uid, $this->pk_res['top']);
+            } else {
+                /* 明鸡，找出第4名的队友 第几个出玩牌 */
+                $v = array_diff($this->room_uids, $this->pk_res['top']);
+                $this->pk_res['top'][3] = $v[key($v)];
+                $i = 0;
+                if (in_array($this->pk_res['top'][3], $this->pk_res['partner'])) {
+                    if (in_array($this->pk_res['top'][1], $this->pk_res['partner'])) {
+                        $i = 1;
+                    }
+                } else if ($this->pk_res['top'][3] == $this->room_banker_uid) {
+                    if ($this->pk_res['top'][1] == $this->room_mingji_uid) {
+                        $i = 1;
+                    }
+                } else if ($this->pk_res['top'][3] == $this->room_mingji_uid) {
+                    if ($this->pk_res['top'][1] == $this->room_banker_uid) {
+                        $i = 1;
+                    }
+                }
+            }
+            /* 第4名的队友第几个出完？ */
+            if ($i == 0) {
+                /* 1,4 */
+                $score1 = $this->pk_res['point'][$this->pk_res['top'][0]] + $this->pk_res['point'][$this->pk_res['top'][3]];
+                $score2 = 200 - $score1;
+            } else if ($i == 1) {
+                /* 2,4 */
+                $score1 = $this->pk_res['point'][$this->pk_res['top'][1]] + $this->pk_res['point'][$this->pk_res['top'][3]] - 20;
+                $score2 = 200 - $score1;
+            }
+            if ($i == 0) {
+                if ($score1 <= 0) {
+                    $s = -3;
+                } else if ($score1 < 50) {
+                    $s = -2;
+                } else if ($score1 < 100) {
+                    $s = -1;
+                } else if ($score1 <= 150) {
+                    $s = 1;
+                } else if ($score1 < 200) {
+                    $s = 2;
+                } else {
+                    $s = 3;
+                }
+                $this->pk_res['win'][$this->pk_res['top'][0]] = $s;
+                $this->pk_res['win'][$this->pk_res['top'][1]] = -$s;
+                $this->pk_res['win'][$this->pk_res['top'][2]] = -$s;
+                $this->pk_res['win'][$this->pk_res['top'][3]] = $s;
+            } else {
+                if ($score1 <= 0) {
+                    $s = -3;
+                } else if ($score1 < 50) {
+                    $s = -2;
+                } else if ($score1 <= 100) {
+                    $s = -1;
+                } else if ($score1 <= 150) {
+                    $s = 1;
+                } else if ($score1 < 200) {
+                    $s = 2;
+                } else {
+                    $s = 3;
+                }
+                $this->pk_res['win'][$this->pk_res['top'][0]] = -$s;
+                $this->pk_res['win'][$this->pk_res['top'][1]] = $s;
+                $this->pk_res['win'][$this->pk_res['top'][2]] = -$s;
+                $this->pk_res['win'][$this->pk_res['top'][3]] = $s;
+            }
+        }
+        $this->room_prev_first = $this->pk_res['top'][0];
         return true;
     } /* }}} */
 
@@ -470,6 +639,8 @@ class Room
                 $this->ready($connection, $ret);
             } else if ($ret[1] == 'play') {
                 $this->play($connection, $ret);
+            } else if ($ret[1] == 'exit') {
+                $this->bye($connection, $ret);
             }
         } else if ($ret[0] == 'test') {
             //$ret = $this->{$ret[1]}($ret[2]);
@@ -512,11 +683,13 @@ class Room
     /**
      * @fn
      * @brief 
-     *  有用户退出，断连接
+     *  有用户离开房间；
+     *  如果用户当前 在房间，且有牌，不可退出(退出扣6分，队友不扣分)；
+     *  用户正常离开房间： unset $this->room_ids[$room_id][$uid], $this->room_uids[n=>$uid], $this->room_uids_poker[$uid] 对象；
      * @param 
      *  request:
-     *      c:a:args...
      *      controller:action:arg1:arg2:arg n...
+     *      room:exit:1
      * @return 
      */
     public function bye($connection, $ret = []) /* {{{ */
@@ -524,8 +697,8 @@ class Room
         if (empty($ret[2])) {
 	        return ;
         }
-        if (!empty($connection->room_id) /* && 不在牌局[当局结束了，且没点准备] */) {
-            $this->sendRoom($connection->room_id, pencode(['1', $connection->uid.' 离开了房间。']));
+        /* 不在牌局[当局结束了，且没点准备] */
+        if (empty($this->room_uids_poker[$connection->uid])) {
             unset($this->room_ids[$connection->room_id][$connection->uid]);     /* room id */
             unset($this->room_uids_poker[$connection->uid]);                    /* uid poker */
             foreach ($this->room_uids as $k => $v) {
@@ -533,7 +706,53 @@ class Room
                     unset($this->room_uids[$k]);                                /* room uid */
                 }
             }
+            $this->room_uids = array_values($this->room_uids);
+            if (!empty($connection->room_id)) {
+                $this->sendRoom($connection->room_id, pencode(['1', $connection->uid.' 离开了房间。']));
+                wlog(LOG_PATH.'room-'.$connection->room_id.date('-Ym').'.log', json_encode([$connection->uid.' 离开了房间', $this->room_uids], JSON_UNESCAPED_UNICODE));
+            }
             $connection->room_id = 0;
+        } else {
+            $connection->send(pencode(['50910', '牌局进行中，不可离开房间。']));
+        }
+	    return ;
+    } /* }}} */
+
+    /**
+     * @fn
+     * @brief 
+     *  正常/异常断连接
+     *  如果用户当前 在房间，且有牌，退出/断网等 为异常；
+     *  用户正常关闭： unset $this->links[$uid]，$this->room_ids[$room_id][$uid]，$this->room_uids[n=>$uid] 对象；
+     *  用户异常退出： unset $this->room_ids[$room_id][$uid]；TODO:设置定时，异常断开时，指定时间内不发起重连，则清理连接。
+     *  异常退出 定时器 $connection->e_timer
+     * @param 
+     *  request:
+     *      c:a:args...
+     *      controller:action:arg1:arg2:arg n...
+     * @return 
+     */
+    public function onClose($connection) /* {{{ */
+    {
+        /* 在牌局[当局结束了，且没点准备]，异常关闭，设置定时清理 */
+        if (!empty($connection->room_id) && !empty($this->room_uids_poker[$connection->uid])) {
+            unset($this->room_ids[$connection->room_id][$connection->uid]);     /* room id */
+            $this->sendRoom($connection->room_id, pencode(['1', $connection->uid.' 网络中断。']));
+            wlog(LOG_PATH.'room-'.$connection->room_id.date('-Ym').'.log', json_encode([$connection->uid.' 网络中断', $this->room_uids_poker], JSON_UNESCAPED_UNICODE));
+        } else {
+            /* 正常关闭 */
+            foreach ($this->room_uids as $k => $v) {
+                if ($connection->uid == $v) {
+                    unset($this->room_uids[$k]);                                /* room uid */
+                }
+            }
+            $this->room_uids = array_values($this->room_uids);
+            unset($this->room_ids[$connection->room_id][$connection->uid]);     /* room id */
+            unset($this->links[$connection->uid]);
+            if (!empty($connection->room_id)) {
+                $this->sendRoom($connection->room_id, pencode(['1', $connection->uid.' 离开了房间！']));
+                wlog(LOG_PATH.'room-'.$connection->room_id.date('-Ym').'.log', json_encode([$connection->uid.' 离开了房间！', $this->room_uids], JSON_UNESCAPED_UNICODE));
+            }
         }
 	    return ;
     } /* }}} */
