@@ -1,0 +1,529 @@
+html {
+    font-size: 16px;
+}
+body {
+    transform: rotate(90deg);
+    /*font-size: 300%;*/
+    overflow: hidden!important;
+}
+div {
+    border: 1px solid #0000aa;
+}
+.app {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    /*left: 50rem;*/
+}
+#u1 {
+    /*height: 600px;*/
+    height: 7rem;
+    width: 30rem;
+    position: absolute;
+    left: 20rem;
+    bottom: -11rem;
+}
+#u3 {
+    height: 5rem;
+    width: 30rem;
+    position: absolute;
+    left: 20rem;
+    top: -11rem;
+}
+#u2 {
+    height: 20rem;
+    width: 5rem;
+    position: absolute;
+    right: -32rem;
+    top: -11rem;
+}
+#u4 {
+    height: 20rem;
+    width: 5rem;
+    position: absolute;
+    left: 14rem;
+    top: -11rem;
+}
+#c1 {
+    height: 5rem;
+    width: 9rem;
+    position: absolute;
+    left: 30rem;
+    top: -2.5rem;
+}
+
+#help {
+    height: 37.5rem;
+    width: 18.75rem;
+    position: relative;
+    left: 33rem;
+    top: -37.5rem;
+}
+
+#ref-poker0 {
+  left: 32%;
+  top: 40%;
+}
+#ref-poker1 {
+  left: 56%;
+  top: 40%;
+}
+.poker-img {
+  width: 3.4rem;
+  height: 4.7rem;
+  background: url("../img/puke.png") no-repeat;
+  background-size: 32em;
+  float: left;
+}
+.bg {
+  background-position: -24.1em -30.5em;
+}
+.index-chess .anime-poker {
+  position: absolute;
+  z-index: 3;
+}
+.index-chess table,
+.index-chess tr,
+.index-chess th,
+.index-chess td {
+  border: none;
+}
+
+.p1 {
+    position:absolute;
+    left: 0;
+    z-index: 1;
+}
+.p2 {
+    position:absolute;
+    left: 3.5%;
+    z-index: 2;
+}
+.p3 {
+    position:absolute;
+    left: 7%;
+    z-index: 3;
+}
+.p4 {
+    position:absolute;
+    left: 10.5%;
+    z-index: 4;
+}
+.p5 {
+    position:absolute;
+    left: 14%;
+    z-index: 5;
+}
+.p6 {
+    position:absolute;
+    left: 17.5%;
+    z-index: 6;
+}
+.p7 {
+    position:absolute;
+    left: 21%;
+    z-index: 7;
+}
+.p8 {
+    position:absolute;
+    left: 24.5%;
+    z-index: 8;
+}
+.p9 {
+    position:absolute;
+    left: 28%;
+    z-index: 9;
+}
+.p10 {
+    position:absolute;
+    left: 31.5%;
+    z-index: 10;
+}
+.p11 {
+    position:absolute;
+    left: 35%;
+    z-index: 11;
+}
+.p12 {
+    position:absolute;
+    left: 38.5%;
+    z-index: 12;
+}
+.p13 {
+    position:absolute;
+    left: 42%;
+    z-index: 13;
+}
+.p14 {
+    position:absolute;
+    left: 45.5%;
+    z-index: 14;
+}
+.p15 {
+    position:absolute;
+    left: 49%;
+    z-index: 15;
+}
+.p16 {
+    position:absolute;
+    left: 52.5%;
+    z-index: 16;
+}
+.p17 {
+    position:absolute;
+    left: 56%;
+    z-index: 17;
+}
+.p18 {
+    position:absolute;
+    left: 59.5%;
+    z-index: 18;
+}
+.p19 {
+    position:absolute;
+    left: 63%;
+    z-index: 19;
+}
+.p20 {
+    position:absolute;
+    left: 66.5%;
+    z-index: 20;
+}
+.p21 {
+    position:absolute;
+    left: 70%;
+    z-index: 21;
+}
+.p22 {
+    position:absolute;
+    left: 73.5%;
+    z-index: 22;
+}
+.p23 {
+    position:absolute;
+    left: 77%;
+    z-index: 23;
+}
+.p24 {
+    position:absolute;
+    left: 80.5%;
+    z-index: 24;
+}
+.p25 {
+    position:absolute;
+    left: 84%;
+    z-index: 25;
+}
+.p26 {
+    position:absolute;
+    left: 87.5%;
+    z-index: 26;
+}
+.p27 {
+    position:absolute;
+    left: 91%;
+    z-index: 27;
+}
+
+.b1 {
+    position:absolute;
+    top: 0;
+    z-index: 1;
+}
+.b2 {
+    position:absolute;
+    top: 3.5%;
+    z-index: 2;
+}
+.b3 {
+    position:absolute;
+    top: 7%;
+    z-index: 3;
+}
+.b4 {
+    position:absolute;
+    top: 10.5%;
+    z-index: 4;
+}
+.b5 {
+    position:absolute;
+    top: 14%;
+    z-index: 5;
+}
+.b6 {
+    position:absolute;
+    top: 17.5%;
+    z-index: 6;
+}
+.b7 {
+    position:absolute;
+    top: 21%;
+    z-index: 7;
+}
+.b8 {
+    position:absolute;
+    top: 24.5%;
+    z-index: 8;
+}
+.b9 {
+    position:absolute;
+    top: 28%;
+    z-index: 9;
+}
+.b10 {
+    position:absolute;
+    top: 31.5%;
+    z-index: 10;
+}
+.b11 {
+    position:absolute;
+    top: 35%;
+    z-index: 11;
+}
+.b12 {
+    position:absolute;
+    top: 38.5%;
+    z-index: 12;
+}
+.b13 {
+    position:absolute;
+    top: 42%;
+    z-index: 13;
+}
+.b14 {
+    position:absolute;
+    top: 45.5%;
+    z-index: 14;
+}
+.b15 {
+    position:absolute;
+    top: 49%;
+    z-index: 15;
+}
+.b16 {
+    position:absolute;
+    top: 52.5%;
+    z-index: 16;
+}
+.b17 {
+    position:absolute;
+    top: 56%;
+    z-index: 17;
+}
+.b18 {
+    position:absolute;
+    top: 59.5%;
+    z-index: 18;
+}
+.b19 {
+    position:absolute;
+    top: 63%;
+    z-index: 19;
+}
+.b20 {
+    position:absolute;
+    top: 66.5%;
+    z-index: 20;
+}
+.b21 {
+    position:absolute;
+    top: 70%;
+    z-index: 21;
+}
+.b22 {
+    position:absolute;
+    top: 73.5%;
+    z-index: 22;
+}
+.b23 {
+    position:absolute;
+    top: 77%;
+    z-index: 23;
+}
+.b24 {
+    position:absolute;
+    top: 80.5%;
+    z-index: 24;
+}
+.b25 {
+    position:absolute;
+    top: 84%;
+    z-index: 25;
+}
+.b26 {
+    position:absolute;
+    top: 87.5%;
+    z-index: 26;
+}
+.b27 {
+    position:absolute;
+    top: 91%;
+    z-index: 27;
+}
+
+/* 方A */
+.anime-poker .k3 {
+  background-position: 0 0 !important;
+}
+.anime-poker .k4 {
+  background-position: -3.9rem 0 !important;
+}
+.anime-poker .k2 {
+  background-position: -7.7rem 0 !important;
+}
+.anime-poker .k1 {
+  background-position: -11.5rem 0 !important;
+}
+.anime-poker .k7 {
+  background-position: 0 -5.06rem !important;
+}
+.anime-poker .k8 {
+  background-position: -3.9rem -5.06rem !important;
+}
+.anime-poker .k6 {
+  background-position: -7.7rem -5.06rem !important;
+}
+.anime-poker .k5 {
+  background-position: -11.5rem -5.06rem !important;
+}
+.anime-poker .k11 {
+  background-position: 0 -10.15rem !important;
+}
+.anime-poker .k12 {
+  background-position: -3.9rem -10.15rem !important;
+}
+.anime-poker .k10 {
+  background-position: -7.7rem -10.15rem !important;
+}
+.anime-poker .k9 {
+  background-position: -11.5rem -10.15rem !important;
+}
+.anime-poker .k15 {
+  background-position: 0 -15.21rem !important;
+}
+.anime-poker .k16 {
+  background-position: -3.9rem -15.21rem !important;
+}
+.anime-poker .k14 {
+  background-position: -7.7rem -15.21rem !important;
+}
+.anime-poker .k13 {
+  background-position: -11.5rem -15.21rem !important;
+}
+.anime-poker .k19 {
+  background-position: 0 -20.3rem !important;
+}
+.anime-poker .k20 {
+  background-position: -3.9rem -20.3rem !important;
+}
+.anime-poker .k18 {
+  background-position: -7.7rem -20.3rem !important;
+}
+.anime-poker .k17 {
+  background-position: -11.5rem -20.3rem !important;
+}
+.anime-poker .k23 {
+  background-position: 0 -25.35rem !important;
+}
+.anime-poker .k24 {
+  background-position: -3.9rem -25.35rem !important;
+}
+.anime-poker .k22 {
+  background-position: -7.7rem -25.35rem !important;
+}
+.anime-poker .k21 {
+  background-position: -11.5rem -25.35rem !important;
+}
+.anime-poker .k27 {
+  background-position: 0 -30.45rem !important;
+}
+.anime-poker .k28 {
+  background-position: -3.9rem -30.45rem !important;
+}
+.anime-poker .k26 {
+  background-position: -7.7rem -30.45rem !important;
+}
+.anime-poker .k25 {
+  background-position: -11.5rem -30.45rem !important;
+}
+.anime-poker .k31 {
+  background-position: -16.35rem 0 !important;
+}
+.anime-poker .k32 {
+  background-position: -20.2rem 0 !important;
+}
+.anime-poker .k30 {
+  background-position: -24.05rem 0 !important;
+}
+.anime-poker .k29 {
+  background-position: -27.88rem 0 !important;
+}
+.anime-poker .k35 {
+  background-position: -16.35rem -5.08rem !important;
+}
+.anime-poker .k36 {
+  background-position: -20.2rem -5.08rem !important;
+}
+.anime-poker .k34 {
+  background-position: -24.05rem -5.08rem !important;
+}
+.anime-poker .k33 {
+  background-position: -27.88rem -5.08rem !important;
+}
+.anime-poker .k39 {
+  background-position: -16.35rem -10.18rem !important;
+}
+.anime-poker .k40 {
+  background-position: -20.2rem -10.18rem !important;
+}
+.anime-poker .k38 {
+  background-position: -24.05rem -10.18rem !important;
+}
+.anime-poker .k37 {
+  background-position: -27.88rem -10.18rem !important;
+}
+.anime-poker .k43 {
+  background-position: -16.35rem -15.22rem !important;
+}
+.anime-poker .k44 {
+  background-position: -20.2rem -15.22rem !important;
+}
+.anime-poker .k42 {
+  background-position: -24.05rem -15.22rem !important;
+}
+.anime-poker .k41 {
+  background-position: -27.88rem -15.22rem !important;
+}
+.anime-poker .k47 {
+  background-position: -16.35rem -20.28rem !important;
+}
+.anime-poker .k48 {
+  background-position: -20.2rem -20.28rem !important;
+}
+.anime-poker .k46 {
+  background-position: -24.05rem -20.28rem !important;
+}
+.anime-poker .k45 {
+  background-position: -27.88rem -20.28rem !important;
+}
+.anime-poker .k51 {
+  background-position: -16.35rem -25.36rem !important;
+}
+.anime-poker .k52 {
+  background-position: -20.2rem -25.36rem !important;
+}
+.anime-poker .k50 {
+  background-position: -24.05rem -25.36rem !important;
+}
+.anime-poker .k49 {
+  background-position: -27.88rem -25.36rem !important;
+}
+/* joker */
+.anime-poker .k54 {
+  background-position: -16.35rem -30.5rem !important;
+}
+.anime-poker .k53 {
+  background-position: -20.2rem -30.5rem !important;
+}
+
+

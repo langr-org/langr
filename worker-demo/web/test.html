@@ -1,0 +1,241 @@
+<!doctype html>
+<html>
+<head>
+<title>Dagong Demo</title>
+<meta charset="UTF-8">
+<!--script src="https://code.jquery.com/jquery-3.5.1.min.js"></script-->
+<script src="js/jquery-3.5.1.js"></script>
+<script src="js/jqwebsocket.js"></script>
+<style>
+#ref-poker0 {
+  left: 32%;
+  top: 40%;
+}
+#ref-poker1 {
+  left: 56%;
+  top: 40%;
+}
+.poker-img {
+  width: 2.1rem;
+  height: 2.6rem;
+  background: url("img/puke.png") no-repeat;
+  background-size: 20.45em;
+}
+.bg {
+  background-position: -15.345em -19.495em;
+}
+.index-chess .anime-poker {
+  position: absolute;
+  z-index: 3;
+}
+.index-chess table,
+.index-chess tr,
+.index-chess th,
+.index-chess td {
+  border: none;
+}
+
+.anime-poker .k3 {
+  background-position: 0 0 !important;
+}
+.anime-poker .k4 {
+  background-position: -2.1rem 0 !important;
+}
+.anime-poker .k2 {
+  background-position: -4.1rem 0 !important;
+}
+.anime-poker .k1 {
+  background-position: -6.3rem 0 !important;
+}
+.anime-poker .k7 {
+  background-position: 0 -2.7rem !important;
+}
+.anime-poker .k8 {
+  background-position: -2.1rem -2.7rem !important;
+}
+.anime-poker .k6 {
+  background-position: -4.1rem -2.7rem !important;
+}
+.anime-poker .k5 {
+  background-position: -6.3rem -2.7rem !important;
+}
+.anime-poker .k11 {
+  background-position: 0 -5.54rem !important;
+}
+.anime-poker .k12 {
+  background-position: -2.1rem -5.54rem !important;
+}
+.anime-poker .k10 {
+  background-position: -4.1rem -5.54rem !important;
+}
+.anime-poker .k9 {
+  background-position: -6.3rem -5.54rem !important;
+}
+.anime-poker .k15 {
+  background-position: 0 -8.2rem !important;
+}
+.anime-poker .k16 {
+  background-position: -2.1rem -8.2rem !important;
+}
+.anime-poker .k14 {
+  background-position: -4.1rem -8.2rem !important;
+}
+.anime-poker .k13 {
+  background-position: -6.3rem -8.2rem !important;
+}
+.anime-poker .k19 {
+  background-position: 0 -11.08rem !important;
+}
+.anime-poker .k20 {
+  background-position: -2.1rem -11.08rem !important;
+}
+.anime-poker .k18 {
+  background-position: -4.1rem -11.08rem !important;
+}
+.anime-poker .k17 {
+  background-position: -6.3rem -11.08rem !important;
+}
+.anime-poker .k23 {
+  background-position: 0 -13.8rem !important;
+}
+.anime-poker .k24 {
+  background-position: -2.1rem -13.8rem !important;
+}
+.anime-poker .k22 {
+  background-position: -4.1rem -13.8rem !important;
+}
+.anime-poker .k21 {
+  background-position: -6.3rem -13.8rem !important;
+}
+.anime-poker .k27 {
+  background-position: 0 -16.5rem !important;
+}
+.anime-poker .k28 {
+  background-position: -2.1rem -16.5rem !important;
+}
+.anime-poker .k26 {
+  background-position: -4.1rem -16.5rem !important;
+}
+.anime-poker .k25 {
+  background-position: -6.3rem -16.5rem !important;
+}
+.anime-poker .k31 {
+  background-position: -8.85rem 0 !important;
+}
+.anime-poker .k32 {
+  background-position: -10.95rem 0 !important;
+}
+.anime-poker .k30 {
+  background-position: -13rem 0 !important;
+}
+.anime-poker .k29 {
+  background-position: -15.1rem 0 !important;
+}
+.anime-poker .k35 {
+  background-position: -8.85rem -2.7rem !important;
+}
+.anime-poker .k36 {
+  background-position: -10.95rem -2.7rem !important;
+}
+.anime-poker .k34 {
+  background-position: -13rem -2.7rem !important;
+}
+.anime-poker .k33 {
+  background-position: -15.1rem -2.7rem !important;
+}
+.anime-poker .k39 {
+  background-position: -8.85rem -5.54rem !important;
+}
+.anime-poker .k40 {
+  background-position: -10.95rem -5.54rem !important;
+}
+.anime-poker .k38 {
+  background-position: -13rem -5.54rem !important;
+}
+.anime-poker .k37 {
+  background-position: -15.1rem -5.54rem !important;
+}
+.anime-poker .k43 {
+  background-position: -8.85rem -8.2rem !important;
+}
+.anime-poker .k44 {
+  background-position: -10.95rem -8.2rem !important;
+}
+.anime-poker .k42 {
+  background-position: -13rem -8.2rem !important;
+}
+.anime-poker .k41 {
+  background-position: -15.1rem -8.2rem !important;
+}
+.anime-poker .k47 {
+  background-position: -8.85rem -11.08rem !important;
+}
+.anime-poker .k48 {
+  background-position: -10.95rem -11.08rem !important;
+}
+.anime-poker .k46 {
+  background-position: -13rem -11.08rem !important;
+}
+.anime-poker .k45 {
+  background-position: -15.1rem -11.08rem !important;
+}
+.anime-poker .k51 {
+  background-position: -8.85rem -13.8rem !important;
+}
+.anime-poker .k52 {
+  background-position: -10.95rem -13.8rem !important;
+}
+.anime-poker .k50 {
+  background-position: -13rem -13.8rem !important;
+}
+.anime-poker .k49 {
+  background-position: -15.1rem -13.8rem !important;
+}
+
+body {
+    transform: rotate(90deg);
+}
+.body-class {
+}
+#content {
+    /*height: 600px;*/
+    height: 37.5rem;
+    width: 31.25rem;
+    overflow-y: scroll;
+}
+#help {
+    height: 37.5rem;
+    width: 18.75rem;
+    position: relative;
+    left: 33rem;
+    top: -37.5rem;
+}
+</style>
+</head>
+<body class="body-class">
+
+<h1>WebSocket Demo - Dagong</h1>
+<!-- <section id="content"></section> -->
+<div id="content"></div>
+<input id="message" type="text" style="width:18.75rem"/>
+<script>
+//$('#content').scrollTop = $('#content').scrollHeight;
+var divscroll = document.getElementById('content');
+divscroll.scrollTop = divscroll.scrollHeight;
+var host = document.domain;
+
+var ws = $.websocket({
+    url: "ws://" + host + ":8765/?token=abcdef",
+    onMessage: function(e) { 
+        $('#content').append(e + ' ' + '<br>');
+    }
+});
+$('#message').change(function(){
+    ws.send(this.value);
+    this.value = '';
+    divscroll.scrollTop = divscroll.scrollHeight;
+    console.log('scrollHeight' + divscroll.scrollHeight);
+});
+</script>
+</body>
+</html>

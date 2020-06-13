@@ -7,18 +7,22 @@
 <script src="js/jquery-3.5.1.js"></script>
 <script src="js/jqwebsocket.js"></script>
 <style>
-    #content {
-        height: 600px;
-        width: 500px;
-        overflow-y: scroll;
-    }
-    #help {
-        height: 600px;
-        width: 300px;
-        position: relative;
-        left: 530px;
-        top: -600px;
-    }
+body {
+    /*transform: rotate(90deg);*/
+}
+#content {
+    /*height: 600px;*/
+    height: 37.5rem;
+    width: 31.25rem;
+    overflow-y: scroll;
+}
+#help {
+    height: 37.5rem;
+    width: 18.75rem;
+    position: relative;
+    left: 33rem;
+    top: -37.5rem;
+}
 </style>
 </head>
 <body>
@@ -26,7 +30,7 @@
 <h1>WebSocket Demo - Dagong</h1>
 <!-- <section id="content"></section> -->
 <div id="content"></div>
-<input id="message" type="text" style="width:300px"/>
+<input id="message" type="text" style="width:19rem"/>
 <script>
 //$('#content').scrollTop = $('#content').scrollHeight;
 var divscroll = document.getElementById('content');
@@ -46,6 +50,6 @@ $('#message').change(function(){
     console.log('scrollHeight' + divscroll.scrollHeight);
 });
 </script>
-<div id="help"><iframe src='api.txt' style="height:600px"> </iframe></div>
+<div id="help"><iframe src='api.txt' style="height:37.5rem"> </iframe></div>
 </body>
 </html>

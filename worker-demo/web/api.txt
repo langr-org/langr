@@ -51,8 +51,8 @@ test:action:arg1:arg2...
 协议返回信息：
 0:msg           客户端请求响应信息，正常
 1:msg           广播信息
-2:action:data   主动向客户端发送数据
-100xx:msg       出错信息
+2xx:action:data 主动向客户端发送数据
+5xxxx:msg       出错信息
 
 
 

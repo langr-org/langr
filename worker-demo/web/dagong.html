@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Dagong Demo</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui" />
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="format-detection" content="telephone=no">
+<meta name="screen-orientation" content="portrait">
+<meta name="x5-orientation" content="portrait">
+<meta name="full-screen" content="yes">
+<meta name="x5-fullscreen" content="true">
+<meta name="browsermode" content="application">
+<meta name="x5-page-mode" content="app">
+<!--<meta name="apple-mobile-web-app-capable" content="yes">-->
+<link href="css/dagong.css" rel="stylesheet">
+<!--script src="https://code.jquery.com/jquery-3.5.1.min.js"></script-->
+<script src="js/jquery-3.5.1.js"></script>
+<script src="js/jqwebsocket.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<!--script src="https://cdn.jsdelivr.net/npm/vue"></script-->
+<!--script src="js/vue-2.6.11.min.js"></script-->
+<script src="js/dagong.js"></script>
+<style>
+</style>
+</head>
+<body>
+    <div id="app" class="app">
+        <div id="u1">
+            <div id="u1-btn">btn</div>
+            <div id="u1-poker" class="anime-poker">
+                <div v-for="pks in pk"></div>
+                <div id='u1_k47' value='<' v-on:click="selectPk" class="poker-img k47 p1"></div>
+                <div id='u1_k48' value='>' class="poker-img k48 p2"></div>
+                <div id='u1_k49' value='H' class="poker-img k49 p3"></div>
+                <div id='u1_k50' value='x' class="poker-img k50 p4"></div>
+                <div id='u1_k51' value='y' class="poker-img k51 p5"></div>
+                <div class="poker-img k52 p6"></div>
+                <div class="poker-img k53 p7"></div>
+                <div class="poker-img k54 p8"></div>
+                <div class="poker-img k1 p9"></div>
+                <div class="poker-img k2 p10"></div>
+                <div class="poker-img k3 p11"></div>
+                <div class="poker-img k4 p12"></div>
+                <div class="poker-img k5 p13"></div>
+                <div class="poker-img k6 p14"></div>
+                <div class="poker-img k7 p15"></div>
+                <div class="poker-img k8 p16"></div>
+                <div class="poker-img k9 p17"></div>
+                <div class="poker-img k10 p18"></div>
+                <div class="poker-img k11 p19"></div>
+                <div class="poker-img k12 p20"></div>
+                <div class="poker-img k13 p21"></div>
+                <div class="poker-img k14 p22"></div>
+                <div class="poker-img k15 p23"></div>
+                <div class="poker-img k16 p24"></div>
+                <div class="poker-img k17 p25"></div>
+                <div class="poker-img k18 p26"></div>
+                <div class="poker-img k19 p27"></div>
+            </div>
+        </div>
+        <div id="u2">
+            <div id="u2-poker" class="anime-poker">
+                <div class="poker-img bg b1"></div>
+                <div class="poker-img bg b2"></div>
+                <div class="poker-img bg b3"></div>
+                <div class="poker-img bg b4"></div>
+                <div class="poker-img bg b5"></div>
+                <div class="poker-img bg b6"></div>
+                <div class="poker-img bg b7"></div>
+                <div class="poker-img bg b8"></div>
+                <div class="poker-img bg b9"></div>
+                <div class="poker-img bg b10"></div>
+                <div class="poker-img bg b11"></div>
+                <div class="poker-img bg b12"></div>
+                <div class="poker-img bg b13"></div>
+                <div class="poker-img bg b14"></div>
+                <div class="poker-img bg b15"></div>
+                <div class="poker-img bg b16"></div>
+                <div class="poker-img bg b17"></div>
+                <div class="poker-img bg b18"></div>
+                <div class="poker-img bg b19"></div>
+                <div class="poker-img bg b20"></div>
+                <div class="poker-img bg b21"></div>
+                <div class="poker-img bg b22"></div>
+                <div class="poker-img bg b23"></div>
+                <div class="poker-img bg b24"></div>
+                <div class="poker-img bg b25"></div>
+                <div class="poker-img bg b26"></div>
+                <div class="poker-img bg b27"></div>
+            </div>
+        </div>
+        <div id="u3">
+            <div id="u3-poker" class="anime-poker">
+                <div class="poker-img k20 p1"></div>
+                <div class="poker-img k21 p2"></div>
+                <div class="poker-img k22 p3"></div>
+                <div class="poker-img k23 p4"></div>
+                <div class="poker-img k24 p5"></div>
+                <div class="poker-img k25 p6"></div>
+                <div class="poker-img k26 p7"></div>
+                <div class="poker-img k27 p8"></div>
+                <div class="poker-img k28 p9"></div>
+                <div class="poker-img k29 p10"></div>
+                <div class="poker-img k30 p11"></div>
+                <div class="poker-img k31 p12"></div>
+                <div class="poker-img k32 p13"></div>
+                <div class="poker-img k33 p14"></div>
+                <div class="poker-img k34 p15"></div>
+                <div class="poker-img k35 p16"></div>
+                <div class="poker-img k36 p17"></div>
+                <div class="poker-img k37 p18"></div>
+                <div class="poker-img k38 p19"></div>
+                <div class="poker-img k39 p20"></div>
+                <div class="poker-img k40 p21"></div>
+                <div class="poker-img k41 p22"></div>
+                <div class="poker-img k42 p23"></div>
+                <div class="poker-img k43 p24"></div>
+                <div class="poker-img k44 p25"></div>
+                <div class="poker-img k45 p26"></div>
+                <div class="poker-img k46 p27"></div>
+            </div>
+        </div>
+        <div id="u4">
+            <div id="u4-poker" class="anime-poker">
+                <div class="poker-img k1 b1"></div>
+                <div class="poker-img k5 b2"></div>
+                <div class="poker-img k9 b3"></div>
+                <div class="poker-img k13 b4"></div>
+                <div class="poker-img k17 b5"></div>
+                <div class="poker-img k21 b6"></div>
+                <div class="poker-img k25 b7"></div>
+                <div class="poker-img k29 b8"></div>
+                <div class="poker-img k33 b9"></div>
+                <div class="poker-img k37 b10"></div>
+                <div class="poker-img k41 b11"></div>
+                <div class="poker-img bg b12"></div>
+                <div class="poker-img bg b13"></div>
+                <div class="poker-img bg b14"></div>
+                <div class="poker-img bg b15"></div>
+                <div class="poker-img bg b16"></div>
+                <div class="poker-img bg b17"></div>
+                <div class="poker-img bg b18"></div>
+                <div class="poker-img bg b19"></div>
+                <div class="poker-img bg b20"></div>
+                <div class="poker-img bg b21"></div>
+                <div class="poker-img bg b22"></div>
+                <div class="poker-img bg b23"></div>
+                <div class="poker-img bg b24"></div>
+                <div class="poker-img bg b25"></div>
+                <div class="poker-img bg b26"></div>
+                <div class="poker-img bg b27"></div>
+            </div>
+        </div>
+        <div id="c1" class="anime-poker">
+            <div class="poker-img bg"></div>
+            <div class="poker-img k52"></div>
+        </div>
+    </div>
+    <script>
+    </script>
+</body>
+</html>
