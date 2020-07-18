@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>css和js判断屏幕横屏的案例演示-艺灵</title>
+<meta name="author" content="www.yilingsj.com">
+<meta name="tag" content="屏幕旋转,强制横屏,media,orientation" />
+<meta name="Keywords" content="移动端开发,屏幕旋转,强制横屏,media,orientation" />
+<meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+<style type="text/css">
+    /*竖屏*/
+    @media screen and (orientation:portrait){
+        html,body{width:100%;height:100%;background-color:#9EDBF8;overflow:hidden}
+        #print{position:absolute;background-color:#ff0}
+    }
+    /*横屏*/
+    @media screen and (orientation:landscape){
+        html,body{width:100%;height:100%;background-color:#666}
+        #print{position:absolute;top:0;left:0;width:100%;height:100%;background-color:#ff0}
+    }
+    #print p{margin:auto;margin-top:20px;text-align:center}
+</style>
+</head>
+<body class="webpBack">
+    <div id="print">
+    <h2>前提条件：手机系统设置中需要开启屏幕旋转，否则旋转屏幕时css和js是被无视的！</h2>
+    <h3>横屏时背景<mark>灰色</mark>，竖屏时背景<mark>蓝色</mark></h3>
+        <p>lol</p>  
+        <div id="box"></div>
+        <div id="box1"></div>
+        <div id="box2"></div>
+    </div>
+</body>
+<script>
+function orient() {
+    if (window.orientation==90||window.orientation==-90) {
+        box.innerText="横屏状态！"+window.orientation;
+    } else if (window.orientation==0||window.orientation==180) {
+        box.innerText="竖屏状态！"+window.orientation;
+    }
+    if (mql.matches) {
+        box1.innerText='portrait--竖屏'
+    } else {
+        box1.innerText='landscape--横屏'
+    }
+    var width = document.documentElement.clientWidth;
+    var height =  document.documentElement.clientHeight;
+    box2.innerText='width:'+width+'; height'+ height;
+    $print =  document.getElementById('print');
+    if ( width < height ) {
+        $print.style.width=height+'px'
+        $print.style.height=width+'px'
+        $print.style.top=(height-width)/2+'px';
+        $print.style.left= 0-(height-width)/2+'px';
+        $print.style.transform='rotate(90deg)';
+        $print.style.transformOrigin='50% 50%';
+    } else {
+        $print.style.transform='none';
+        $print.style.width=width+'px'
+        $print.style.height=height+'px'
+        $print.style.top='0px';
+        $print.style.left='0px';
+    }
+}
+var box=document.getElementById('box');
+var box1=document.getElementById('box1');
+var box2=document.getElementById('box2');
+var mql = window.matchMedia("(orientation: portrait)");
+orient();
+/* 当触发屏幕旋转时 */
+window.onorientationchange = function(){
+    orient();
+}  
+
+</script>
+<!--h1 style="position:fixed;bottom:0;font-size:16px">查看原文→_→：<a href="/xwzj/2017-06-16/547.html" title="移动端开发中的坑之手机端强制横屏">移动端开发中的坑之手机端强制横屏</a></h1-->
+</body>
+</html>
+

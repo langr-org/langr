@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Demo</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,minimal-ui" />
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="format-detection" content="telephone=no">
+<meta name="screen-orientation" content="portrait">
+<meta name="x5-orientation" content="portrait">
+<meta name="full-screen" content="yes">
+<meta name="x5-fullscreen" content="true">
+<meta name="browsermode" content="application">
+<meta name="x5-page-mode" content="app">
+<!--<meta name="apple-mobile-web-app-capable" content="yes">-->
+<link href="css/dagong.css" rel="stylesheet">
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<!--script src="js/jquery-3.5.1.js"></script-->
+<!--script src="js/jquery.websocket.js"></script-->
+<!--script src="js/jquery.cookie.js"></script-->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<!--script src="https://cdn.jsdelivr.net/npm/vue"></script-->
+<!--script src="js/vue-2.6.11.min.js"></script-->
+<!--script src="https://unpkg.com/vue-cookies@1.7.0/vue-cookies.js"></script-->
+<script src="js/vue-cookies.js"></script>
+<style>
+</style>
+</head>
+<body>
+    <div id="app" class="app">
+        <div id="u1">
+            <div id="u1-btn"><span id="u1-pass" @click="btn_pass()" class="u-btn">过牌</span><span id="u1-play" @click="btn_play()" class="u-btn">出牌</span></div>
+            <div id="u1-poker" class="anime-poker">
+                <div v-for="(pk,index) in pks" :id=" 'u1_k' + pk " @click="selectPk(pk, pk_arr[pk])" :value="pk_arr[pk]" class="poker-img" :class="[ 'k' + pk , 'p' + (index+1) ]"></div>
+                <!--<div class="poker-img k3 p26"></div>-->
+                <!--<div class="poker-img k2 p27"></div>-->
+            </div>
+        </div>
+        <div id="u2">
+            <div id="u2-poker" class="anime-poker">
+                <div v-for="i in u2pk" @click="selectPk('u2bg'+i)" class="poker-img bg" :class=" 'b'+i"></div>
+                <!--<div class="poker-img bg b27"></div>-->
+            </div>
+        </div>
+        <div id="u3">
+            <div id="u3-poker" class="anime-poker">
+                <div v-for="i in 20" @click="selectPk('u3bg'+i)" class="poker-img bg" :class=" 'p'+i"></div>
+                <!--<div class="poker-img bg p27"></div>-->
+            </div>
+        </div>
+        <div id="u4">
+            <div id="u4-poker" class="anime-poker">
+                <div v-for="i in u4pk" class="poker-img bg" :class=" 'b'+i"></div>
+                <!--<div class="poker-img bg b27"></div>-->
+            </div>
+        </div>
+    </div>
+
+<div id="login" v-show="loginShow">
+    <div id="l-user" class="">用户名：<input id="user" v-model="user" type="text" placeholder="用户名"/></div>
+    <div id="l-roomid" class="">房间号：<input id="roomid" v-model.number="roomid" type="text" placeholder="房间号"/></div>
+    <div class="u-btn" @click="join_room()">进 入</div>
+    <div class="toast" v-show="toastShow">{{toastText}}</div>
+</div>
+<div id="zhezhao"></div>
+
+<script type='text/javascript'>
+//Vue.prototype.$cookies = cookies;
+//Vue.use(VueCookies)
+//Vue.use(require('./vue-cookies.js'))
+//a = $.cookie('user')
+//$.cookie('users', 'abcddd')
+var user = $cookies.get('user') ? $cookies.get('user') : ''
+var roomid = $cookies.get('roomid') ? $cookies.get('roomid') : 606
+var login = new Vue({
+    el: '#login',
+    data: {
+        user: user,
+        roomid: roomid,
+        loginShow: true,
+        toastShow: false,
+        toastText: ''
+    },
+    created: function () {
+        document.getElementById('zhezhao').style.display = ''
+        send_msg('do-login')
+    },
+    computed: {
+        users: function() {
+            return this.$cookies.get('user')
+        }
+    },
+    methods: {
+        join_room: send_msg,
+        _join_room: function() {
+            send_msg('do-join-room')
+            if (this.user == null || this.user.length < 4) {
+                this.toast('请输入有效用户名')
+                return
+            }
+            if (isNaN(this.roomid) || this.roomid < 1) {
+                this.toast('请输入有效房间号')
+                return
+            }
+            console.log('user:' + this.user + ' roomid:' + this.roomid)
+            console.log('cookie:' + this.$cookies.get('user'))
+            $cookies.set('user', this.user, '30d')
+            $cookies.set('roomid', this.roomid, '30d')
+            //console.log('cookie' + $cookies.get('user'))
+            this.loginShow = false
+            //document.getElementById('zhezhao').style.display = 'none'
+        },
+        toast: function(str) {
+            var v = this
+            v.toastText = str
+            v.toastShow = true
+            setTimeout(function(){
+                v.toastShow = false
+            }, 2000)
+        }
+    }
+})
+
+var pk_arr = ['<', '>', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 
+            'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 
+            'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 
+            'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 
+            'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 
+            'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
+
+pk_arr = ['0', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 
+            'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 
+            'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 
+            'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 
+            'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 
+            'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 
+            'o', 'p', 'q', 'r', '<', '>'];
+var u1_pk = '>>ABCCFGJKLLRSWZachjlmmnnpq';
+/* message.split('').reverse().join('') */
+//var pks = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,52,53,54];
+var pokers = [1,54,3,4,5,6];
+
+poker2number = function (pks) {
+    var len = pks.length
+    var res = []
+    for (i = 0; i < len; i++) {
+        res.push(pk_arr.indexOf(pks[i]))
+    }
+    //console.log(pks + ' ' + len + 'res:' + res)
+    return res;
+}
+
+select_poker = function (pk, is_select = true) {
+    console.log('current_pk:' + current_pk)
+    if (is_select) {
+        current_pk = current_pk + pk
+    } else {
+        current_pk = current_pk.replace(pk, '')
+    }
+    console.log('current_pk ok:' + current_pk)
+}
+
+pks = poker2number(u1_pk)
+
+var current_pk = '';
+
+var u1 = new Vue({
+    el: '#u1',
+    data: {
+        pks: pks,
+        pk_arr: pk_arr
+    },
+    methods: {
+        selectPk: function(o, pk) {
+            ob = document.getElementById('u1_k'+o)
+            v = ob.style.getPropertyValue('top')
+            if (v == undefined || v == '') {
+                /* 选中 */
+                ob.style.setProperty('top', '30px')
+                console.log(pk + '选中')
+                select_poker(pk)
+            } else {
+                /* 取消选中 */
+                ob.style.removeProperty('top')
+                console.log(pk + '取消选中')
+                select_poker(pk, false)
+            }
+        },
+        btn_pass: function() {
+            console.log('u1 pass')
+            console.log(current_pk)
+        },
+        btn_play: function() {
+            console.log('u1 play')
+            console.log(current_pk)
+        }
+    }
+})
+/*
+var u2 = new Vue({
+    el: '#u2',
+    data: {
+        u2pk: 18
+    },
+    methods: {
+        selectPk(v) {
+            console.log(v)
+        }
+    }
+})
+var u3 = new Vue({
+    el: '#u3',
+    data: {
+    },
+    methods: {
+        selectPk(v) {
+            console.log(v)
+        }
+    }
+})
+var u4 = new Vue({
+    el: '#u4',
+    data: {
+        u4pk: 24
+    }
+})
+*/
+
+/*
+var u1_btn = new Vue({
+    el: '#u1-btn',
+    data: {
+    },
+    methods: {
+        btn_pass: function() {
+            console.log('u1 pass')
+        },
+        btn_play: function() {
+            console.log('u1 play')
+        }
+    }
+})
+*/
+
+var play_time_out = function () {
+}
+
+function send_msg(msg) {
+    console.log('send:' + msg)
+}
+
+/*
+document.getElementById('u1-pass').onclick = function () {
+    console.log('u1-pass')
+}
+document.getElementById('u1-play').onclick = function () {
+    console.log('pk:' + current_pk)
+}
+*/
+</script>
+</body>
+</html>
