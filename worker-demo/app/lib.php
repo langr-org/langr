@@ -77,7 +77,7 @@ if (!function_exists('pdecode')) {
      */
     function pdecode($content = '', $p = 'txt') /* {{{ */
     {
-        $ret = explode(':', $content);
+        $ret = json_decode($content, true);
         return $ret;
     } /* }}} */
 }
@@ -91,8 +91,12 @@ if (!function_exists('pencode')) {
      */
     function pencode($msg = [], $p = 'txt') /* {{{ */
     {
-        $ret = implode(':', $msg);
-        return $ret;
+        $ret['c'] = isset($msg[0]) ? $msg[0] : 0;
+        $ret['m'] = isset($msg[1]) ? $msg[1] : 'ok';
+        if (!empty($msg[2])) {
+            $ret['d'] = $msg[2];
+        }
+        return json_encode($ret, JSON_UNESCAPED_UNICODE);
     } /* }}} */
 }
 

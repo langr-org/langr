@@ -81,17 +81,20 @@ class Room
      *  request:
      *      c:a:args...
      *      token:uid:user-token
+     *      {'a':'login','m':'token','d':{a1:uid,a2:token-value...}}
      *  response:
      * @return 
      */
     public function token(& $connection, $ret = []) /* {{{ */
     {
-        if (!empty($ret[1]) && !empty($ret[2])) {
-            $connection->uid = $ret[1];     /* uid */
-            $connection->id = $ret[2];      /* token */
-            $connection->room_id = 0;       /* 房间号 */
-            $connection->is_ready = false;  /* 准备好？ */
-            $this->links[$ret[1]] = $connection;
+        if (!empty($ret['d']['a1']) && !empty($ret['d']['a2'])) {
+            $connection->uid = $ret['d']['a1']; /* uid */
+            $connection->id = $ret['d']['a2'];  /* token */
+            $connection->room_id = 0;           /* 房间号 */
+            $connection->is_ready = false;      /* 准备好？ */
+            $this->links[$ret['d']['a1']] = $connection;
+        } else {
+            $connection->send(pencode(['50010', 'login error!']));
         }
 	    return ;
     } /* }}} */
@@ -108,17 +111,18 @@ class Room
      *  request:
      *      c:a:args...
      *      room:reconnection:uid:token
+     *      {'a':'room','m':'reconnection','d':{a1:uid,a2:token-value...}}
      *  response:
      * @return 
      */
     public function reConnection(& $connection, $ret = []) /* {{{ */
     {
-        if (!empty($ret[2]) && !empty($ret[3])) {
-            $connection->uid = $ret[2];                     /* uid */
-            $connection->id = $this->links[$ret[2]]->id;    /* token */
-            $connection->room_id = $this->links[$ret[2]]->room_id;      /* 房间号 */
-            $connection->is_ready = $this->links[$ret[2]]->is_ready;    /* 准备好？ */
-            $this->links[$ret[2]] = $connection;
+        if (!empty($ret['d']['a1']) && !empty($ret['d']['a2'])) {
+            $connection->uid = $ret['d']['a1'];     /* uid */
+            $connection->id = $this->links[$ret['d']['a1']]->id;      /* token */
+            $connection->room_id = $this->links[$ret['d']['a1']]->room_id;      /* 房间号 */
+            $connection->is_ready = $this->links[$ret['d']['a1']]->is_ready;    /* 准备好？ */
+            $this->links[$ret['d']['a1']] = $connection;
             if ($connection->room_id) {
                 $this->room_ids[$connection->room_id][$connection->uid] = $connection;
             }
@@ -134,37 +138,39 @@ class Room
      *  request:
      *      c:a:args...
      *      controller:action:arg1:arg2:arg n...
+     *      {'a':controller,'m':method,'d':{arg1:arg2:arg n...}}
      *      room:add:room_id
+     *      {'a':'room','m':'add','d':{a1:room-id}}
      *  response:
      *      0:ok:[uids]
      * @return 
      */
     public function joinRoom(& $connection, $ret = []) /* {{{ */
     {
-        if (empty($ret[2]) || $connection->room_id != 0) {
+        if (empty($ret['d']['a1']) || $connection->room_id != 0) {
             $connection->send(pencode(['50110', 'room id error! '.$connection->room_id]));
 	        return ;
         }
         $msg = 'join room';
         /* 检测房间人员 */
-        if (empty($this->room_ids[$ret[2]])) {
+        if (empty($this->room_ids[$ret['d']['a1']])) {
             if (count($this->room_ids) >= ROOM_NUM) {
                 $connection->send(pencode(['50120', 'server full!']));
                 $connection->close();
 	            return ;
             }
             $msg = 'create room';
-            wlog(LOG_PATH.'room-'.date('Ym').'.log', 'create room:'.$ret[2].' uid:'.$connection->uid);
-        } else if (count($this->room_ids[$ret[2]]) >= DESK_PEOPLE) {
+            wlog(LOG_PATH.'room-'.date('Ym').'.log', 'create room:'.$ret['d']['a1'].' uid:'.$connection->uid);
+        } else if (count($this->room_ids[$ret['d']['a1']]) >= DESK_PEOPLE) {
             /* 满员 */
             $connection->send(pencode(['50130', 'room full!']));
-            wlog(LOG_PATH.'room-'.date('Ym').'.log', json_encode(['joinRoom:', $this->room_ids[$ret[2]], $this->room_uids], JSON_UNESCAPED_UNICODE));
+            wlog(LOG_PATH.'room-'.date('Ym').'.log', json_encode(['joinRoom:', $this->room_ids[$ret['d']['a1']], $this->room_uids], JSON_UNESCAPED_UNICODE));
 	        return ;
         }
-        $connection->room_id = $ret[2];
-        $this->room_ids[$ret[2]][$connection->uid] = $connection;   /* room id */
+        $connection->room_id = $ret['d']['a1'];
+        $this->room_ids[$ret['d']['a1']][$connection->uid] = $connection;   /* room id */
         $this->room_uids[] = $connection->uid;                      /* room uid */
-        $connection->send(pencode([0, $msg.' '.$ret[2].' ok!'], $this->room_uids));
+        $connection->send(pencode([0, $msg.' '.$ret['d']['a1'].' ok!', $this->room_uids]));
         //foreach ($this->room_ids[$connection->room_id] as $uid => $con) {
         //    $con->send(pencode(['1', $connection->uid.' join room!']));
         //}
@@ -200,12 +206,13 @@ class Room
      *  request:
      *      c:a:args...
      *      controller:action:arg1:arg2:arg n...
+     *      {'a':'room','m':'ready','d':{'a1':'1'}}
      *      room:ready:1
      * @return 
      */
     public function ready(& $connection, $ret = []) /* {{{ */
     {
-        if (empty($ret[2])) {
+        if (empty($ret['d']['a1'])) {
             $connection->send(pencode(['50210', 'ready?']));
 	        return ;
         } else {
@@ -252,6 +259,7 @@ class Room
      *      controller:action:arg1:arg2:arg n...
      *      room:play:AAA
      *      room:play:0     pass
+     *      {'a':'room','m':'play','d':{'a1':'play-info'}}
      * @return 
      */
     public function play(& $connection, $ret = []) /* {{{ */
@@ -263,7 +271,7 @@ class Room
         }
         wlog(LOG_PATH.'room-'.date('Ym').'.log', json_encode(['play:', $this->pk_power, $connection->uid, $ret, $this->pk_prev]));
         /* 打牌后开始清除当手牌超时时间，并设置下一手牌超时时间；超时自动出牌：过牌/出最小单张 */
-        if (empty($ret[2]) || $ret[2] == '0') {
+        if (empty($ret['d']['a1']) || $ret['d']['a1'] == '0') {
             /* pass */
             if (empty($this->pk_prev['uid']) || $connection->uid == $this->pk_prev['uid']) {
                 $connection->send(pencode(['50320', $connection->uid.' 无上家牌!', $this->pk_power]));
@@ -280,7 +288,7 @@ class Room
             }
         //wlog(LOG_PATH.'room-'.date('Ym').'.log', json_encode(['play:2 ', $connection->uid, $ret]));
             /* 检测规则，检测是否合法牌型，并且大于上一手牌 */
-            $ret = $this->game->checkRule($ret[2], $this->pk_prev);
+            $ret = $this->game->checkRule($ret['d']['a1'], $this->pk_prev);
         //wlog(LOG_PATH.'room-'.date('Ym').'.log', json_encode(['play:3 ', $connection->uid, $ret]));
             if ($ret === false) {
                 $connection->send(pencode(['50330', $connection->uid.' rule error!']));
@@ -626,36 +634,36 @@ class Room
      */
     public function run(& $connection, $data = '') /* {{{ */
     {
-        //$connection->send(date('YmdHis ').':room:'.$data);
+        wlog(LOG_PATH.'room-'.date('Ym').'.log', $data);
         $ret = pdecode($data);
-        if (empty($ret[0])) {
-        } else if ($ret[0] == 'token') {
+        if (empty($ret['a'])) {
+        } else if ($ret['a'] == 'login') {
             $this->token($connection, $ret);
-        } else if ($ret[0] == 'room') {
-            if (empty($ret[1])) {
-            } else if ($ret[1] == 'add') {
+        } else if ($ret['a'] == 'room') {
+            if (empty($ret['m'])) {
+            } else if ($ret['m'] == 'add') {
                 $this->joinRoom($connection, $ret);
-            } else if ($ret[1] == 'ready') {
+            } else if ($ret['m'] == 'ready') {
                 $this->ready($connection, $ret);
-            } else if ($ret[1] == 'play') {
+            } else if ($ret['m'] == 'play') {
                 $this->play($connection, $ret);
-            } else if ($ret[1] == 'exit') {
+            } else if ($ret['m'] == 'exit') {
                 $this->bye($connection, $ret);
             }
-        } else if ($ret[0] == 'test') {
-            //$ret = $this->{$ret[1]}($ret[2]);
+        } else if ($ret['a'] == 'test') {
+            //$ret = $this->{$ret['m']}($ret['d']);
             $this->pk_power = $connection->uid;
             $this->play($connection, $ret);
-            /*$ret1 = $this->game->checkRule($ret[2]);
-            if ($ret1 != false && !empty($ret[3])) {
-                $ret2 = $this->game->checkRule($ret[3], $ret1);
+            /*$ret1 = $this->game->checkRule($ret['d']);
+            if ($ret1 != false && !empty($ret['d'])) {
+                $ret2 = $this->game->checkRule($ret['d'], $ret1);
                 $ret = [$ret1, $ret2, $ret];
             } else {
                 $ret = $ret1;
             }*/
         }
-        $ret = json_encode($ret, JSON_UNESCAPED_UNICODE);
-        $connection->send(pencode(['0', 'ok', $ret]));
+        //$ret = json_encode($ret, JSON_UNESCAPED_UNICODE);
+        //$connection->send(pencode(['0', 'ok', $ret]));
 	    return ;
     } /* }}} */
 
@@ -694,7 +702,7 @@ class Room
      */
     public function bye($connection, $ret = []) /* {{{ */
     {
-        if (empty($ret[2])) {
+        if (empty($ret['d']['a1'])) {
 	        return ;
         }
         /* 不在牌局[当局结束了，且没点准备] */
@@ -747,10 +755,10 @@ class Room
                 }
             }
             $this->room_uids = array_values($this->room_uids);
-            unset($this->room_ids[$connection->room_id][$connection->uid]);     /* room id */
             unset($this->links[$connection->uid]);
             if (!empty($connection->room_id)) {
                 $this->sendRoom($connection->room_id, pencode(['1', $connection->uid.' 离开了房间！']));
+                unset($this->room_ids[$connection->room_id][$connection->uid]);     /* room id */
                 wlog(LOG_PATH.'room-'.$connection->room_id.date('-Ym').'.log', json_encode([$connection->uid.' 离开了房间！', $this->room_uids], JSON_UNESCAPED_UNICODE));
             }
         }

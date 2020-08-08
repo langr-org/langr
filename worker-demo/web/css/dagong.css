@@ -15,6 +15,57 @@ div {
     position: absolute;
     /*left: 50rem;*/
 }
+.toast {
+    position: fixed;
+    left: 55%;
+    top: 75%;
+    transition: all .5s;
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -ms-transform: translateX(-50%) translateY(-50%);
+    -o-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+    text-align: center;
+    border-radius: 5px;
+    color: #FFF;
+    background: rgba(17, 17, 17, 0.7);
+    line-height: 25px;
+    padding: 0 10px;
+    max-width: 200px;
+    z-index: 2000;
+}
+#zhezhao {
+    /*display: none;*/
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    width: 200%;
+    height: 200%;
+    /*background: rgba(15,15,15,0.4);*/
+    background-color: black;
+    z-index: 999;
+    -moz-opacity: 0.2;
+    opacity: .2;
+    filter: alpha(opacity=10);
+}
+#login {
+    border-radius: 20px;
+    height: 20rem;
+    /*width: 17rem;*/
+    position: relative;
+    background-color: #aaaaaa;
+    left: 50%;
+    top: 50%;
+    z-index: 1000;
+}
+#login div {
+    margin: 10px;
+    padding: 10px;
+    text-align: center;
+}
+
 #u1 {
     /*height: 600px;*/
     height: 7rem;
@@ -58,6 +109,29 @@ div {
     position: relative;
     left: 33rem;
     top: -37.5rem;
+}
+
+#u1-btn {
+    width: 100%;
+    float: right;
+}
+#u1-poker {
+    float: left;
+}
+
+.u-btn {
+    color: #FFF;
+    border-radius: 10px;
+    background: #8ac007;
+    border: 1px solid #aaa;
+    float: right;
+    padding: 2px 5px 2px 5px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+.u-btn:hover {
+    background-color: #4CAF50;
+    color: white;
 }
 
 #ref-poker0 {
@@ -525,5 +599,4 @@ div {
 .anime-poker .k53 {
   background-position: -20.2rem -30.5rem !important;
 }
-
 

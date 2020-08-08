@@ -4,33 +4,48 @@ API 文档
 登陆：
 请求：
 token:uid:token-value
+{'a':'login','m':'token','d':{'a1':'uid','a2':'token-value'}}
+返回：
+{'c':200,'m':'login-token','d':{'a1':token-value}}
 
 [TODO]聊天：
 hall:room-id:msg
+{'a':'chat','m':'room/hall/private','d':{'a1':'room-id/uid','a2':'msg'}}
 msg:
 @uid msg @提醒
-*uid msg 私聊
 
 创建/加入房间：
 请求：
 room:add:room-id
-返回：
+{'a':'room','m':'add','d':{'a1':'room-id'}}
+x返回：
 0:msg:[room-uids]
 100xx:msg
+{'c':0,'m':'msg','d':{'a1':[room-uids]}}
+房间返回：
+{'c':200,'m':'login-token','d':{'a1':['room-uids']}}
 
 [TODO]获取房间信息：
 请求：
 room:get:room-id
+{'a':'room','m':'get','d':{'a1':'room-id'}}
 返回：
 0:ok:{room-info-json}
+{'c':0,'m':'ok','d':{'a1':{room-info}}}
 
 准备：
 请求：
 room:ready:1
+{'a':'room','m':'ready','d':{'a1':'1'}}
+[TODO]房间返回：
+{'c':200,'m':'room-ready','d':{'a1':'uid'}}
+都准备好，发牌：
+{'c':200,'m':'room-sendpoker','d':{'a1':'pokers'}}
 
 出牌：
 请求：
 room:play:play-info
+{'a':'room','m':'play','d':{'a1':'play-info'}}
 play-info:
 0   过
 A
@@ -39,22 +54,37 @@ AAB/AABEFG
 ABCD/<>EFG/Lfr/<>o
 返回：
 0:ok
+{'c':0,'m':'ok'}
+房间返回：
+{'c':200,'m':'room-play','d':{'a1':'uid','a2':'play-info'}}
+游戏结束：
+{'c':200,'m':'room-gameover','d':{'a1':'uid','a2':'play-info'}}
 
 [TODO]退出房间：
 请求：
 room:exit:1
+{'a':'room','m':'exit','d':{'a1':'1'}}
 
 测试：
-test:action:arg1:arg2...
+test:method:arg1:arg2...
+{'a':'test','m':'method','d':{'arg1':'','arg2':''}}
 
 
 协议返回信息：
 0:msg           客户端请求响应信息，正常
 1:msg           广播信息
-2xx:action:data 主动向客户端发送数据
+2xx:controller-method:data 主动向客户端发送数据
 5xxxx:msg       出错信息
 
+下行：
+{'c':0,'m':'msg/method','d':{'args':'argv'}}
+上行：
+{'a':'controller','m':'method','d':{args}}
 
-
+a = controller  上行：请求的动作；
+m = method  上行：请求的 method；
+d = data    上/下行：数据，根据各 controller/method 可能有，可能没有；
+c = code    下行：执行状态码，参考 协议返回信息；
+m = msg     下行：code != 2xx, msg 提示信息 / code = 2xx, 向客户端发送数据的 method；
 
 </pre>
